@@ -1,0 +1,4 @@
+[core]
+    remote = localstore
+['remote "localstore"']
+    url = C:\Users\sasha\PycharmProjects\Sum2024MLOps/datastore
