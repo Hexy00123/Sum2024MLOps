@@ -1,8 +1,8 @@
 defaults:
-  - dataset: default
+  - _self_
 
-sample_size: 0.2
+num_samples: 5
 
 dataset:
-  url: "../zameen-updated.csv"
+  url: "zameen-updated.csv"
   name: "zameen-updated"
