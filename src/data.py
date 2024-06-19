@@ -8,7 +8,7 @@ import dvc.api
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def sample_data(cfg: DictConfig):
     # Read data
-    data_path = hydra.utils.to_absolute_path(cfg.dataset.url)
+    data_path = hydra.utils.to_absolute_path('data/' + cfg.dataset.url)
     data = pd.read_csv(data_path)
 
     # Sort data by 'date_added'
