@@ -92,3 +92,7 @@ class TestSampleData:
 
         # Clean up
         os.remove(sample_file)
+
+    # TODO: Add a test that checks if the sampled data is sorted by 'date_added',
+    #  and that new samples are supersets of previous samples.
+    # That next sample date_added are greater or equal to the previous sample date_added.
