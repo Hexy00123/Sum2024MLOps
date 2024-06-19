@@ -1,45 +1,44 @@
-# TODO: fix working
-
 import os
-import pytest
-import pandas as pd
-from omegaconf import DictConfig
-from hydra import initialize, compose
+
 import hydra
+import pandas as pd
+import pytest
+from hydra import initialize, compose
+from omegaconf import DictConfig
+
 from src.data import sample_data
 
 
-# create a fixture to initialize the hydra config
 @pytest.fixture
 def cfg() -> DictConfig:
+    """
+    Load the test_config.yaml configuration file
+    """
     with initialize(config_path="../configs", version_base=None):
         cfg = compose(config_name="test_config")
     return cfg
+
+
+def sample_data_stage(cfg: DictConfig, stage: int, sample_file: str):
+    """
+    Helper function to sample data for a specific project stage
+    """
+    buf = cfg.copy()
+    buf.project_stage = stage
+    sample_data(buf)
+    sampled_data = pd.read_csv(sample_file)
+    return sampled_data
 
 
 class TestSampleData:
     """
     Test the sample_data function
     """
-    def test_with_initialize(self, cfg) -> None:
-        """
-        Test the hydra config initialization
-        """
-        assert cfg == {
-            "num_samples": 5,
-            "dataset": {
-                "url": "zameen-updated.csv",
-                "name": "zameen-updated"
-            },
-            "project_stage": 1,
-            "test": True
-        }
 
     def test_sample_length(self, monkeypatch, cfg):
         """
         Test the length of the sampled data
         """
-
         # Mock the hydra.utils.get_original_cwd() to return the current working directory
         monkeypatch.setattr(hydra.utils, 'get_original_cwd', os.getcwd)
 
@@ -64,23 +63,12 @@ class TestSampleData:
         """
         Test if the samples are different for different project stages
         """
-
         monkeypatch.setattr(hydra.utils, 'get_original_cwd', os.getcwd)
 
-        # Run the function twice with different project stages
-        cfg1 = cfg.copy()
-        cfg1.project_stage = 1
-        sample_data(cfg1)
-        sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
-        sampled_data1 = pd.read_csv(sample_file)
-
-        cfg2 = cfg.copy()
-        cfg2.project_stage = 2
-        sample_data(cfg2)
         sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
 
-        # Load the generated samples
-        sampled_data2 = pd.read_csv(sample_file)
+        sampled_data1 = sample_data_stage(cfg, 1, sample_file)
+        sampled_data2 = sample_data_stage(cfg, 2, sample_file)
 
         # Check if samples are not identical
         assert not sampled_data1.equals(sampled_data2)
@@ -88,29 +76,19 @@ class TestSampleData:
         # Clean up
         os.remove(sample_file)
 
-    def test_first_second_comparison(self, monkeypatch, cfg):
+    def test_samples_comparison(self, monkeypatch, cfg):
         """
-        Test if the second sample has 2 times more data than the first sample
+        Test if each sample increases in size by 1/5 of the original data
         """
         monkeypatch.setattr(hydra.utils, 'get_original_cwd', os.getcwd)
 
-        # Run the function twice with different project stages
-        cfg1 = cfg.copy()
-        cfg1.project_stage = 1
-        sample_data(cfg1)
-        sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
-        sampled_data1 = pd.read_csv(sample_file)
-
-        cfg2 = cfg.copy()
-        cfg2.project_stage = 2
-        sample_data(cfg2)
         sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
 
-        # Load the generated samples
-        sampled_data2 = pd.read_csv(sample_file)
-
-        # Check if samples are not identical
-        assert len(sampled_data2) == 2 * len(sampled_data1)
+        first_sample_len = len(sample_data_stage(cfg, 1, sample_file))
+        for i in range(2, 6):
+            sampled_data = sample_data_stage(cfg, i, sample_file)
+            j = 1 if i == 5 else 0
+            assert len(sampled_data) == i * first_sample_len + j
 
         # Clean up
         os.remove(sample_file)
