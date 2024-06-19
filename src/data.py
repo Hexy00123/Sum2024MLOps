@@ -1,8 +1,9 @@
+# python src/data.py project_stage=1
+
 import os
 import pandas as pd
 import hydra
 from omegaconf import DictConfig
-import dvc.api
 
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
