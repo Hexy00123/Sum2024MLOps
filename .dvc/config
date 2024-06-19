@@ -1,4 +1,6 @@
 [core]
-    remote = localstore
+    remote = storage
 ['remote "localstore"']
     url = C:\Users\sasha\PycharmProjects\Sum2024MLOps/datastore
+['remote "storage"']
+    url = gdrive://1tamO2_xj-RZnUpi_PykTIapnIoi4lvK5
