@@ -1,80 +1,116 @@
 # TODO: fix working
 
+import os
 import pytest
-from omegaconf import OmegaConf, DictConfig
+import pandas as pd
+from omegaconf import DictConfig
+from hydra import initialize, compose
 import hydra
+from src.data import sample_data
 
 
-@pytest.fixture(scope="session")
-def cfg():
-    # defaults:
-    #   - _self_
-    #
-    # num_samples: 5
-    #
-    # dataset:
-    #   url: "zameen-updated.csv"
-    #   name: "zameen-updated"
-    #
-    # project_stage: 1
-    #
-    # test: True  # test mode
-    cfg = DictConfig()
+# create a fixture to initialize the hydra config
+@pytest.fixture
+def cfg() -> DictConfig:
+    with initialize(config_path="../configs", version_base=None):
+        cfg = compose(config_name="test_config")
     return cfg
 
-# tests/test_data.py
 
-import os
-import pandas as pd
-import pytest
+class TestSampleData:
+    """
+    Test the sample_data function
+    """
+    def test_with_initialize(self, cfg) -> None:
+        """
+        Test the hydra config initialization
+        """
+        assert cfg == {
+            "num_samples": 5,
+            "dataset": {
+                "url": "zameen-updated.csv",
+                "name": "zameen-updated"
+            },
+            "project_stage": 1,
+            "test": True
+        }
 
-# Remove the hydra import from the test files
+    def test_sample_length(self, monkeypatch, cfg):
+        """
+        Test the length of the sampled data
+        """
 
-# You can keep the test functions as they are, but modify them to use the cfg fixture
+        # Mock the hydra.utils.get_original_cwd() to return the current working directory
+        monkeypatch.setattr(hydra.utils, 'get_original_cwd', os.getcwd)
 
+        # Run the function
+        sample_data(cfg)
 
-def test_sample_length(cfg):
-    from src.data import sample_data
+        # Load the generated sample
+        sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
+        sampled_data = pd.read_csv(sample_file)
 
-    # Run the function
-    sample_data(cfg)
+        dataset_path = cfg.dataset.url
+        data = pd.read_csv(dataset_path)
 
-    # Load the generated sample
-    sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
-    sampled_data = pd.read_csv(sample_file)
+        # Check the length of the sample
+        expected_length = len(data) // cfg.num_samples  # Calculate expected length based on num_samples
+        assert len(sampled_data) == expected_length
 
-    dataset_path = cfg.dataset.url
-    data = pd.read_csv(dataset_path)
+        # Clean up
+        os.remove(sample_file)
 
-    # Check the length of the sample
-    expected_length = len(data) / cfg.num_samples  # Calculate expected length based on num_samples
-    assert len(sampled_data) == expected_length
+    def test_different_samples(self, monkeypatch, cfg):
+        """
+        Test if the samples are different for different project stages
+        """
 
-    # Clean up
-    os.remove(sample_file)
+        monkeypatch.setattr(hydra.utils, 'get_original_cwd', os.getcwd)
 
+        # Run the function twice with different project stages
+        cfg1 = cfg.copy()
+        cfg1.project_stage = 1
+        sample_data(cfg1)
+        sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
+        sampled_data1 = pd.read_csv(sample_file)
 
-def test_different_samples(cfg):
-    from src.data import sample_data
+        cfg2 = cfg.copy()
+        cfg2.project_stage = 2
+        sample_data(cfg2)
+        sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
 
-    # Run the function twice with different project stages
-    cfg1 = cfg.copy()
-    cfg1.project_stage = 1
-    sample_data(cfg1)
-    sample_file1 = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample1.csv')
+        # Load the generated samples
+        sampled_data2 = pd.read_csv(sample_file)
 
-    cfg2 = cfg.copy()
-    cfg2.project_stage = 2
-    sample_data(cfg2)
-    sample_file2 = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample2.csv')
+        # Check if samples are not identical
+        assert not sampled_data1.equals(sampled_data2)
 
-    # Load the generated samples
-    sampled_data1 = pd.read_csv(sample_file1)
-    sampled_data2 = pd.read_csv(sample_file2)
+        # Clean up
+        os.remove(sample_file)
 
-    # Check if samples are not identical
-    assert not sampled_data1.equals(sampled_data2)
+    def test_first_second_comparison(self, monkeypatch, cfg):
+        """
+        Test if the second sample has 2 times more data than the first sample
+        """
+        monkeypatch.setattr(hydra.utils, 'get_original_cwd', os.getcwd)
 
-    # Clean up
-    os.remove(sample_file1)
-    os.remove(sample_file2)
+        # Run the function twice with different project stages
+        cfg1 = cfg.copy()
+        cfg1.project_stage = 1
+        sample_data(cfg1)
+        sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
+        sampled_data1 = pd.read_csv(sample_file)
+
+        cfg2 = cfg.copy()
+        cfg2.project_stage = 2
+        sample_data(cfg2)
+        sample_file = os.path.join(os.getcwd(), 'data', 'samples', 'test_sample.csv')
+
+        # Load the generated samples
+        sampled_data2 = pd.read_csv(sample_file)
+
+        # Check if samples are not identical
+        assert len(sampled_data2) == 2 * len(sampled_data1)
+
+        # Clean up
+        os.remove(sample_file)
