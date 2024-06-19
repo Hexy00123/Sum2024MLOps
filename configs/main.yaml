@@ -6,3 +6,5 @@ num_samples: 5
 dataset:
   url: "zameen-updated.csv"
   name: "zameen-updated"
+
+project_stage: 1  # Default to stage 1, adjust as per your project needs
