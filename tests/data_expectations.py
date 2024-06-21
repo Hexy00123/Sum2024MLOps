@@ -1,55 +1,35 @@
-from great_expectations.data_context import FileDataContext
+# cd tests && python data_expectations.py
+
+import great_expectations as gx
 
 
 def validate_initial_data():
-    context = FileDataContext(context_root_dir="../services/gx")
+    """
+    This function is used to validate the initial data using the data expectations.
+    """
+    context = gx.get_context(project_root_dir="services")
 
-    data_source = context.sources.add_or_update_pandas(name="first_ds")
-    data_asset = data_source.add_csv_asset(
-        name="asset01",
-        filepath_or_buffer="../data/samples/sample.csv",
-    )
+    retrieved_checkpoint = context.get_checkpoint(name="first_phase_checkpoint")
 
-    batch_request = data_asset.build_batch_request()
+    results = retrieved_checkpoint.run()
 
-    context.add_or_update_expectation_suite("first_expectation_suite")
+    assert results.success
 
-    validator = context.get_validator(
-        batch_request=batch_request,
-        expectation_suite_name="first_expectation_suite",
-    )
-
-    # Expectations
-    validator.expect_table_row_count_to_be_between(min_value=33689, max_value=168446)
-
-    validator.expect_column_values_to_not_be_null(
-        column="property_id"
-    )
-
-    validator.expect_column_values_to_not_be_null(
-        column="location_id"
-    )
-
-    validator.save_expectation_suite(
-        discard_failed_expectations=False
-    )
-
-    checkpoint = context.add_or_update_checkpoint(
-        name="first_checkpoint",
-        validations=[
-            {
-                "batch_request": batch_request,
-                "expectation_suite_name": "first_expectation_suite",
-            },
-        ],
-    )
-
-    results = checkpoint.run()
-
-    if not results.success:
-        raise Exception("Data validation failed. Please check the logs for more details.")
     print("Data validation successful.")
+
+
+def docs():
+    """
+    This function is used to generate the documentation site for the data validation.
+    """
+    context = gx.get_context(project_root_dir="services")
+
+    context.build_data_docs()
+
+    # Open the data docs in a browser
+    context.open_data_docs()
 
 
 if __name__ == "__main__":
     validate_initial_data()
+    docs()
