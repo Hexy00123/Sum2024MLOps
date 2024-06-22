@@ -1,3 +1,5 @@
+REM ./scripts/test_data.bat
+
 @echo off
 REM Exit immediately if a command exits with a non-zero status
 setlocal enabledelayedexpansion
