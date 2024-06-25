@@ -1,7 +1,4 @@
 # if running in wsl for the first time, running jupiter may be necessary
-# jupyter execute notebooks/data_expectations.ipynb
-# ./scripts/test_data.sh
-
 # Exit immediately if a command exits with a non-zero status
 set -e
 
