@@ -50,7 +50,7 @@ class TestSampleData:
         sampled_data = pd.read_csv(sample_file)
 
         dataset_path = cfg.dataset.url
-        data = pd.read_csv(dataset_path)
+        data = pd.read_csv("data/" + dataset_path)
 
         # Check the length of the sample
         expected_length = len(data) // cfg.num_samples  # Calculate expected length based on num_samples
