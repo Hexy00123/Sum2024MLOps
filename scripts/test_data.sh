@@ -1,5 +1,4 @@
 # if running in wsl for the first time, running jupiter may be necessary
-# Exit immediately if a command exits with a non-zero status
 set -e
 # Define the data sample file path
 DATA_SAMPLE_PATH="data/samples"
