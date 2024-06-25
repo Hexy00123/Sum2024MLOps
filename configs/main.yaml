@@ -1,0 +1,12 @@
+defaults:
+  - _self_
+
+num_samples: 5
+
+dataset:
+  url: "zameen-updated.csv"
+  name: "zameen-updated"
+
+project_stage: 1
+
+test: False
