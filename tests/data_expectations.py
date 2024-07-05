@@ -1,4 +1,4 @@
-# cd tests && python data_expectations.py
+# python tests/data_expectations.py
 
 import great_expectations as gx
 
@@ -15,8 +15,6 @@ def validate_initial_data():
 
     assert results.success
 
-    print("Data validation successful.")
-
 
 def docs():
     """
@@ -32,4 +30,4 @@ def docs():
 
 if __name__ == "__main__":
     validate_initial_data()
-    docs()
+    # docs()

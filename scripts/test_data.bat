@@ -22,9 +22,6 @@ if not errorlevel 1 (
     exit /b 1
 )
 
-REM echo the current path
-echo %CD%
-
 REM Step 3: Version the data sample with DVC
 echo Versioning the data sample with DVC...
 
