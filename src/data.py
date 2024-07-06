@@ -1,4 +1,4 @@
-# python src/data.py project_stage=1
+# python src/data.py index=1
 
 import os
 
@@ -18,10 +18,10 @@ def sample_data(cfg: DictConfig):
     data = data.sort_values(by='date_added')
 
     # Read project stage from config
-    project_stage = cfg.project_stage
+    index = cfg.index
 
     # Calculate the number of samples to take based on project stage
-    num_samples = int(len(data) * project_stage / cfg.num_samples)
+    num_samples = int(len(data) * index / cfg.num_samples)
 
     # Take the first num_samples based on project_stage
     sampled_data = data.head(num_samples)
@@ -33,7 +33,7 @@ def sample_data(cfg: DictConfig):
     # Save sampled data
     sample_file = os.path.join(output_dir, filename)
     sampled_data.to_csv(sample_file, index=False)
-    print(f"Sampled data for stage {project_stage} saved to {sample_file}")
+    print(f"Sampled data for stage {index} saved to {sample_file}")
 
 
 if __name__ == "__main__":
