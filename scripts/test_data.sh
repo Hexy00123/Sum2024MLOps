@@ -7,7 +7,7 @@ echo "Taking a data sample..."
 python3 src/data.py project_stage=1
 # Step 2: Validate the data sample
 echo "Validating the data sample..."
-if python3 tests/data_expectations.py; then
+if python3 src/data_expectations.py; then
     echo "Data validation successful."
     # Step 3: Version the data sample with DVC
     echo "Versioning the data sample with DVC..."
