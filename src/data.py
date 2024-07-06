@@ -1,7 +1,4 @@
-# python src/data.py index=1
-
 import os
-
 import hydra
 import pandas as pd
 from omegaconf import DictConfig
@@ -10,6 +7,7 @@ from omegaconf import DictConfig
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def sample_data(cfg: DictConfig):
     filename = "sample.csv" if cfg.test is False else "test_sample.csv"
+
     # Read data
     data_path = hydra.utils.to_absolute_path('data/' + cfg.dataset.url)
     data = pd.read_csv(data_path)
@@ -20,11 +18,20 @@ def sample_data(cfg: DictConfig):
     # Read project stage from config
     index = cfg.index
 
-    # Calculate the number of samples to take based on project stage
-    num_samples = int(len(data) * index / cfg.num_samples)
+    # Calculate start and end indices for the sample
+    total_length = len(data)
+    num_splits = cfg.num_samples
+    split_size = total_length // num_splits
 
-    # Take the first num_samples based on project_stage
-    sampled_data = data.head(num_samples)
+    start_idx = (index - 1) * split_size
+    end_idx = start_idx + split_size
+
+    # Handle the case when index is the last one and may not divide evenly
+    if index == num_splits:
+        end_idx = total_length
+
+    # Take the slice of data based on start and end indices
+    sampled_data = data.iloc[start_idx:end_idx]
 
     # Ensure the output directory exists
     output_dir = os.path.join(hydra.utils.get_original_cwd(), "data", "samples")
