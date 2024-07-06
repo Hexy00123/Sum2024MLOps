@@ -29,5 +29,5 @@ def docs():
 
 
 if __name__ == "__main__":
-    validate_initial_data()
-    # docs()
+    # validate_initial_data()
+    docs()
