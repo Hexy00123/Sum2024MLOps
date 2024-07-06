@@ -25,7 +25,7 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean
 
-# EXPOSE 8080
+EXPOSE 8080
 
 # Switch to regular user airflow
 USER airflow
