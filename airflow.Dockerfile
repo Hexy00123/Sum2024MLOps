@@ -1,6 +1,6 @@
 # The base image - Use the same version of the package `apache-airflow` that you installed via pip
 FROM apache/airflow:2.7.3-python3.11
-# FROM apache/airflow:latest-python3.11
+#FROM apache/airflow:latest-python3.11
 # FROM apache/airflow:2.9.2-python3.11
 # Why python3.11? the explanation is later below
 
@@ -14,7 +14,7 @@ COPY airflow.requirements.txt .
 RUN pip install --upgrade pip
 
 # Install requirements.txt
-RUN sudo pip install -r airflow.requirements.txt --upgrade
+RUN pip install -r airflow.requirements.txt --upgrade
 
 # Switch to root user
 USER root
