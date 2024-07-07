@@ -3,6 +3,10 @@ import hydra
 import pandas as pd
 from omegaconf import DictConfig
 
+#TODO:
+# 2. preprocess_data @Bulat
+# 3. load_features
+
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def sample_data(cfg: DictConfig):
@@ -41,6 +45,24 @@ def sample_data(cfg: DictConfig):
     sample_file = os.path.join(output_dir, filename)
     sampled_data.to_csv(sample_file, index=False)
     print(f"Sampled data for stage {index} saved to {sample_file}")
+
+
+@hydra.main(config_path="../configs", config_name="data_version", version_base=None)
+def read_datastore(cfg: DictConfig):
+    # which returns the sample as a dataframe/tensor.
+    version = cfg.data_version
+    sample_path = hydra.utils.to_absolute_path(cfg.sample_path)
+    sample = pd.read_csv(sample_path)
+    return sample, version
+
+
+def preprocess_data():
+    ...
+
+
+def load_features():
+    # zenml
+    ...
 
 
 if __name__ == "__main__":

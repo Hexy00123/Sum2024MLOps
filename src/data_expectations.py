@@ -1,4 +1,6 @@
-# python tests/data_expectations.py
+# python src/data_expectations.py
+
+# TODO: validate features
 
 import great_expectations as gx
 
@@ -14,6 +16,10 @@ def validate_initial_data():
     results = retrieved_checkpoint.run()
 
     assert results.success
+
+
+def validate_features():
+    ...
 
 
 def docs():
