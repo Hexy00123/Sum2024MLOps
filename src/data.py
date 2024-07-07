@@ -134,6 +134,8 @@ def preprocess_data(df: pd.DataFrame):
     data = scale_feature(data, 'bedrooms')
     data = scale_feature(data, 'year', strategy='minmax')
 
+    data = scale_feature(data, 'price')
+
     # Cyclic datetime encoding
     data = cyclic_encoding(data, 'day', 31)
     data = cyclic_encoding(data, 'month', 12)
