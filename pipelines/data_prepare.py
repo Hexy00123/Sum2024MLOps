@@ -21,7 +21,7 @@ def extract() -> Tuple[
     ArtifactConfig(name="data_version",
                    tags=["data_preparation"])]
 ]:
-    df, version = read_datastore(BASE_PATH)
+    df, version = read_datastore()
 
     return df, version
 
