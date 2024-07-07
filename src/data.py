@@ -92,6 +92,13 @@ def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std') -
     return data
 
 
+def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
+    data[column_name+'_sin'] = np.sin(2 * np.pi * data[column_name]/max_value)
+    data[column_name+'_cos'] = np.sin(2 * np.pi * data[column_name]/max_value)
+    data = data.drop(column_name, axis=1)
+    return data
+
+
 def preprocess_data(df: pd.DataFrame):
     # Filter data
     df = df[df['latitude'] > 22][df['latitude'] < 38]
@@ -109,23 +116,27 @@ def preprocess_data(df: pd.DataFrame):
 
     # Drop unnecessary/raw columns
     data = df.drop(['Area Type', 'Area Size', 'Area Category', 'agency',
-                 'agent', 'property_id', 'page_url', 'date_added'], axis=1)
-    
+                    'agent', 'property_id', 'page_url', 'date_added'], axis=1)
+
+    # Encoding features
     data = one_hot_encode_feature(data, 'property_type')
     data = one_hot_encode_feature(data, 'location')
     data = one_hot_encode_feature(data, 'city')
     data = one_hot_encode_feature(data, 'province_name')
     data = one_hot_encode_feature(data, 'purpose')
 
+    # Scaling features
     data = scale_feature(data, 'latitude', strategy='minmax')
     data = scale_feature(data, 'longitude', strategy='minmax')
     data = scale_feature(data, 'area')
     data = scale_feature(data, 'location_id', strategy='minmax')
     data = scale_feature(data, 'baths')
     data = scale_feature(data, 'bedrooms')
-    data = scale_feature(data, 'day', strategy='minmax')
-    data = scale_feature(data, 'month', strategy='minmax')
     data = scale_feature(data, 'year', strategy='minmax')
+
+    # Cyclic datetime encoding
+    data = cyclic_encoding(data, 'day', 31)
+    data = cyclic_encoding(data, 'month', 12)
 
     return data
 
