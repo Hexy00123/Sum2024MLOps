@@ -1,6 +1,6 @@
 defaults:
   - _self_
 
-sample_path: "data/samples/sample.csv"
+sample_path: "sample.csv"
 
 data_version: 3

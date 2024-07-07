@@ -1,6 +1,13 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.bash import BashOperator
+import os
+
+# Define the base directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_PATH = os.path.join(BASE_DIR, '..', '..', '..', 'configs', 'data_version.yaml')
+DATA_PY_PATH = os.path.join(BASE_DIR, '..', '..', '..', 'src', 'data.py')
+SAMPLE_PATH = os.path.join(BASE_DIR, 'data', 'samples')
 
 default_args = {
     'owner': 'airflow',
@@ -20,24 +27,31 @@ dag = DAG(
     catchup=False,
 )
 
+check_path = BashOperator(
+    task_id='check_path',
+    bash_command=f'echo {BASE_DIR}',
+    dag=dag,
+)
+
 extract_data = BashOperator(
     task_id='extract_data',
-    bash_command='python3 src/data.py index=$(cat ./configs/data_version.yaml | grep version | awk \'{print $2}\')',
+    bash_command=f'python3 {DATA_PY_PATH}',
+    # bash_command='python3 src/data.py',
     dag=dag,
 )
 
 validate_data = BashOperator(
     task_id='validate_data',
-    bash_command='python3 src/data_expectations.py',
+    bash_command=f'python3 {os.path.join(BASE_DIR, "src", "data_expectations.py")}',
     dag=dag,
 )
 
 version_data = BashOperator(
     task_id='version_data',
-    bash_command='''\
-    dvc add data/samples && \
-    TAG="v$(cat ./configs/data_version.yaml | grep version | awk \'{print $2}\').0" && \
-    git add data/samples.dvc && \
+    bash_command=f'''
+    dvc add {SAMPLE_PATH} && \
+    TAG="v$(cat {CONFIG_PATH} | grep version | awk '{{print $2}}').0" && \
+    git add {SAMPLE_PATH}.dvc && \
     git commit -m "Add data version $TAG" && \
     git push && \
     git tag -a "$TAG" -m "Add data version $TAG" && \
@@ -49,11 +63,11 @@ version_data = BashOperator(
 
 update_version = BashOperator(
     task_id='update_version',
-    bash_command='''\
+    bash_command=f'''
     python3 -c "import yaml; \
-    with open('./configs/data_version.yaml', 'r') as f: config = yaml.safe_load(f); \
+    with open('{CONFIG_PATH}', 'r') as f: config = yaml.safe_load(f); \
     config['version'] += 1; \
-    with open('./configs/data_version.yaml', 'w') as f: yaml.safe_dump(config, f)" 
+    with open('{CONFIG_PATH}', 'w') as f: yaml.safe_dump(config, f)" 
     ''',
     dag=dag,
 )

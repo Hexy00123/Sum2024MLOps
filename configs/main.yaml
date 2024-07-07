@@ -10,3 +10,7 @@ dataset:
 index: 1
 
 test: False
+
+sample_path: "sample.csv"
+
+data_version: 3
