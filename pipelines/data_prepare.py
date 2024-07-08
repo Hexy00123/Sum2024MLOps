@@ -17,7 +17,7 @@ def extract() -> Tuple[
                    tags=["data_preparation"]
                    )
     ],
-    Annotated[str,
+    Annotated[int,
     ArtifactConfig(name="data_version",
                    tags=["data_preparation"])]
 ]:
@@ -31,7 +31,7 @@ def transform(df: pd.DataFrame) -> Tuple[
     Annotated[pd.DataFrame,
     ArtifactConfig(name="input_features",
                    tags=["data_preparation"])],
-    Annotated[pd.DataFrame,
+    Annotated[pd.Series,
     ArtifactConfig(name="input_target",
                    tags=["data_preparation"])]
 ]:
