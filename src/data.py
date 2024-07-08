@@ -155,5 +155,4 @@ def load_features():
 
 
 if __name__ == "__main__":
-    sample, version = read_datastore()
-    print(sample)
+    sample_data()
