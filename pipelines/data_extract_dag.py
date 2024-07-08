@@ -72,7 +72,7 @@ with DAG(
         start_date=days_ago(1),
         tags=['example'],
 ) as dag:
-    project_stage = 3
+    project_stage = 2
 
     extract_task = PythonOperator(
         task_id='extract_data_sample',

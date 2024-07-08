@@ -7,10 +7,6 @@ dataset:
   url: "zameen-updated.csv"
   name: "zameen-updated"
 
-index: 1
+index: 2
 
 test: False
-
-sample_path: "sample.csv"
-
-data_version: 3

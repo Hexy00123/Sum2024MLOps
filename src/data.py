@@ -52,20 +52,6 @@ def sample_data(cfg: DictConfig):
     print(f"Sampled data for stage {index} saved to {sample_file}")
 
 
-# @hydra.main(config_path="../configs", config_name="main", version_base=None)
-# def read_datastore():
-#     # which returns the sample as a dataframe/tensor.
-#     version = 3
-#     # sample_path = hydra.utils.to_absolute_path('data/samples/' + cfg.sample_path)
-#     sample_path = "data/samples/sample.csv"
-#     print(sample_path)
-#     print(version)
-#     # print current directory
-#     print(os.getcwd())
-#     # sample_path = hydra.utils.to_absolute_path(cfg.sample_path)
-#     sample = pd.read_csv(sample_path)
-#     return sample, version
-
 def read_datastore():
     version = 3
     sample_path = "../data/samples/sample.csv"
