@@ -53,16 +53,24 @@ def sample_data(cfg: DictConfig):
 
 
 # @hydra.main(config_path="../configs", config_name="main", version_base=None)
+# def read_datastore():
+#     # which returns the sample as a dataframe/tensor.
+#     version = 3
+#     # sample_path = hydra.utils.to_absolute_path('data/samples/' + cfg.sample_path)
+#     sample_path = "data/samples/sample.csv"
+#     print(sample_path)
+#     print(version)
+#     # print current directory
+#     print(os.getcwd())
+#     # sample_path = hydra.utils.to_absolute_path(cfg.sample_path)
+#     sample = pd.read_csv(sample_path)
+#     return sample, version
+
 def read_datastore():
-    # which returns the sample as a dataframe/tensor.
     version = 3
-    # sample_path = hydra.utils.to_absolute_path('data/samples/' + cfg.sample_path)
-    sample_path = "data/samples/sample.csv"
-    print(sample_path)
-    print(version)
-    # print current directory
-    print(os.getcwd())
-    # sample_path = hydra.utils.to_absolute_path(cfg.sample_path)
+    sample_path = "../data/samples/sample.csv"
+    if not os.path.exists(sample_path):
+        raise FileNotFoundError(f"File {sample_path} not found.")
     sample = pd.read_csv(sample_path)
     return sample, version
 
@@ -146,7 +154,11 @@ def preprocess_data(df: pd.DataFrame):
     data = cyclic_encoding(data, 'day', 31)
     data = cyclic_encoding(data, 'month', 12)
 
-    return data
+    X, y = data.drop('price', axis=1), data['price']
+
+    print(X.describe())
+
+    return X, y
 
 
 def load_features():
