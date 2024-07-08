@@ -15,4 +15,3 @@ evidently
 Flask
 flask-session2
 psycopg2-binary
-GitPython==3.1.30

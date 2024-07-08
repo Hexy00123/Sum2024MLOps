@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 
-
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -23,7 +22,7 @@ dag = DAG(
 
 extract_data = BashOperator(
     task_id='extract_data',
-    bash_command='python3 src/data.py',
+    bash_command='python3 src/data.py index=$(cat ./configs/data_version.yaml | grep version | awk \'{print $2}\')',
     dag=dag,
 )
 
@@ -58,7 +57,5 @@ update_version = BashOperator(
     ''',
     dag=dag,
 )
-
-
 
 extract_data >> validate_data >> version_data >> update_version
