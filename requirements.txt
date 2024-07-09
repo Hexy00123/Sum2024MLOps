@@ -30,7 +30,6 @@ click-repl==0.3.0
 colorama==0.4.6
 comm==0.2.2
 configobj==5.0.8
-contourpy==1.2.1
 cryptography==42.0.8
 cycler==0.12.1
 debugpy==1.8.1
