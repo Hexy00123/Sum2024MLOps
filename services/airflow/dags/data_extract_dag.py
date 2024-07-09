@@ -18,19 +18,14 @@ default_args = {
 }
 
 
-# Function to extract a new sample of the data
 def extract_data_sample(project_stage):
-    # Assuming you have a function in src/data.py for this purpose
     subprocess.run(["python3", "src/data.py", f"index={project_stage}"], check=True)
 
 
-# Function to validate the sample using Great Expectations
 def validate_data_sample():
-    # Assuming you have a function in src/data_expectations.py for this purpose
     subprocess.run(["python3", "src/data_expectations.py"], check=True)
 
 
-# Function to version the sample using DVC
 def version_data_sample(project_stage):
     DATA_SAMPLE_PATH = "data/samples"
     TAG = f"v{project_stage}.0"
@@ -50,12 +45,8 @@ def version_data_sample(project_stage):
     origin.push(tags=True)
 
 
-# Function to load the sample to the data store
 def load_data_sample(project_stage):
     TAG = f"v{project_stage}.0"
-    # Assuming the remote storage is already configured in your DVC remote
-    # No additional code needed if `dvc push` is configured correctly
-    # DVC push
     subprocess.run(["dvc", "push"], check=True)
 
     # Update data version in YAML file
@@ -97,5 +88,4 @@ with DAG(
         op_kwargs={'project_stage': project_stage},
     )
 
-    # Set task dependencies
     extract_task >> validate_task >> version_task >> load_task

@@ -6,6 +6,7 @@ from hydra import initialize, compose
 from omegaconf import DictConfig
 from src.data import sample_data
 
+
 @pytest.fixture
 def cfg() -> DictConfig:
     """
@@ -14,6 +15,7 @@ def cfg() -> DictConfig:
     with initialize(config_path="../configs", version_base=None):
         cfg = compose(config_name="test_config")
     return cfg
+
 
 def sample_data_stage(cfg: DictConfig, index: int, sample_file: str):
     """
@@ -24,6 +26,7 @@ def sample_data_stage(cfg: DictConfig, index: int, sample_file: str):
     sample_data(buf)
     sampled_data = pd.read_csv(sample_file)
     return sampled_data
+
 
 class TestSampleData:
     """
