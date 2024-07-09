@@ -54,7 +54,7 @@ def sample_data(cfg: DictConfig):
 
 def read_datastore():
     version = 3
-    sample_path = "../data/samples/sample.csv"
+    sample_path = "data/samples/sample.csv"
     if not os.path.exists(sample_path):
         raise FileNotFoundError(f"File {sample_path} not found.")
     sample = pd.read_csv(sample_path)
