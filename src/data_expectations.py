@@ -11,11 +11,14 @@ def validate_initial_data():
     """
     context = gx.get_context(project_root_dir="services")
 
-    retrieved_checkpoint = context.get_checkpoint(name="first_phase_checkpoint")
+    retrieved_checkpoint = context.get_checkpoint(
+        name="first_phase_checkpoint")
 
     results = retrieved_checkpoint.run()
 
     assert results.success
+
+    print('All data satisfies the validity conditions!', results.success)
 
 
 def validate_features():
