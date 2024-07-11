@@ -39,8 +39,10 @@ def transform(df: pd.DataFrame) -> Tuple[
     ArtifactConfig(name="input_target",
                    tags=["data_preparation"])]
 ]:
-    # Your data transformation code
+
     X, y = preprocess_data(df)
+
+    print([col for col in X.columns])
 
     return X, y
 
@@ -55,7 +57,7 @@ def validate(X: pd.DataFrame,
     ArtifactConfig(name="valid_target",
                    tags=["data_preparation"])]
 ]:
-    X, y = validate_features(X, y)
+    validate_features(X, y)
 
     return X, y
 

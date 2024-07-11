@@ -2,13 +2,13 @@ import os
 import hydra
 import pandas as pd
 from omegaconf import DictConfig
+from sklearn.decomposition import PCA
 
 from sklearn.preprocessing import StandardScaler, OneHotEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
 import numpy as np
 
 # TODO:
-# 2. preprocess_data @Nooth1ng
 # 3. load_features
 
 
@@ -117,23 +117,42 @@ def preprocess_data(df: pd.DataFrame):
     df = df[df['latitude'] > 22][df['latitude'] < 38]
     df = df[df['longitude'] > 59][df['longitude'] < 79]
 
+    # put '-' instead of missing values in agent and agency
+    df['agent'] = df['agent'].fillna('-')
+    df['agency'] = df['agency'].fillna('-')
+
     # Preprocess datetime features
     df['day'] = df['date_added'].apply(lambda x: int(x.split('-')[1]))
     df['month'] = df['date_added'].apply(lambda x: int(x.split('-')[0]))
     df['year'] = df['date_added'].apply(lambda x: int(x.split('-')[2]))
 
-    # Convert mertics
+    # Convert metrics
     area_marla = np.where(df['Area Type'] == 'Kanal',
                           df['Area Size'] * 20, df['Area Size'])
     df['area'] = area_marla
 
+    # PCA for too large categorical features
+    columns_to_pca = ['agency', 'agent', 'location']
+    for column in columns_to_pca:
+        dummies = pd.get_dummies(df[column])
+        n_components = min(500, dummies.shape[1])
+        pca_result = PCA(n_components=n_components).fit_transform(dummies)
+
+        pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
+
+        if n_components < 500:
+            for i in range(n_components, 500):
+                pca_df[f"{column}_{i}"] = 0
+
+        df = df.reset_index(drop=True)
+        df = pd.concat([df, pca_df], axis=1)
+        df = df.drop(column, axis=1)
+
     # Drop unnecessary/raw columns
-    data = df.drop(['Area Type', 'Area Size', 'Area Category', 'agency',
-                    'agent', 'property_id', 'page_url', 'date_added'], axis=1)
+    data = df.drop(['Area Type', 'Area Size', 'Area Category', 'property_id', 'page_url', 'date_added'], axis=1)
 
     # Encoding features
     data = one_hot_encode_feature(data, 'property_type')
-    data = one_hot_encode_feature(data, 'location')
     data = one_hot_encode_feature(data, 'city')
     data = one_hot_encode_feature(data, 'province_name')
     data = one_hot_encode_feature(data, 'purpose')
@@ -146,7 +165,6 @@ def preprocess_data(df: pd.DataFrame):
     data = scale_feature(data, 'baths')
     data = scale_feature(data, 'bedrooms')
     data = scale_feature(data, 'year', strategy='minmax')
-
     data = scale_feature(data, 'price')
 
     # Cyclic datetime encoding
