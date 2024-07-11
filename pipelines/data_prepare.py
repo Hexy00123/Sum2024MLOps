@@ -1,8 +1,12 @@
 import os
+import sys
 from typing_extensions import Tuple, Annotated
 
 import pandas as pd
 from zenml import step, pipeline, ArtifactConfig
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 from src.data import preprocess_data, read_datastore, load_features
 from src.data_expectations import validate_features
@@ -81,4 +85,5 @@ def prepare_data_pipeline():
 
 
 if __name__ == "__main__":
+    # print current path
     run = prepare_data_pipeline()

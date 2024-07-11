@@ -5,7 +5,11 @@ from datetime import timedelta
 import subprocess
 import yaml
 import os
-# import git
+import sys
+from src.data import sample_data
+from src.data_expectations import validate_initial_data
+import git
+
 
 # Define the default arguments for the DAG
 default_args = {
@@ -18,58 +22,74 @@ default_args = {
 }
 
 
-# Function to extract a new sample of the data
 def extract_data_sample(project_stage):
-    # Assuming you have a function in src/data.py for this purpose
-    subprocess.run(["python3", "src/data.py",
-                   f"index={project_stage}"], check=True)
+    try:
+        # subprocess.run(["python3", "src/data.py",
+        # f"index={project_stage}"], check=True)
+        sample_data()
+    except Exception as e:
+        print('Failed!!')
+        print(os.getcwd())
+        print(os.listdir())
+
+        print(os.chdir('..'))
+        print('up dir')
+        print(os.getcwd())
+        print(os.listdir())
+
+        print(os.chdir('dags'))
+        print('dags dir')
+        print(os.getcwd())
+        print(os.listdir())
+
+        print(e)
 
 
-# Function to validate the sample using Great Expectations
 def validate_data_sample():
-    # Assuming you have a function in src/data_expectations.py for this purpose
-    subprocess.run(["python3", "src/data_expectations.py"], check=True)
+    try:
+        # subprocess.run(["python3", "src/data_expectations.py"], check=True)
+        validate_initial_data()
+    except Exception as e:
+        print('Failed!!')
+        print(e)
 
 
-# Function to version the sample using DVC
-# def version_data_sample(project_stage):
-#     DATA_SAMPLE_PATH = "data/samples"
-#     TAG = f"v{project_stage}.0"
+def version_data_sample(project_stage):
+    try: 
+        DATA_SAMPLE_PATH = "data/samples"
+        TAG = f"v{project_stage}.0"
 
-#     # DVC add
-#     subprocess.run(["dvc", "add", DATA_SAMPLE_PATH], check=True)
+        # DVC add
+        subprocess.run(["dvc", "add", DATA_SAMPLE_PATH], check=True)
 
-#     # Git add and commit using GitPython
-#     repo = git.Repo('/project')
-#     repo.index.add([f"{DATA_SAMPLE_PATH}.dvc"])
-#     repo.index.commit(f"Add data version {TAG}")
-#     origin = repo.remote(name='origin')
-#     origin.push()
+        # Git add and commit using GitPython
+        repo = git.Repo('/project')
+        repo.index.add([f"{DATA_SAMPLE_PATH}.dvc"])
+        repo.index.commit(f"Add data version {TAG}")
+        origin = repo.remote(name='origin')
+        origin.push()
 
-#     # Git tag and push tags
-#     repo.create_tag(TAG, message=f"Add data version {TAG}")
-#     origin.push(tags=True)
+        # Git tag and push tags
+        repo.create_tag(TAG, message=f"Add data version {TAG}")
+        origin.push(tags=True)
+    except Exception as e:
+        print('Failed!!')
+        print(e)  
 
 
 # Function to load the sample to the data store>> version_task
 def load_data_sample(project_stage):
-    TAG = f"v{project_stage}.0"
-    # Assuming the remote storage is already configured in your DVC remote
-    # No additional code needed if `dvc push` is configured correctly
-    # DVC push
-    subprocess.run(["dvc", "push"], check=True)
+    try: 
+        TAG = f"v{project_stage}.0"
+        # No additional code needed if `dvc push` is configured correctly        
+        subprocess.run(["dvc", "push"], check=True)
 
-    # Update data version in YAML file
-    with open('./configs/data_version.yaml', 'w') as yaml_file:
-        yaml.dump({"version": TAG}, yaml_file)
-
-
-def say_hello():
-    print('hello')
-
-
-def say_bye():
-    print('bye!')
+        # Update data version in YAML file
+        with open('./configs/data_version.yaml', 'w') as yaml_file:
+            yaml.dump({"version": TAG}, yaml_file)
+    except Exception as e: 
+        print('Failed!!')
+        print(e)
 
 
 # Define the DAG
@@ -77,7 +97,7 @@ with DAG(
         'data_extract_dag',
         default_args=default_args,
         description='A simple data extraction DAG',
-        schedule_interval=timedelta(minutes=5),
+        schedule_interval=None,
         start_date=days_ago(1),
         tags=['example'],
 ) as dag:
@@ -94,11 +114,11 @@ with DAG(
         python_callable=validate_data_sample,
     )
 
-    # version_task = PythonOperator(
-    #     task_id='version_data_sample',
-    #     python_callable=version_data_sample,
-    #     op_kwargs={'project_stage': project_stage},
-    # )
+    version_task = PythonOperator(
+        task_id='version_data_sample',
+        python_callable=version_data_sample,
+        op_kwargs={'project_stage': project_stage},
+    )
 
     load_task = PythonOperator(
         task_id='load_data_sample',
@@ -106,17 +126,7 @@ with DAG(
         op_kwargs={'project_stage': project_stage},
     )
 
-    simple_task_1 = PythonOperator(
-        task_id='say_hello',
-        python_callable=say_hello,
-    )
-
-    simple_task_2 = PythonOperator(
-        task_id='say_bye',
-        python_callable=say_bye,
-    )
-
     # Set task dependencies
     # extract_task >> validate_task >> version_task >> load_task
     # extract_task >> validate_task >> load_task
-    simple_task_1 >> simple_task_2
+    extract_task >> validate_task >> version_task >> load_task

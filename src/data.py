@@ -12,23 +12,31 @@ import numpy as np
 # 3. load_features
 
 
-@hydra.main(config_path="../configs", config_name="main", version_base=None)
-def sample_data(cfg: DictConfig):
-    filename = "sample.csv" if cfg.test is False else "test_sample.csv"
+# TODO: Uncomment
+# @hydra.main(config_path="../configs", config_name="main", version_base=None)
+# TODO: back input parameter: cfg: DictConfig
+def sample_data():
+    # TODO: Uncomment & replace
+    # filename = "sample.csv" if cfg.test is False else "test_sample.csv"
+    filename = "sample.csv" if True is False else "test_sample.csv"
 
     # Read data
-    data_path = hydra.utils.to_absolute_path('data/' + cfg.dataset.url)
+    # TODOL Uncommeent
+    # data_path = hydra.utils.to_absolute_path('data/' + cfg.dataset.url)
+    data_path = hydra.utils.to_absolute_path('data/' + 'zameen-updated.csv')
     data = pd.read_csv(data_path)
 
     # Sort data by 'date_added'
     data = data.sort_values(by='date_added')
 
     # Read project stage from config
-    index = cfg.index
+    # TODO: Back value
+    index = 1  # cfg.index
 
     # Calculate start and end indices for the sample
     total_length = len(data)
-    num_splits = cfg.num_samples
+    # TODO: Uncomment
+    num_splits = 1  # cfg.num_samples
     split_size = total_length // num_splits
 
     start_idx = (index - 1) * split_size
@@ -42,8 +50,13 @@ def sample_data(cfg: DictConfig):
     sampled_data = data.iloc[start_idx:end_idx]
 
     # Ensure the output directory exists
+    # output_dir = os.path.join(
+    # hydra.utils.get_original_cwd(), "data", "samples")
+
+    # TODO: Uncomment
     output_dir = os.path.join(
-        hydra.utils.get_original_cwd(), "data", "samples")
+        os.getcwd(), "data", "samples")
+
     os.makedirs(output_dir, exist_ok=True)
 
     # Save sampled data
@@ -54,7 +67,7 @@ def sample_data(cfg: DictConfig):
 
 def read_datastore():
     version = 3
-    sample_path = "../data/samples/sample.csv"
+    sample_path = "data/samples/sample.csv"
     if not os.path.exists(sample_path):
         raise FileNotFoundError(f"File {sample_path} not found.")
     sample = pd.read_csv(sample_path)
