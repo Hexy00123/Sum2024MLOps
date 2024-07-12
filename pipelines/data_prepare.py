@@ -26,6 +26,8 @@ def extract() -> Tuple[
 ]:
     print("Extracting data...")
     df, version = read_datastore()
+    print(df)
+    print(version)
 
     return df, version
 
@@ -41,6 +43,9 @@ def transform(df: pd.DataFrame) -> Tuple[
 ]:
     print("Preprocessing data...")
     X, y = preprocess_data(df)
+    print(X.info())
+    print(X.head())
+    print(y.head())
     return X, y
 
 

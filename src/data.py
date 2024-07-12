@@ -116,19 +116,27 @@ def preprocess_data(df: pd.DataFrame):
         df = df[df['latitude'] > 22][df['latitude'] < 38]
         df = df[df['longitude'] > 59][df['longitude'] < 79]
 
+        print('data filtered')
+
         # put '-' instead of missing values in agent and agency
         df['agent'] = df['agent'].fillna('-')
         df['agency'] = df['agency'].fillna('-')
+
+        print('missing values filled')
 
         # Preprocess datetime features
         df['day'] = df['date_added'].apply(lambda x: int(x.split('-')[1]))
         df['month'] = df['date_added'].apply(lambda x: int(x.split('-')[0]))
         df['year'] = df['date_added'].apply(lambda x: int(x.split('-')[2]))
 
+        print('datetime features processed')
+
         # Convert metrics
         area_marla = np.where(df['Area Type'] == 'Kanal',
                               df['Area Size'] * 20, df['Area Size'])
         df['area'] = area_marla
+
+        print('metrics converted')
 
         # PCA for too large categorical features
         columns_to_pca = ['agency', 'agent', 'location']
@@ -147,14 +155,20 @@ def preprocess_data(df: pd.DataFrame):
             df = pd.concat([df, pca_df], axis=1)
             df = df.drop(column, axis=1)
 
+        print('PCA applied')
+
         # Drop unnecessary/raw columns
         data = df.drop(['Area Type', 'Area Size', 'Area Category', 'property_id', 'page_url', 'date_added'], axis=1)
+
+        print('unnecessary columns dropped')
 
         # Encoding features
         data = one_hot_encode_feature(data, 'property_type')
         data = one_hot_encode_feature(data, 'city')
         data = one_hot_encode_feature(data, 'province_name')
         data = one_hot_encode_feature(data, 'purpose')
+
+        print('features encoded')
 
         # Scaling features
         data = scale_feature(data, 'latitude', strategy='minmax')
@@ -166,11 +180,17 @@ def preprocess_data(df: pd.DataFrame):
         data = scale_feature(data, 'year', strategy='minmax')
         data = scale_feature(data, 'price')
 
+        print('features scaled')
+
         # Cyclic datetime encoding
         data = cyclic_encoding(data, 'day', 31)
         data = cyclic_encoding(data, 'month', 12)
 
+        print('datetime encoded')
+
         X, y = data.drop('price', axis=1), data['price']
+
+        print('preprocessing done')
 
         return X, y
     except Exception as e:
