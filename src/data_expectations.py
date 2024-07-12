@@ -19,25 +19,12 @@ def validate_initial_data() -> None:
     print('All data satisfies the validity conditions!', results.success)
 
 
-def validate_features(X: pd.DataFrame, y: pd.DataFrame) -> None:
+def validate_features(X: pd.DataFrame, y: pd.Series) -> None:
     context = gx.get_context(project_root_dir="services")
 
-    print('y before')
-    print(y)
-    print('---------------------')
-
-    y = pd.DataFrame(y, columns=['price'])
-
-    print('y after')
-    print(y)
-    print('---------------------')
+    y.rename('price', inplace=True)
 
     df = pd.concat([X, y], axis=1)
-
-    print('df')
-    print(df)
-    print('---------------------')
-    exit(0)
 
     ds = context.sources.add_or_update_pandas(name="ds")
     da = ds.add_dataframe_asset(name="df", dataframe=df)
@@ -51,13 +38,6 @@ def validate_features(X: pd.DataFrame, y: pd.DataFrame) -> None:
     )
 
     results = checkpoint.run()
-
-    for res in results:
-        print(res)
-        # exit(0``)
-        # success = res['success']
-        # if not success:
-        #     print(res)
 
     assert results.success
 
