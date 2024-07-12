@@ -22,16 +22,42 @@ def validate_initial_data() -> None:
 def validate_features(X: pd.DataFrame, y: pd.DataFrame) -> None:
     context = gx.get_context(project_root_dir="services")
 
-    retrieved_checkpoint = context.get_checkpoint(
-        name="first_phase_features_checkpoint")
+    print('y before')
+    print(y)
+    print('---------------------')
+
+    y = pd.DataFrame(y, columns=['price'])
+
+    print('y after')
+    print(y)
+    print('---------------------')
 
     df = pd.concat([X, y], axis=1)
 
-    ds = context.sources.add_or_update_pandas(name="my_pandas_ds")
-    da = ds.add_dataframe_asset(name="my_pandas_df", dataframe=df)
-    batch_request = da.build_batch_request()
+    print('df')
+    print(df)
+    print('---------------------')
+    exit(0)
 
-    results = retrieved_checkpoint.run(batch_request=batch_request)
+    ds = context.sources.add_or_update_pandas(name="ds")
+    da = ds.add_dataframe_asset(name="df", dataframe=df)
+    batch_request = da.build_batch_request()
+    checkpoint = context.add_or_update_checkpoint(
+        name="features_checkpoint",
+        validations=[{
+            "batch_request": batch_request,
+            "expectation_suite_name": "features_expectations_suite"
+        }]
+    )
+
+    results = checkpoint.run()
+
+    for res in results:
+        print(res)
+        # exit(0``)
+        # success = res['success']
+        # if not success:
+        #     print(res)
 
     assert results.success
 
@@ -51,5 +77,5 @@ def docs() -> None:
 
 
 if __name__ == "__main__":
-    validate_initial_data()
-    # docs()
+    # validate_initial_data()
+    docs()

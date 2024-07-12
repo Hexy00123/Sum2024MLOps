@@ -46,8 +46,7 @@ def transform(df: pd.DataFrame) -> Tuple[
 
 
 @step(enable_cache=False)
-def validate(X: pd.DataFrame,
-             y: pd.DataFrame) -> Tuple[
+def validate(X: pd.DataFrame, y: pd.DataFrame) -> Tuple[
     Annotated[pd.DataFrame,
     ArtifactConfig(name="valid_input_features",
                    tags=["data_preparation"])],

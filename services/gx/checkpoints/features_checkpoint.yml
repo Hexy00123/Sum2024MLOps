@@ -1,4 +1,4 @@
-name: first_checkpoint
+name: features_checkpoint
 config_version: 1.0
 template_name:
 module_name: great_expectations.checkpoint
@@ -20,11 +20,11 @@ evaluation_parameters: {}
 runtime_configuration: {}
 validations:
   - batch_request:
-      datasource_name: first_ds
-      data_asset_name: asset01
+      datasource_name: ds
+      data_asset_name: df
       options: {}
       batch_slice:
-    expectation_suite_name: first_phase_expectation_suite
+    expectation_suite_name: features_expectations_suite
 profilers: []
 ge_cloud_id:
 expectation_suite_ge_cloud_id:
