@@ -24,6 +24,7 @@ def extract() -> Tuple[
     ArtifactConfig(name="data_version",
                    tags=["data_preparation"])]
 ]:
+    print("Extracting data...")
     df, version = read_datastore()
 
     return df, version
@@ -38,8 +39,8 @@ def transform(df: pd.DataFrame) -> Tuple[
     ArtifactConfig(name="input_target",
                    tags=["data_preparation"])]
 ]:
+    print("Preprocessing data...")
     X, y = preprocess_data(df)
-
     return X, y
 
 
@@ -52,9 +53,11 @@ def validate(X: pd.DataFrame, y: pd.Series) -> Tuple[
     ArtifactConfig(name="valid_target",
                    tags=["data_preparation"])]
 ]:
-    validate_features(X, y)
 
+    print("Validating features...")
+    validate_features(X, y)
     return X, y
+
 
 
 @step(enable_cache=False)
@@ -66,9 +69,12 @@ def load(X: pd.DataFrame, y: pd.Series, version: int) -> Tuple[
     ArtifactConfig(name="target",
                    tags=["data_preparation"])]
 ]:
-    load_features(X, y, version)
 
+    print("Loading features...")
+    load_features(X, y, version)
     return X, y
+
+
 
 
 @pipeline()
