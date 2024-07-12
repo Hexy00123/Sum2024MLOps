@@ -60,7 +60,7 @@ def validate(X: pd.DataFrame, y: pd.Series) -> Tuple[
 
 
 @step(enable_cache=False)
-def load(X: pd.DataFrame, y: pd.Series, version: str) -> Tuple[
+def load(X: pd.DataFrame, y: pd.Series, version: int) -> Tuple[
     Annotated[pd.DataFrame,
     ArtifactConfig(name="features",
                    tags=["data_preparation"])],

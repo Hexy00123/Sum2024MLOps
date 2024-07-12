@@ -7,6 +7,7 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, OneHotEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
 import numpy as np
+import zenml
 
 # TODO:
 # 3. load_features
@@ -176,9 +177,11 @@ def preprocess_data(df: pd.DataFrame):
     return X, y
 
 
-def load_features():
-    # zenml
-    ...
+def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
+    y.rename('price', inplace=True)
+    df = pd.concat([X, y], axis=1)
+    tag = str(version)
+    zenml.save_artifact(data=df, name="features_target", tags=[tag])
 
 
 if __name__ == "__main__":
