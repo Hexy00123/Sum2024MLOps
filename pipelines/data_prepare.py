@@ -7,7 +7,6 @@ from zenml import step, pipeline, ArtifactConfig
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-
 from src.data import preprocess_data, read_datastore, load_features
 from src.data_expectations import validate_features
 
@@ -39,7 +38,6 @@ def transform(df: pd.DataFrame) -> Tuple[
     ArtifactConfig(name="input_target",
                    tags=["data_preparation"])]
 ]:
-
     X, y = preprocess_data(df)
 
     return X, y
@@ -82,5 +80,4 @@ def prepare_data_pipeline():
 
 
 if __name__ == "__main__":
-    # print current path
     run = prepare_data_pipeline()
