@@ -173,8 +173,6 @@ def preprocess_data(df: pd.DataFrame):
 
     X, y = data.drop('price', axis=1), data['price']
 
-    print(X.describe())
-
     return X, y
 
 

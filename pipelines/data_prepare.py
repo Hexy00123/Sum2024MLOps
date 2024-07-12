@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
 from src.data import preprocess_data, read_datastore, load_features
-from src.data_expectations import validate_features
+from src.data_expectations import validate_features, validate_initial_data
 
 BASE_PATH = os.path.expandvars("$PROJECTPATH")
 
@@ -41,8 +41,6 @@ def transform(df: pd.DataFrame) -> Tuple[
 ]:
 
     X, y = preprocess_data(df)
-
-    print([col for col in X.columns])
 
     return X, y
 

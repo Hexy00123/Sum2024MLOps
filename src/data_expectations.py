@@ -3,12 +3,10 @@
 # TODO: validate features
 
 import great_expectations as gx
+import pandas as pd
 
 
-def validate_initial_data():
-    """
-    This function is used to validate the initial data using the data expectations.
-    """
+def validate_initial_data() -> None:
     context = gx.get_context(project_root_dir="services")
 
     retrieved_checkpoint = context.get_checkpoint(
@@ -21,11 +19,26 @@ def validate_initial_data():
     print('All data satisfies the validity conditions!', results.success)
 
 
-def validate_features():
-    ...
+def validate_features(X: pd.DataFrame, y: pd.DataFrame) -> None:
+    context = gx.get_context(project_root_dir="services")
+
+    retrieved_checkpoint = context.get_checkpoint(
+        name="first_phase_features_checkpoint")
+
+    df = pd.concat([X, y], axis=1)
+
+    ds = context.sources.add_or_update_pandas(name="my_pandas_ds")
+    da = ds.add_dataframe_asset(name="my_pandas_df", dataframe=df)
+    batch_request = da.build_batch_request()
+
+    results = retrieved_checkpoint.run(batch_request=batch_request)
+
+    assert results.success
+
+    print('All features satisfy the validity conditions!', results.success)
 
 
-def docs():
+def docs() -> None:
     """
     This function is used to generate the documentation site for the data validation.
     """
