@@ -12,8 +12,8 @@ from datetime import timedelta
 # This DAG is scheduled to print 'hello world' every minute starting from 01.01.2022.
 with DAG(dag_id="hello_world",
          start_date=days_ago(0),
-         schedule_interval=timedelta(minutes=5)
-) as dag:
+         schedule_interval=timedelta(minutes=2)
+) as hello_dag:
     # Tasks are represented as operators
     # Use Bash operator to create a Bash task
     hello = BashOperator(task_id="hello", bash_command="echo hello")

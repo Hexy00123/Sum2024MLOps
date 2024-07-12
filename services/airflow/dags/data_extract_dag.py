@@ -1,11 +1,14 @@
-from airflow import DAG
-from airflow.operators.python import PythonOperator
-from airflow.operators.bash import BashOperator
-from airflow.utils.dates import days_ago
-from datetime import timedelta
-import yaml
-import subprocess
 import os
+import subprocess
+from datetime import timedelta
+
+import hydra
+import yaml
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
+from airflow.utils.dates import days_ago
+from omegaconf import DictConfig
 
 from src.data_expectations import validate_initial_data
 
@@ -19,11 +22,15 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
+
 def check_git_config():
     try:
-        email_result = subprocess.run(["git", "config", "--global", "user.email"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        name_result = subprocess.run(["git", "config", "--global", "user.name"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        remote_url = subprocess.run(["git", "config", "--get", "remote.origin.url"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        email_result = subprocess.run(["git", "config", "--global", "user.email"], check=True, stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE)
+        name_result = subprocess.run(["git", "config", "--global", "user.name"], check=True, stdout=subprocess.PIPE,
+                                     stderr=subprocess.PIPE)
+        remote_url = subprocess.run(["git", "config", "--get", "remote.origin.url"], check=True, stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
         email = email_result.stdout.decode().strip()
         name = name_result.stdout.decode().strip()
         url = remote_url.stdout.decode().strip()
@@ -34,6 +41,8 @@ def check_git_config():
         print("Failed to retrieve git config:")
         print(e.stderr.decode())
 
+
+# @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def extract_data_sample(project_stage):
     try:
         subprocess.run(["python3", "src/data.py", f"index={project_stage}"], check=True)
@@ -52,6 +61,7 @@ def extract_data_sample(project_stage):
         print(os.listdir())
         print(e)
 
+
 def validate_data_sample():
     try:
         validate_initial_data()
@@ -69,16 +79,23 @@ def load_data_sample(project_stage):
         print('Failed!!')
         print(e)
 
+
 # Define the DAG
 with DAG(
         'data_extract_dag',
         default_args=default_args,
         description='A simple data extraction DAG',
         schedule_interval=None,
-        start_date=days_ago(1),
+        start_date=days_ago(0),
         tags=['example'],
-) as dag:
-    project_stage = 3
+) as data_extract_dag:
+    # project_stage = 3
+    # import project stage from config
+    project_stage = hydra.utils.to_absolute_path('configs/main.yaml')
+    with open(project_stage, 'r') as file:
+        project_stage = yaml.safe_load(file)['index']
+
+    print(f"Project stage: {project_stage}")
 
     extract_task = PythonOperator(
         task_id='extract_data_sample',
@@ -148,5 +165,6 @@ with DAG(
         env={'TAG': f"v{project_stage}.0"},
         cwd=os.getcwd()
     )
+
 
     extract_task >> validate_task >> version_task >> load_task
