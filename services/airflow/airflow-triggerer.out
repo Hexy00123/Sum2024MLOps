@@ -1,0 +1,57 @@
+[[34m2024-07-13T21:56:40.182+0300[0m] {[34mtriggerer_job_runner.py:[0m171} INFO[0m - Setting up TriggererHandlerWrapper with handler <FileTaskHandler (NOTSET)>[0m
+[[34m2024-07-13T21:56:40.185+0300[0m] {[34mtriggerer_job_runner.py:[0m227} INFO[0m - Setting up logging queue listener with handlers [<RedirectStdHandler <stdout> (NOTSET)>, <NonCachingFileHandler /home/sshk/project/services/airflow/logs/triggerer.log (NOTSET)>, <TriggererHandlerWrapper (NOTSET)>][0m
+[[34m2024-07-13T21:56:45.077+0300[0m] {[34mtriggerer_job_runner.py:[0m324} INFO[0m - Starting the triggerer[0m
+[[34m2024-07-13T21:57:45.131+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T21:58:45.179+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T21:59:45.240+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:00:45.295+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:01:45.349+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:02:45.402+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:03:45.457+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:04:45.513+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:05:45.566+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:06:45.620+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:07:45.674+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:08:45.724+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:09:45.775+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:10:45.822+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:11:45.874+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:12:45.925+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:13:45.973+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:14:46.028+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:15:46.073+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:16:46.125+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:17:46.178+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:18:46.232+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:19:46.281+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:20:46.333+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:21:46.384+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:22:46.433+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:23:46.486+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:24:46.538+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:25:46.591+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:26:46.646+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:27:46.698+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:28:46.746+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:29:46.797+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:30:46.848+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:31:46.898+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:32:46.952+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:33:47.003+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:34:47.052+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:35:47.100+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:36:47.149+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:37:47.202+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:38:47.247+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:39:47.303+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:40:47.357+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:41:47.411+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:42:47.463+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:43:47.511+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:44:47.557+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:45:47.604+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:46:47.652+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:47:47.701+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:48:47.758+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-13T22:48:57.179+0300[0m] {[34mtriggerer_job_runner.py:[0m337} INFO[0m - Waiting for triggers to clean up[0m
+[[34m2024-07-13T22:48:57.809+0300[0m] {[34mtriggerer_job_runner.py:[0m343} INFO[0m - Exited trigger loop[0m

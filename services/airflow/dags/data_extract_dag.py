@@ -1,6 +1,7 @@
 import os
 import subprocess
 from datetime import timedelta
+import sys
 
 import hydra
 import yaml
@@ -10,7 +11,16 @@ from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 from omegaconf import DictConfig
 
-from src.data_expectations import validate_initial_data
+
+# print(os.getcwd())
+# os.chdir("../../../")
+# print(os.getcwd())
+
+# sys.path.insert(0, 'home/sshk/project/src')
+
+
+
+# from src.data_expectations import validate_initial_data
 
 # Define the default arguments for the DAG
 default_args = {
@@ -55,7 +65,7 @@ def extract_data_sample(project_stage):
         print('up dir')
         print(os.getcwd())
         print(os.listdir())
-        print(os.chdir('dags'))
+        # print(os.chdir('dags'))
         print('dags dir')
         print(os.getcwd())
         print(os.listdir())
@@ -64,7 +74,8 @@ def extract_data_sample(project_stage):
 
 def validate_data_sample():
     try:
-        validate_initial_data()
+        subprocess.run(["python3", "src/data_expectations.py"], check=True)
+        print('Data extracted successfully!')
     except Exception as e:
         print('Failed!!')
         print(e)
@@ -92,21 +103,28 @@ with DAG(
 ) as data_extract_dag:
     # project_stage = 3
     # import project stage from config
-    project_stage = hydra.utils.to_absolute_path('configs/main.yaml')
-    with open(project_stage, 'r') as file:
-        project_stage = yaml.safe_load(file)['index']
+    # project_stage = hydra.utils.to_absolute_path('configs/main.yaml')
+    # with open(project_stage, 'r') as file:
+    #     project_stage = yaml.safe_load(file)['index']
+
+    project_stage = 2
+    project_root = 'home/sshk/project'
 
     print(f"Project stage: {project_stage}")
-
-    extract_task = PythonOperator(
+    extract_task = BashOperator(
         task_id='extract_data_sample',
-        python_callable=extract_data_sample,
-        op_kwargs={'project_stage': project_stage},
+        bash_command=f'''
+        python3 src/data.py index={project_stage}
+        ''',
+        cwd=project_root,
     )
 
-    validate_task = PythonOperator(
+    validate_task = BashOperator(
         task_id='validate_data_sample',
-        python_callable=validate_data_sample,
+        bash_command=f'''
+        python3 src/data_expectations.py
+        ''',
+        cwd=project_root,
     )
 
     version_task = BashOperator(
@@ -131,7 +149,7 @@ with DAG(
         git config --list
 
         DATA_SAMPLE_PATH="data/samples"
-        TAG="v{project_stage}.2"
+        TAG="v{project_stage}.4"
         
         git config --global --add safe.directory $(pwd)
 
@@ -147,7 +165,7 @@ with DAG(
         git push
         git push --tags
         ''',
-        cwd=os.getcwd()
+        cwd=project_root
     )
 
     load_task = BashOperator(
@@ -161,10 +179,10 @@ with DAG(
             dvc push
 
             # Update data version in YAML file
-            echo "version: $TAG" > ./configs/data_version.yaml
+            # echo "version: $TAG" > configs/data_version.yaml
             ''',
         env={'TAG': f"v{project_stage}.0"},
-        cwd=os.getcwd()
+        cwd=project_root
     )
 
 

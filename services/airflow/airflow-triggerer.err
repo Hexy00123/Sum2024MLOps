@@ -1,0 +1,12 @@
+[2024-07-13 21:56:40 +0300] [127010] [INFO] Starting gunicorn 22.0.0
+[2024-07-13 21:56:40 +0300] [127010] [ERROR] Connection in use: ('::', 8794)
+[2024-07-13 21:56:40 +0300] [127010] [ERROR] Retrying in 1 second.
+[2024-07-13 21:56:41 +0300] [127010] [ERROR] Connection in use: ('::', 8794)
+[2024-07-13 21:56:41 +0300] [127010] [ERROR] Retrying in 1 second.
+[2024-07-13 21:56:42 +0300] [127010] [ERROR] Connection in use: ('::', 8794)
+[2024-07-13 21:56:42 +0300] [127010] [ERROR] Retrying in 1 second.
+[2024-07-13 21:56:43 +0300] [127010] [ERROR] Connection in use: ('::', 8794)
+[2024-07-13 21:56:43 +0300] [127010] [ERROR] Retrying in 1 second.
+[2024-07-13 21:56:44 +0300] [127010] [ERROR] Connection in use: ('::', 8794)
+[2024-07-13 21:56:44 +0300] [127010] [ERROR] Retrying in 1 second.
+[2024-07-13 21:56:45 +0300] [127010] [ERROR] Can't connect to ('::', 8794)
