@@ -68,6 +68,7 @@ def validate_data_sample():
     except Exception as e:
         print('Failed!!')
         print(e)
+        print(type(e))
 
 def load_data_sample(project_stage):
     try:
