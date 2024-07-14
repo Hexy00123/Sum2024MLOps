@@ -1,57 +1,209 @@
-[[34m2024-07-13T21:56:40.182+0300[0m] {[34mtriggerer_job_runner.py:[0m171} INFO[0m - Setting up TriggererHandlerWrapper with handler <FileTaskHandler (NOTSET)>[0m
-[[34m2024-07-13T21:56:40.185+0300[0m] {[34mtriggerer_job_runner.py:[0m227} INFO[0m - Setting up logging queue listener with handlers [<RedirectStdHandler <stdout> (NOTSET)>, <NonCachingFileHandler /home/sshk/project/services/airflow/logs/triggerer.log (NOTSET)>, <TriggererHandlerWrapper (NOTSET)>][0m
-[[34m2024-07-13T21:56:45.077+0300[0m] {[34mtriggerer_job_runner.py:[0m324} INFO[0m - Starting the triggerer[0m
-[[34m2024-07-13T21:57:45.131+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T21:58:45.179+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T21:59:45.240+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:00:45.295+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:01:45.349+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:02:45.402+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:03:45.457+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:04:45.513+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:05:45.566+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:06:45.620+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:07:45.674+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:08:45.724+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:09:45.775+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:10:45.822+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:11:45.874+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:12:45.925+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:13:45.973+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:14:46.028+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:15:46.073+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:16:46.125+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:17:46.178+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:18:46.232+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:19:46.281+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:20:46.333+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:21:46.384+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:22:46.433+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:23:46.486+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:24:46.538+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:25:46.591+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:26:46.646+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:27:46.698+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:28:46.746+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:29:46.797+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:30:46.848+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:31:46.898+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:32:46.952+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:33:47.003+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:34:47.052+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:35:47.100+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:36:47.149+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:37:47.202+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:38:47.247+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:39:47.303+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:40:47.357+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:41:47.411+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:42:47.463+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:43:47.511+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:44:47.557+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:45:47.604+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:46:47.652+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:47:47.701+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:48:47.758+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
-[[34m2024-07-13T22:48:57.179+0300[0m] {[34mtriggerer_job_runner.py:[0m337} INFO[0m - Waiting for triggers to clean up[0m
-[[34m2024-07-13T22:48:57.809+0300[0m] {[34mtriggerer_job_runner.py:[0m343} INFO[0m - Exited trigger loop[0m
+[[34m2024-07-14T20:47:29.056+0300[0m] {[34mtriggerer_job_runner.py:[0m171} INFO[0m - Setting up TriggererHandlerWrapper with handler <FileTaskHandler (NOTSET)>[0m
+[[34m2024-07-14T20:47:29.061+0300[0m] {[34mtriggerer_job_runner.py:[0m227} INFO[0m - Setting up logging queue listener with handlers [<RedirectStdHandler <stdout> (NOTSET)>, <NonCachingFileHandler /home/sshk/project/services/airflow/logs/triggerer.log (NOTSET)>, <TriggererHandlerWrapper (NOTSET)>][0m
+[[34m2024-07-14T20:47:33.846+0300[0m] {[34mtriggerer_job_runner.py:[0m324} INFO[0m - Starting the triggerer[0m
+[[34m2024-07-14T20:47:55.200+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.36 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:47:55.882+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.52 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:47:59.603+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 3.50 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:09.783+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.22 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:10.086+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.29 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:10.805+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.37 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:11.058+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.20 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:13.661+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.23 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:14.096+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.41 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:14.327+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.23 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:14.949+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.57 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:15.633+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.36 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:16.401+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.54 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:17.311+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.46 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:17.812+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.44 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:19.100+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 1.18 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:20.022+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.51 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:20.574+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.36 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:21.975+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.77 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:22.402+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.36 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:22.880+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.44 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:24.492+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 1.52 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:26.016+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.66 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:29.745+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 2.29 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:31.595+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 1.25 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:31.894+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.24 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:32.476+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.37 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:33.294+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.35 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T20:48:34.886+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:49:34.966+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:50:35.023+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:51:35.077+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:52:35.127+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:53:35.178+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:54:35.236+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:55:35.284+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:56:35.337+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:57:35.393+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:58:35.447+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T20:59:35.496+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:00:35.552+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:01:35.609+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:02:35.666+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:03:35.718+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:04:35.778+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:05:35.835+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:06:35.890+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:07:35.947+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:08:36.003+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:09:36.052+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:09:50.428+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.21 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:09:50.762+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.32 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:09:52.808+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 1.09 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:09:53.716+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.59 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:10:36.753+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:11:36.810+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:12:36.860+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:13:36.916+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:14:36.964+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:15:37.019+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:16:13.574+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.24 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:14.065+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.24 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:14.289+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.22 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:14.520+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.21 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:15.098+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.51 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:16.278+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.73 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:16.555+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.25 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:19.476+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 1.98 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:19.781+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.25 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:22.191+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 1.34 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:22.933+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.31 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:23.874+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.23 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:25.137+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.26 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:16:37.573+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:17:37.627+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:18:37.678+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:19:37.732+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:20:37.787+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:21:37.842+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:22:37.894+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:23:37.943+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:24:37.998+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:25:38.053+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:26:38.110+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:27:38.159+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:28:38.216+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:29:38.268+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:30:38.322+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:31:38.377+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:32:38.425+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:33:38.481+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:34:38.536+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:35:38.591+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:36:38.647+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:37:38.705+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:38:38.754+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:39:38.816+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:40:38.868+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:41:38.922+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:42:38.974+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:43:39.027+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:44:39.076+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:45:39.128+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:46:39.174+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:47:39.226+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:48:03.668+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 1.94 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T21:48:39.701+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:49:39.757+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:50:39.812+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:51:39.864+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:52:39.929+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:53:39.986+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:54:40.039+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:55:40.096+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:56:40.148+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:57:40.201+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:58:40.251+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T21:59:40.306+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:00:40.368+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:01:40.422+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:02:40.478+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:03:40.532+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:04:40.589+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:05:40.657+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:06:40.715+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:07:40.769+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:08:40.824+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:09:40.876+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:10:40.924+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:11:40.979+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:12:41.035+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:13:41.093+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:14:41.143+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:15:41.191+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:16:41.244+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:17:41.301+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:18:41.350+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:19:41.411+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:20:41.466+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:21:41.522+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:22:41.577+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:23:41.627+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:24:41.676+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:25:41.731+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:26:41.781+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:27:41.837+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:28:41.894+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:29:41.949+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:30:42.020+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:31:42.074+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:32:42.131+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:33:42.187+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:34:42.239+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:35:42.291+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:36:42.347+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:37:42.396+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:38:42.451+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:39:42.503+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:40:42.555+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:41:42.606+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:42:42.658+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:43:42.708+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:44:42.762+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:45:42.810+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:45:55.043+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.27 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:45:55.581+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.23 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:45:56.041+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.21 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:45:56.500+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.44 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:45:56.876+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.27 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:45:57.476+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.26 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:45:57.924+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.20 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:45:58.526+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.22 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:45:59.009+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.37 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:46:43.095+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:47:43.145+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:48:43.252+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:48:45.559+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.27 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:48:46.278+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 0.57 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:48:49.114+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 2.83 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:49:43.291+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:50:43.344+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:51:43.388+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:52:43.441+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:53:43.490+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:54:43.538+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:55:35.404+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 1.55 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T22:55:44.412+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:56:44.463+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:57:44.513+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:58:44.568+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T22:59:44.613+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:00:44.659+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:01:44.709+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:02:44.759+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:03:44.811+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:04:44.860+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:05:44.909+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:06:44.959+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:07:45.010+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:08:45.060+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:09:45.110+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:10:26.934+0300[0m] {[34mtriggerer_job_runner.py:[0m573} INFO[0m - Triggerer's async thread was blocked for 1.40 seconds, likely by a badly-written trigger. Set PYTHONASYNCIODEBUG=1 to get more information on overrunning coroutines.[0m
+[[34m2024-07-14T23:10:45.957+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:11:46.010+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:12:46.062+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
+[[34m2024-07-14T23:13:46.111+0300[0m] {[34mtriggerer_job_runner.py:[0m474} INFO[0m - 0 triggers currently running[0m
