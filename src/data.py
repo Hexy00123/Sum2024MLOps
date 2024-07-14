@@ -8,6 +8,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
 import numpy as np
 import zenml
+import re
 
 
 # TODO: Uncomment
@@ -61,6 +62,51 @@ def sample_data(cfg: DictConfig):
     sample_file = os.path.join(output_dir, filename)
     sampled_data.to_csv(sample_file, index=False)
     print(f"Sampled data for stage {index} saved to {sample_file}")
+
+
+
+@hydra.main(config_path="../configs", config_name="main", version_base=None)
+def refactor_sample_data(cfg: DictConfig):
+    filename = "sample.csv" if cfg.test is False else "test_sample.csv"
+    
+    data_path = hydra.utils.to_absolute_path('data/samples/' + filename)
+    
+    df = pd.read_csv(data_path)
+    
+    pattern = re.compile(r"^[0-9]+(,[0-9]+)?\s*(Kanal|Marla)$")
+    regex=r"^[0-9]+(\.[0-9])?\s*(Kanal|Marla)$"
+    pattern_perfect = re.compile(regex)
+    
+    # Function to replace commas with dots and round the number to one decimal place
+    def format_area(value):
+        match = pattern.match(value)
+        perfect_match = pattern_perfect.match(value)
+        if match:
+            # Replace commas with dots
+            new_value = value.replace(',', '.')
+            # Extract the numeric part and the unit
+            numeric_part, unit = new_value.split()
+            # Round the numeric part to one decimal place
+            rounded_value = f"{round(float(numeric_part), 1)} {unit}"
+            return rounded_value
+        elif perfect_match:
+            return value  
+        else:
+            return None          
+    
+    df['area'] = df['area'].apply(format_area)
+
+    df = df.dropna(subset=['area'])
+
+    df = df[df['baths'] <= 30]
+
+    output_dir = os.path.join(hydra.utils.get_original_cwd(), "data", "samples")
+    os.makedirs(output_dir, exist_ok=True)
+    
+    df.to_csv(data_path, index=False)
+    print(f"Refactored data saved to {data_path}")
+
+
 
 
 def read_datastore():
@@ -207,3 +253,4 @@ def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
 
 if __name__ == "__main__":
     sample_data()
+    # refactor_sample_data()

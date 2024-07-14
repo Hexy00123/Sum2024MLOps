@@ -5,8 +5,8 @@
     {
       "expectation_type": "expect_table_row_count_to_be_between",
       "kwargs": {
-        "max_value": 168446,
-        "min_value": 33689
+        "max_value": 33690,
+        "min_value": 33687
       },
       "meta": {}
     },
@@ -43,7 +43,7 @@
       "expectation_type": "expect_column_median_to_be_between",
       "kwargs": {
         "column": "price",
-        "max_value": 23500000.0,
+        "max_value": 15000000.0,
         "min_value": 120000.0
       },
       "meta": {
@@ -74,7 +74,7 @@
       "kwargs": {
         "column": "location",
         "max_value": 1500,
-        "min_value": 800
+        "min_value": 700
       },
       "meta": {
         "dimension": "Uniqueness"
@@ -113,8 +113,8 @@
       "expectation_type": "expect_column_unique_value_count_to_be_between",
       "kwargs": {
         "column": "agency",
-        "max_value": 4000,
-        "min_value": 3000
+        "max_value": 5000,
+        "min_value": 2000
       },
       "meta": {
         "dimension": "Uniqueness"
@@ -164,7 +164,7 @@
       "expectation_type": "expect_column_max_to_be_between",
       "kwargs": {
         "column": "baths",
-        "max_value": 15
+        "max_value": 30
       },
       "meta": {
         "dimension": "Timelessness"
@@ -194,7 +194,7 @@
       "expectation_type": "expect_column_max_to_be_between",
       "kwargs": {
         "column": "bedrooms",
-        "max_value": 18
+        "max_value": 70
       },
       "meta": {
         "dimension": "Consistency"
@@ -241,6 +241,6 @@
   ],
   "ge_cloud_id": null,
   "meta": {
-    "great_expectations_version": "0.18.16"
+    "great_expectations_version": "0.18.18"
   }
 }
