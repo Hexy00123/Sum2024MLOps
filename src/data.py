@@ -156,21 +156,25 @@ def preprocess_data(df: pd.DataFrame):
         print('metrics converted')
 
         # PCA for too large categorical features
-        columns_to_pca = ['agency', 'agent', 'location']
-        for column in columns_to_pca:
-            dummies = pd.get_dummies(df[column])
-            n_components = min(500, dummies.shape[1])
-            pca_result = PCA(n_components=n_components).fit_transform(dummies)
+        try:
+            columns_to_pca = ['agency', 'agent', 'location']
+            for column in columns_to_pca:
+                dummies = pd.get_dummies(df[column])
+                n_components = min(500, dummies.shape[1])
+                pca_result = PCA(n_components=n_components).fit_transform(dummies)
 
-            pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
+                pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
 
-            if n_components < 500:
-                for i in range(n_components, 500):
-                    pca_df[f"{column}_{i}"] = 0
+                if n_components < 500:
+                    for i in range(n_components, 500):
+                        pca_df[f"{column}_{i}"] = 0
 
-            df = df.reset_index(drop=True)
-            df = pd.concat([df, pca_df], axis=1)
-            df = df.drop(column, axis=1)
+                df = df.reset_index(drop=True)
+                df = pd.concat([df, pca_df], axis=1)
+                df = df.drop(column, axis=1)
+        except Exception as e:
+            print("Failed PCA")
+            print(e)
 
         print('PCA applied')
 
