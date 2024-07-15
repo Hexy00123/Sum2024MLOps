@@ -12,7 +12,7 @@ from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 from omegaconf import DictConfig
 
-from data import sample_data, refactor_sample_data
+# from data import sample_data, refactor_sample_data
 
 project_root = 'home/sshk/project'
 
@@ -29,44 +29,44 @@ default_args = {
 }
 
 
-# @hydra.main(config_path="../configs", config_name="main", version_base=None)
-def extract_data_sample(project_stage):
-    try:
-        subprocess.run(["python3", "src/data.py", f"index={project_stage}"], check=True)
-        print('Data extracted successfully!')
-    except Exception as e:
-        print('Failed!!')
-        print(os.getcwd())
-        print(os.listdir())
-        print(os.chdir('..'))
-        print('up dir')
-        print(os.getcwd())
-        print(os.listdir())
-        # print(os.chdir('dags'))
-        print('dags dir')
-        print(os.getcwd())
-        print(os.listdir())
-        print(e)
+# # @hydra.main(config_path="../configs", config_name="main", version_base=None)
+# def extract_data_sample(project_stage):
+#     try:
+#         subprocess.run(["python3", "src/data.py", f"index={project_stage}"], check=True)
+#         print('Data extracted successfully!')
+#     except Exception as e:
+#         print('Failed!!')
+#         print(os.getcwd())
+#         print(os.listdir())
+#         print(os.chdir('..'))
+#         print('up dir')
+#         print(os.getcwd())
+#         print(os.listdir())
+#         # print(os.chdir('dags'))
+#         print('dags dir')
+#         print(os.getcwd())
+#         print(os.listdir())
+#         print(e)
 
 
-def validate_data_sample():
-    try:
-        subprocess.run(["python3", "src/data_expectations.py"], check=True)
-        print('Data extracted successfully!')
-    except Exception as e:
-        print('Failed!!')
-        print(e)
-        print(type(e))
+# def validate_data_sample():
+#     try:
+#         subprocess.run(["python3", "src/data_expectations.py"], check=True)
+#         print('Data extracted successfully!')
+#     except Exception as e:
+#         print('Failed!!')
+#         print(e)
+#         print(type(e))
 
-def load_data_sample(project_stage):
-    try:
-        TAG = f"v{project_stage}.0"
-        subprocess.run(["dvc", "push"], check=True)
-        with open('./configs/data_version.yaml', 'w') as yaml_file:
-            yaml.dump({"version": TAG}, yaml_file)
-    except Exception as e:
-        print('Failed!!')
-        print(e)
+# def load_data_sample(project_stage):
+#     try:
+#         TAG = f"v{project_stage}.0"
+#         subprocess.run(["dvc", "push"], check=True)
+#         with open('./configs/data_version.yaml', 'w') as yaml_file:
+#             yaml.dump({"version": TAG}, yaml_file)
+#     except Exception as e:
+#         print('Failed!!')
+#         print(e)
 
 
 

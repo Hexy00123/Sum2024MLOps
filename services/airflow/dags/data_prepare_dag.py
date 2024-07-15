@@ -21,7 +21,7 @@ default_args = {
 
 with DAG(dag_id="hello_world",
          start_date=days_ago(0),
-        schedule_interval=None,
+         schedule_interval=timedelta(minutes=2),
         
         #  schedule_interval=timedelta(minutes=2)
 ) as hello_dag:
@@ -44,8 +44,8 @@ with DAG(
         'data_prepare_dag',
         default_args=default_args,
         description='A data preparation DAG that depends on data extraction DAG',
-        # schedule_interval=timedelta(minutes=5),
-        schedule_interval=None,
+        schedule_interval=timedelta(minutes=5),
+        # schedule_interval=None,
         start_date=days_ago(0),
         tags=['example'],
 ) as data_prepare_dag:
