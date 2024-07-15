@@ -17,29 +17,13 @@ import pendulum
 start_date = pendulum.now(tz="Europe/Moscow").subtract(minutes=5)
 start_date = start_date.replace(second=0, microsecond=0)
 
-
-
-# from data import sample_data, refactor_sample_data
-
-project_root = '/home/pc/Documents/Innopolis/Sum24/MLOps/Project'
-
-
-# default_args = {
-#     'owner': 'airflow',
-#     'depends_on_past': False,
-#     'email_on_failure': False,
-#     'email_on_retry': False,
-#     'retries': 1,
-#     'retry_delay': timedelta(minutes=2),
-# }
+project_root = os.environ.get('PROJECT_ROOT', os.getcwd())
 
 # Define the DAG
 with DAG(
         dag_id='data_extract_dag',
-        # default_args=default_args,
         description='A simple data extraction DAG',
         schedule_interval=timedelta(minutes=5),
-        # schedule_interval=None,
         start_date=start_date,
         tags=['data extraction'],
         # catchup=False,
@@ -60,9 +44,9 @@ with DAG(
 
     validate_task = BashOperator(
         task_id='validate_data_sample',
-        bash_command=f'''
+        bash_command='''
         python3 src/data_expectations.py
-        ''',  # noqa: F541
+        ''',
         cwd=project_root,
     )
 
@@ -105,7 +89,7 @@ with DAG(
 
     load_task = BashOperator(
         task_id='load_data_sample',
-        bash_command=f'''
+        bash_command='''
         set -e
         dvc push
         ''',

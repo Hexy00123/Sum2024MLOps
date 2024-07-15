@@ -9,7 +9,6 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import zenml
 import re
-import argparse
 
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
