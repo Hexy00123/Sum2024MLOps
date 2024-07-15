@@ -21,9 +21,7 @@ start_date = start_date.replace(second=0, microsecond=0)
 
 # from data import sample_data, refactor_sample_data
 
-project_root = 'home/sshk/project'
-
-
+project_root = '/home/pc/Documents/Innopolis/Sum24/MLOps/Project'
 
 
 # default_args = {
@@ -34,7 +32,6 @@ project_root = 'home/sshk/project'
 #     'retries': 1,
 #     'retry_delay': timedelta(minutes=2),
 # }
-
 
 # Define the DAG
 with DAG(
@@ -48,13 +45,10 @@ with DAG(
         # catchup=False,
         is_paused_upon_creation=False,
 ) as data_extract_dag:
-
-    project_root = 'home/sshk/project'
-
     with initialize(config_path="../../../configs"):
         cfg = compose(config_name="main")
         project_stage = cfg.index
-    
+
     print(f"Project stage: {project_stage}")
     extract_task = BashOperator(
         task_id='extract_data_sample',
@@ -63,7 +57,6 @@ with DAG(
         ''',
         cwd=project_root,
     )
-
 
     validate_task = BashOperator(
         task_id='validate_data_sample',
@@ -77,12 +70,6 @@ with DAG(
         task_id='version_data_sample',
         bash_command=f'''
         set -e
-
-        # Git configuration
-        git config --global user.email "sashaki02@gmail.com"
-        git config --global user.name "Alexandra Vabnits"
-    
-        git config --global user.username "sashhhaka"
 
         DATA_SAMPLE_PATH="data/samples"
         TAG="v{project_stage}.0"
@@ -116,7 +103,6 @@ with DAG(
         cwd=project_root
     )
 
-
     load_task = BashOperator(
         task_id='load_data_sample',
         bash_command=f'''
@@ -125,6 +111,5 @@ with DAG(
         ''',
         cwd=project_root
     )
-
 
     extract_task >> validate_task >> version_task >> load_task
