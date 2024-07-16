@@ -22,19 +22,18 @@ default_args = {
 with DAG(dag_id="hello_world",
          start_date=days_ago(0),
          schedule_interval=timedelta(minutes=2),
-        
-        #  schedule_interval=timedelta(minutes=2)
-) as hello_dag:
+
+         #  schedule_interval=timedelta(minutes=2)
+         ) as hello_dag:
     # Tasks are represented as operators
     # Use Bash operator to create a Bash task
     hello = BashOperator(task_id="hello", bash_command="echo hello")
 
-
     # Python task
+
     @task()
     def world():
         print("world")
-
 
     # Set dependencies between tasks
     # First is hello task then world task
@@ -49,7 +48,7 @@ with DAG(
         start_date=days_ago(0),
         tags=['example'],
 ) as data_prepare_dag:
-    project_root = 'home/sshk/project'
+    project_root = '/home/pc/Documents/Innopolis/Sum24/MLOps/Project'
     # Task to wait for the completion of the data_extract_dag
     wait_for_data_extraction = ExternalTaskSensor(
         task_id='wait_for_data_extraction',

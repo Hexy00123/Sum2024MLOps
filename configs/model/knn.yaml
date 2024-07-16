@@ -1,0 +1,14 @@
+model_name: KNearestNeighboursRegressor
+artifact_path: basic_knn
+
+tag_key: "model"
+tag_value: "basic KNN"
+
+module_name: "sklearn.neighbors"
+class_name: "KNeighborsRegressor"
+
+params:
+  n_neighbors: [1, 3, 5]
+  weights: ['uniform', 'distance']
+  algorithm: ['ball_tree', 'kd_tree', 'brute'] 
+
