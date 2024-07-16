@@ -86,14 +86,11 @@ def read_datastore():
 
 
 def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame:
-    ohe = OneHotEncoder(sparse_output=False, handle_unknown="ignore").fit(
-        data[[column_name]]
-    )
+    ohe = OneHotEncoder(sparse_output=False, handle_unknown='ignore').fit(
+        data[[column_name]])
 
-    encoded_df = pd.DataFrame(
-        ohe.transform(data[[column_name]]),
-        columns=ohe.get_feature_names_out([column_name]),
-    )
+    encoded_df = pd.DataFrame(ohe.transform(
+        data[[column_name]]), columns=ohe.get_feature_names_out([column_name]))
 
     data = data.drop(column_name, axis=1)
 
@@ -105,12 +102,13 @@ def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame
     return data
 
 
-def scale_feature(
-    data: pd.DataFrame, column_name: str, strategy: str = "std"
-) -> pd.DataFrame:
-    scalers = {"std": StandardScaler, "minmax": MinMaxScaler}
+def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std') -> pd.DataFrame:
+    scalers = {
+        'std': StandardScaler,
+        'minmax': MinMaxScaler
+    }
     if strategy not in scalers:
-        raise NotImplementedError(f"Scaling is not implemented for {strategy}")
+        raise NotImplementedError(f'Scaling is not implemented for {strategy}')
 
     scaler = scalers[strategy]().fit(data[[column_name]])
 
@@ -119,8 +117,8 @@ def scale_feature(
 
 
 def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
-    data[column_name + "_sin"] = np.sin(2 * np.pi * data[column_name] / max_value)
-    data[column_name + "_cos"] = np.sin(2 * np.pi * data[column_name] / max_value)
+    data[column_name + '_sin'] = np.sin(2 * np.pi * data[column_name] / max_value)
+    data[column_name + '_cos'] = np.sin(2 * np.pi * data[column_name] / max_value)
     data = data.drop(column_name, axis=1)
     return data
 
@@ -128,101 +126,90 @@ def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
 def preprocess_data(df: pd.DataFrame):
     try:
         # Filter data
-        df = df[df["latitude"] > 22][df["latitude"] < 38]
-        df = df[df["longitude"] > 59][df["longitude"] < 79]
+        df = df[df['latitude'] > 22][df['latitude'] < 38]
+        df = df[df['longitude'] > 59][df['longitude'] < 79]
 
-        print("data filtered")
+        print('data filtered')
 
         # put '-' instead of missing values in agent and agency
-        df["agent"] = df["agent"].fillna("-")
-        df["agency"] = df["agency"].fillna("-")
+        df['agent'] = df['agent'].fillna('-')
+        df['agency'] = df['agency'].fillna('-')
 
-        print("missing values filled")
+        print('missing values filled')
 
         # Preprocess datetime features
-        df["day"] = df["date_added"].apply(lambda x: int(x.split("-")[1]))
-        df["month"] = df["date_added"].apply(lambda x: int(x.split("-")[0]))
-        df["year"] = df["date_added"].apply(lambda x: int(x.split("-")[2]))
+        df['day'] = df['date_added'].apply(lambda x: int(x.split('-')[1]))
+        df['month'] = df['date_added'].apply(lambda x: int(x.split('-')[0]))
+        df['year'] = df['date_added'].apply(lambda x: int(x.split('-')[2]))
 
-        print("datetime features processed")
+        print('datetime features processed')
 
         # Convert metrics
-        area_marla = np.where(
-            df["Area Type"] == "Kanal", df["Area Size"] * 20, df["Area Size"]
-        )
-        df["area"] = area_marla
+        area_marla = np.where(df['Area Type'] == 'Kanal',
+                              df['Area Size'] * 20, df['Area Size'])
+        df['area'] = area_marla
 
-        print("metrics converted")
-
-        # PCA for too large categorical features
-        try:
-            columns_to_pca = ["agency", "agent", "location"]
-            for column in columns_to_pca:
-                dummies = pd.get_dummies(df[column])
-                n_components = min(500, dummies.shape[1])
-                pca_result = PCA(n_components=n_components).fit_transform(dummies)
-
-                pca_df = pd.DataFrame(
-                    pca_result, columns=[f"{column}_{i}" for i in range(n_components)]
-                )
-
-                if n_components < 500:
-                    for i in range(n_components, 500):
-                        pca_df[f"{column}_{i}"] = 0
-
-                df = df.reset_index(drop=True)
-                df = pd.concat([df, pca_df], axis=1)
-                df = df.drop(column, axis=1)
-        except Exception as e:
-            print("Failed PCA")
-            print(e)
-
-        print("PCA applied")
+        print('metrics converted')
 
         # Drop unnecessary/raw columns
-        data = df.drop(
-            [
-                "Area Type",
-                "Area Size",
-                "Area Category",
-                "property_id",
-                "page_url",
-                "date_added",
-            ],
-            axis=1,
-        )
+        data = df.drop(['Area Type', 'Area Size', 'Area Category', 'property_id', 'page_url', 'date_added'], axis=1)
 
-        print("unnecessary columns dropped")
+        print('unnecessary columns dropped')
 
         # Encoding features
-        data = one_hot_encode_feature(data, "property_type")
-        data = one_hot_encode_feature(data, "city")
-        data = one_hot_encode_feature(data, "province_name")
-        data = one_hot_encode_feature(data, "purpose")
+        columns_to_one_hot = ['property_type', 'city', 'province_name', 'purpose', 'agency', 'agent', 'location']
+        for column in columns_to_one_hot:
+            data = one_hot_encode_feature(data, column)
 
-        print("features encoded")
+        print('features encoded')
 
         # Scaling features
-        data = scale_feature(data, "latitude", strategy="minmax")
-        data = scale_feature(data, "longitude", strategy="minmax")
-        data = scale_feature(data, "area")
-        data = scale_feature(data, "location_id", strategy="minmax")
-        data = scale_feature(data, "baths")
-        data = scale_feature(data, "bedrooms")
-        data = scale_feature(data, "year", strategy="minmax")
-        data = scale_feature(data, "price")
+        columns_to_minmax = ['latitude', 'longitude', 'location_id', 'year']
+        columns_to_std = ['area', 'baths', 'bedrooms', 'price']
+        for column in columns_to_minmax:
+            data = scale_feature(data, column, strategy='minmax')
+        for column in columns_to_std:
+            data = scale_feature(data, column)
 
-        print("features scaled")
+        print('features scaled')
+
+        # scale one-hot encoded features
+        for column in columns_to_one_hot:
+            columns = [col for col in data.columns if col.startswith(f"{column}_")]
+            for col in columns:
+                data = scale_feature(data, col)
+
+        print('one-hot encoded features scaled')
+
+        # PCA for too large categorical features
+        columns_to_pca = ['agency', 'agent', 'location']
+        for column in columns_to_pca:
+            dummy_cols = [col for col in data.columns if col.startswith(f"{column}_") and col != 'location_id']
+            dummies = data[dummy_cols]
+            n_components = min(500, len(dummies))
+            pca_result = PCA(n_components=n_components).fit_transform(dummies)
+
+            pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
+
+            if n_components < 500:
+                for i in range(n_components, 500):
+                    pca_df[f"{column}_{i}"] = 0
+
+            data = data.reset_index(drop=True)
+            data = pd.concat([data, pca_df], axis=1)
+            data = data.drop(dummy_cols, axis=1)
+
+        print('PCA applied')
 
         # Cyclic datetime encoding
-        data = cyclic_encoding(data, "day", 31)
-        data = cyclic_encoding(data, "month", 12)
+        data = cyclic_encoding(data, 'day', 31)
+        data = cyclic_encoding(data, 'month', 12)
 
-        print("datetime encoded")
+        print('datetime encoded')
 
-        X, y = data.drop("price", axis=1), data["price"]
+        X, y = data.drop('price', axis=1), data['price']
 
-        print("preprocessing done")
+        print('preprocessing done')
 
         return X, y
     except Exception as e:
@@ -230,7 +217,7 @@ def preprocess_data(df: pd.DataFrame):
 
 
 def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
-    y.rename("price", inplace=True)
+    y.rename('price', inplace=True)
     df = pd.concat([X, y], axis=1)
     tag = str(version)
     zenml.save_artifact(data=df, name="features_target", tags=[tag])
@@ -239,3 +226,4 @@ def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
 if __name__ == "__main__":
     sample_data()
     refactor_sample_data()
+    
