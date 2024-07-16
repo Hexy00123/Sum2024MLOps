@@ -76,14 +76,12 @@ def refactor_sample_data(cfg: DictConfig):
     print(f"Refactored data saved to {data_path}")
 
 
-@hydra.main(config_path="../configs", config_name="main", version_base=None)
-def read_datastore(cfg: DictConfig):
-    version = cfg.index
+def read_datastore():
     sample_path = "data/samples/sample.csv"
     if not os.path.exists(sample_path):
         raise FileNotFoundError(f"File {sample_path} not found.")
     sample = pd.read_csv(sample_path)
-    return sample, version
+    return sample
 
 
 def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame:
