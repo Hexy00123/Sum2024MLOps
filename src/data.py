@@ -1,24 +1,22 @@
 import os
+import re
+
 import hydra
+import numpy as np
 import pandas as pd
+import zenml
 from omegaconf import DictConfig
 from sklearn.decomposition import PCA
-
-from sklearn.preprocessing import StandardScaler, OneHotEncoder, MinMaxScaler
-from sklearn.model_selection import train_test_split
-import numpy as np
-import zenml
-import re
-import argparse
+from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, StandardScaler
 
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def sample_data(cfg: DictConfig):
     filename = "sample.csv" if cfg.test is False else "test_sample.csv"
-    data_path = hydra.utils.to_absolute_path('data/' + cfg.dataset.url)
+    data_path = hydra.utils.to_absolute_path("data/" + cfg.dataset.url)
     data = pd.read_csv(data_path)
 
-    data = data.sort_values(by='date_added')
+    data = data.sort_values(by="date_added")
 
     index = cfg.index
     total_length = len(data)
@@ -31,8 +29,7 @@ def sample_data(cfg: DictConfig):
         end_idx = total_length
     sampled_data = data.iloc[start_idx:end_idx]
 
-    output_dir = os.path.join(
-    hydra.utils.get_original_cwd(), "data", "samples")
+    output_dir = os.path.join(hydra.utils.get_original_cwd(), "data", "samples")
 
     os.makedirs(output_dir, exist_ok=True)
     sample_file = os.path.join(output_dir, filename)
@@ -40,42 +37,41 @@ def sample_data(cfg: DictConfig):
     print(f"Sampled data for stage {index} saved to {sample_file}")
 
 
-
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def refactor_sample_data(cfg: DictConfig):
     filename = "sample.csv" if cfg.test is False else "test_sample.csv"
-    
-    data_path = hydra.utils.to_absolute_path('data/samples/' + filename)
-    
+
+    data_path = hydra.utils.to_absolute_path("data/samples/" + filename)
+
     df = pd.read_csv(data_path)
-    
+
     pattern = re.compile(r"^[0-9]+(,[0-9]+)?\s*(Kanal|Marla)$")
-    regex=r"^[0-9]+(\.[0-9])?\s*(Kanal|Marla)$"
+    regex = r"^[0-9]+(\.[0-9])?\s*(Kanal|Marla)$"
     pattern_perfect = re.compile(regex)
-    
+
     # Function to replace commas with dots and round the number to one decimal place
     def format_area(value):
         match = pattern.match(value)
         perfect_match = pattern_perfect.match(value)
         if match:
-            new_value = value.replace(',', '.')
+            new_value = value.replace(",", ".")
             numeric_part, unit = new_value.split()
             rounded_value = f"{round(float(numeric_part), 1)} {unit}"
             return rounded_value
         elif perfect_match:
-            return value  
+            return value
         else:
-            return None          
-    
-    df['area'] = df['area'].apply(format_area)
+            return None
 
-    df = df.dropna(subset=['area'])
+    df["area"] = df["area"].apply(format_area)
 
-    df = df[df['baths'] <= 30]
+    df = df.dropna(subset=["area"])
+
+    df = df[df["baths"] <= 30]
 
     output_dir = os.path.join(hydra.utils.get_original_cwd(), "data", "samples")
     os.makedirs(output_dir, exist_ok=True)
-    
+
     df.to_csv(data_path, index=False)
     print(f"Refactored data saved to {data_path}")
 
@@ -121,8 +117,8 @@ def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std') -
 
 
 def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
-    data[column_name+'_sin'] = np.sin(2 * np.pi * data[column_name]/max_value)
-    data[column_name+'_cos'] = np.sin(2 * np.pi * data[column_name]/max_value)
+    data[column_name + '_sin'] = np.sin(2 * np.pi * data[column_name] / max_value)
+    data[column_name + '_cos'] = np.sin(2 * np.pi * data[column_name] / max_value)
     data = data.drop(column_name, axis=1)
     return data
 
@@ -155,53 +151,55 @@ def preprocess_data(df: pd.DataFrame):
 
         print('metrics converted')
 
-        # PCA for too large categorical features
-        try:
-            columns_to_pca = ['agency', 'agent', 'location']
-            for column in columns_to_pca:
-                dummies = pd.get_dummies(df[column])
-                n_components = min(500, dummies.shape[1])
-                pca_result = PCA(n_components=n_components).fit_transform(dummies)
-
-                pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
-
-                if n_components < 500:
-                    for i in range(n_components, 500):
-                        pca_df[f"{column}_{i}"] = 0
-
-                df = df.reset_index(drop=True)
-                df = pd.concat([df, pca_df], axis=1)
-                df = df.drop(column, axis=1)
-        except Exception as e:
-            print("Failed PCA")
-            print(e)
-
-        print('PCA applied')
-
         # Drop unnecessary/raw columns
         data = df.drop(['Area Type', 'Area Size', 'Area Category', 'property_id', 'page_url', 'date_added'], axis=1)
 
         print('unnecessary columns dropped')
 
         # Encoding features
-        data = one_hot_encode_feature(data, 'property_type')
-        data = one_hot_encode_feature(data, 'city')
-        data = one_hot_encode_feature(data, 'province_name')
-        data = one_hot_encode_feature(data, 'purpose')
+        columns_to_one_hot = ['property_type', 'city', 'province_name', 'purpose', 'agency', 'agent', 'location']
+        for column in columns_to_one_hot:
+            data = one_hot_encode_feature(data, column)
 
         print('features encoded')
 
         # Scaling features
-        data = scale_feature(data, 'latitude', strategy='minmax')
-        data = scale_feature(data, 'longitude', strategy='minmax')
-        data = scale_feature(data, 'area')
-        data = scale_feature(data, 'location_id', strategy='minmax')
-        data = scale_feature(data, 'baths')
-        data = scale_feature(data, 'bedrooms')
-        data = scale_feature(data, 'year', strategy='minmax')
-        data = scale_feature(data, 'price')
+        columns_to_minmax = ['latitude', 'longitude', 'location_id', 'year']
+        columns_to_std = ['area', 'baths', 'bedrooms', 'price']
+        for column in columns_to_minmax:
+            data = scale_feature(data, column, strategy='minmax')
+        for column in columns_to_std:
+            data = scale_feature(data, column)
 
         print('features scaled')
+
+        # scale one-hot encoded features
+        for column in columns_to_one_hot:
+            columns = [col for col in data.columns if col.startswith(f"{column}_")]
+            for col in columns:
+                data = scale_feature(data, col)
+
+        print('one-hot encoded features scaled')
+
+        # PCA for too large categorical features
+        columns_to_pca = ['agency', 'agent', 'location']
+        for column in columns_to_pca:
+            dummy_cols = [col for col in data.columns if col.startswith(f"{column}_") and col != 'location_id']
+            dummies = data[dummy_cols]
+            n_components = min(500, len(dummies))
+            pca_result = PCA(n_components=n_components).fit_transform(dummies)
+
+            pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
+
+            if n_components < 500:
+                for i in range(n_components, 500):
+                    pca_df[f"{column}_{i}"] = 0
+
+            data = data.reset_index(drop=True)
+            data = pd.concat([data, pca_df], axis=1)
+            data = data.drop(dummy_cols, axis=1)
+
+        print('PCA applied')
 
         # Cyclic datetime encoding
         data = cyclic_encoding(data, 'day', 31)
@@ -218,7 +216,6 @@ def preprocess_data(df: pd.DataFrame):
         print(f"Preprocessing failed: {e}")
 
 
-
 def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
     y.rename('price', inplace=True)
     df = pd.concat([X, y], axis=1)
@@ -229,3 +226,4 @@ def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
 if __name__ == "__main__":
     sample_data()
     refactor_sample_data()
+    
