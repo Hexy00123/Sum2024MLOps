@@ -7,6 +7,6 @@ dataset:
   url: "zameen-updated.csv"
   name: "zameen-updated"
 
-index: 1
+index: 5
 
 test: False

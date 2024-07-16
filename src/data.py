@@ -1,66 +1,79 @@
 import os
+import re
+
 import hydra
+import numpy as np
 import pandas as pd
+import zenml
 from omegaconf import DictConfig
 from sklearn.decomposition import PCA
-
-from sklearn.preprocessing import StandardScaler, OneHotEncoder, MinMaxScaler
-from sklearn.model_selection import train_test_split
-import numpy as np
-import zenml
+from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, StandardScaler
 
 
-# TODO: Uncomment
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
-# TODO: back input parameter: cfg: DictConfig
 def sample_data(cfg: DictConfig):
-    # TODO: Uncomment & replace
     filename = "sample.csv" if cfg.test is False else "test_sample.csv"
-    # filename = "sample.csv" if True is False else "test_sample.csv"
-
-    # Read data
-    # TODOL Uncommeent
-    data_path = hydra.utils.to_absolute_path('data/' + cfg.dataset.url)
-    # data_path = hydra.utils.to_absolute_path('data/' + 'zameen-updated.csv')
+    data_path = hydra.utils.to_absolute_path("data/" + cfg.dataset.url)
     data = pd.read_csv(data_path)
 
-    # Sort data by 'date_added'
-    data = data.sort_values(by='date_added')
+    data = data.sort_values(by="date_added")
 
-    # Read project stage from config
-    # TODO: Back value
     index = cfg.index
-
-    # Calculate start and end indices for the sample
     total_length = len(data)
-    # TODO: Uncomment
     num_splits = cfg.num_samples
     split_size = total_length // num_splits
-
     start_idx = (index - 1) * split_size
     end_idx = start_idx + split_size
 
-    # Handle the case when index is the last one and may not divide evenly
     if index == num_splits:
         end_idx = total_length
-
-    # Take the slice of data based on start and end indices
     sampled_data = data.iloc[start_idx:end_idx]
 
-    # Ensure the output directory exists
-    output_dir = os.path.join(
-        hydra.utils.get_original_cwd(), "data", "samples")
-
-    # TODO: Uncomment
-    # output_dir = os.path.join(
-    #     os.getcwd(), "data", "samples")
+    output_dir = os.path.join(hydra.utils.get_original_cwd(), "data", "samples")
 
     os.makedirs(output_dir, exist_ok=True)
-
-    # Save sampled data
     sample_file = os.path.join(output_dir, filename)
     sampled_data.to_csv(sample_file, index=False)
     print(f"Sampled data for stage {index} saved to {sample_file}")
+
+
+@hydra.main(config_path="../configs", config_name="main", version_base=None)
+def refactor_sample_data(cfg: DictConfig):
+    filename = "sample.csv" if cfg.test is False else "test_sample.csv"
+
+    data_path = hydra.utils.to_absolute_path("data/samples/" + filename)
+
+    df = pd.read_csv(data_path)
+
+    pattern = re.compile(r"^[0-9]+(,[0-9]+)?\s*(Kanal|Marla)$")
+    regex = r"^[0-9]+(\.[0-9])?\s*(Kanal|Marla)$"
+    pattern_perfect = re.compile(regex)
+
+    # Function to replace commas with dots and round the number to one decimal place
+    def format_area(value):
+        match = pattern.match(value)
+        perfect_match = pattern_perfect.match(value)
+        if match:
+            new_value = value.replace(",", ".")
+            numeric_part, unit = new_value.split()
+            rounded_value = f"{round(float(numeric_part), 1)} {unit}"
+            return rounded_value
+        elif perfect_match:
+            return value
+        else:
+            return None
+
+    df["area"] = df["area"].apply(format_area)
+
+    df = df.dropna(subset=["area"])
+
+    df = df[df["baths"] <= 30]
+
+    output_dir = os.path.join(hydra.utils.get_original_cwd(), "data", "samples")
+    os.makedirs(output_dir, exist_ok=True)
+
+    df.to_csv(data_path, index=False)
+    print(f"Refactored data saved to {data_path}")
 
 
 def read_datastore():
@@ -212,3 +225,5 @@ def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
 
 if __name__ == "__main__":
     sample_data()
+    refactor_sample_data()
+    

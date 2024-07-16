@@ -1,0 +1,464 @@
+[2024-07-14 20:46:46 +0300] [225500] [INFO] Starting gunicorn 22.0.0
+[2024-07-14 20:46:46 +0300] [225500] [ERROR] Connection in use: ('::', 8793)
+[2024-07-14 20:46:46 +0300] [225500] [ERROR] Retrying in 1 second.
+[2024-07-14 20:46:47 +0300] [225500] [ERROR] Connection in use: ('::', 8793)
+[2024-07-14 20:46:47 +0300] [225500] [ERROR] Retrying in 1 second.
+[2024-07-14 20:46:48 +0300] [225500] [ERROR] Connection in use: ('::', 8793)
+[2024-07-14 20:46:48 +0300] [225500] [ERROR] Retrying in 1 second.
+[2024-07-14 20:46:49 +0300] [225500] [ERROR] Connection in use: ('::', 8793)
+[2024-07-14 20:46:49 +0300] [225500] [ERROR] Retrying in 1 second.
+[2024-07-14 20:46:50 +0300] [225500] [ERROR] Connection in use: ('::', 8793)
+[2024-07-14 20:46:50 +0300] [225500] [ERROR] Retrying in 1 second.
+[2024-07-14 20:46:51 +0300] [225500] [ERROR] Can't connect to ('::', 8793)
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:84 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:84 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:84 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:84 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:92 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:93 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:93 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:93 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:95 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:95 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:92 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:92 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:92 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:92 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:92 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:92 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:92 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:87 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:87 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:87 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:87 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:87 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:87 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:87 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
+/home/sshk/project/services/airflow/dags/data_extract_dag.py:85 UserWarning: 
+The version_base parameter is not specified.
+Please specify a compatability version level, or None.
+Will assume defaults for version 1.1
