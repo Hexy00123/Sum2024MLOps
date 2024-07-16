@@ -76,8 +76,9 @@ def refactor_sample_data(cfg: DictConfig):
     print(f"Refactored data saved to {data_path}")
 
 
-def read_datastore():
-    version = 1
+@hydra.main(config_path="../configs", config_name="main", version_base=None)
+def read_datastore(cfg: DictConfig):
+    version = cfg.index
     sample_path = "data/samples/sample.csv"
     if not os.path.exists(sample_path):
         raise FileNotFoundError(f"File {sample_path} not found.")
