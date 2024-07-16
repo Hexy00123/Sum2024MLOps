@@ -1,0 +1,13 @@
+model_name: Lasso
+artifact_path: basic_lasso
+
+tag_key: "model"
+tag_value: "basic lasso"
+
+module_name: "sklearn.linear_models"
+class_name: "Lasso"
+
+params:
+  alpha: [0.1, 0.5, 1.0]
+  max_iter: [100, 250, 1000]
+  warm_start: [True, False]

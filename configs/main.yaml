@@ -1,5 +1,7 @@
 defaults:
   - _self_
+  - experiment
+  - model/model
 
 num_samples: 5
 
@@ -7,6 +9,15 @@ dataset:
   url: "zameen-updated.csv"
   name: "zameen-updated"
 
-index: 5
+data: 
+  target_cols: ["price"]
+
+index: 1
 
 test: False
+
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +model: "knn" 
