@@ -133,18 +133,23 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                                                                  targets=cfg.data.target_cols[0])
         mlflow.log_input(df_train_dataset, "training")
         mlflow.log_input(df_test_dataset, "testing")
+        print("LOG: logged input")
 
         # Log the hyperparameters
         mlflow.log_params(gs.best_params_)
+        print("LOG: logged model params")
 
         # Log the performance metrics
         mlflow.log_metrics(best_metrics_dict)
+        print("LOG: logged model metrics")
 
         # Set a tag that we can use to remind ourselves what this run was for
         mlflow.set_tag(cfg.model.tag_key, cfg.model.tag_value)
+        print("LOG: tagged model")
 
         # Infer the model signature
         signature = mlflow.models.infer_signature(X_train, gs.predict(X_train))
+        print("LOG: set signature")
 
         model_info = mlflow.sklearn.log_model(
             sk_model=gs.best_estimator_,
@@ -154,13 +159,17 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
             registered_model_name=cfg.model.model_name,
             pyfunc_predict_fn=cfg.model.pyfunc_predict_fn
         )
+        print("LOG: logged model")
 
         client = mlflow.client.MlflowClient()
         client.set_model_version_tag(
             name=cfg.model.model_name, version=model_info.registered_model_version, key="source", value="best_Grid_search_model")
 
-        for index, result in cv_results.iterrows():
+        cv_results_list = list(cv_results.iterrows())
+        print(f'LOG: CV results size: {len(cv_results_list)}')
+        for index, result in cv_results_list:
             child_run_name = "_".join(['child', run_name, str(index)])
+            print(f"LOG: performing child run: {child_run_name}")
 
             with mlflow.start_run(run_name=child_run_name, experiment_id=experiment_id, nested=True):
                 ps = result.filter(regex='param_').to_dict()
@@ -172,6 +181,7 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 mlflow.log_params(ps)
                 mlflow.log_metrics(ms)
                 mlflow.log_metrics(stds)
+                print('LOG: logged child model params & metrics')
 
                 # We will create the estimator at runtime
                 module_name = cfg.model.module_name  # e.g. "sklearn.linear_model"
@@ -181,8 +191,11 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 class_instance = getattr(
                     importlib.import_module(module_name), class_name)
 
+                print('LOG: created instance')
+                print('LOG: fitting...')
                 estimator = class_instance(**ps)
                 estimator.fit(X_train, y_train)
+                print('LOG: fitting done')
 
                 signature = mlflow.models.infer_signature(
                     X_train, estimator.predict(X_train))
@@ -193,25 +206,31 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                     input_example=X_train.iloc[0].to_numpy(),
                     registered_model_name=cfg.model.model_name,
                 )
+                print('LOG: logged child model')
 
                 model_uri = model_info.model_uri
                 loaded_model = mlflow.sklearn.load_model(model_uri=model_uri)
+                print('LOG: loading child model')
 
                 predictions = loaded_model.predict(X_test)  # type: ignore
+                print('LOG: re-evaluating child model')
 
                 eval_data = pd.DataFrame(y_test)
                 eval_data.columns = ["label"]
                 eval_data["predictions"] = predictions
+                print('LOG: metrics preprocessing done')
 
-                results = mlflow.evaluate(
-                    data=eval_data,
-                    model_type="classifier",
-                    targets="label",
-                    predictions="predictions",
-                    evaluators=["default"]
-                )
+                # ??? 
+                # results = mlflow.evaluate(
+                #     data=eval_data,
+                #     model_type="regressor",
+                #     targets="label",
+                #     predictions="predictions",
+                #     evaluators=["default"]
+                # )
+                # print('LOG: evaluating')
 
-                print(f"metrics:\n{results.metrics}")
+                # print(f"LOG: metrics:\n{results.metrics}")
 
 
 if __name__ == '__main__':

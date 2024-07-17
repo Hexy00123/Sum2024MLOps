@@ -4,7 +4,7 @@ artifact_path: basic_lasso
 tag_key: "model"
 tag_value: "basic lasso"
 
-module_name: "sklearn.linear_models"
+module_name: "sklearn.linear_model"
 class_name: "Lasso"
 
 params:

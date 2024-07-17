@@ -20,4 +20,4 @@ hydra:
   mode: MULTIRUN
   sweeper:
     params:
-      +model: "knn" 
+      +model: "lasso, knn" 
