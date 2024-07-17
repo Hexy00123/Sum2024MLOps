@@ -4,13 +4,13 @@ from datetime import timedelta
 import pendulum
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
+
 from airflow.sensors.external_task import ExternalTaskSensor
 
 # take todays datetime - 10 minutes
 start_date = pendulum.now(tz="Europe/Moscow").subtract(minutes=10)
 start_date = start_date.replace(second=0, microsecond=0)
 project_root = os.environ.get("PROJECT_DIR")
-
 
 with DAG(
     dag_id="data_prepare_dag",
@@ -21,7 +21,6 @@ with DAG(
     # catchup=False,
     is_paused_upon_creation=False,
 ) as data_prepare_dag:
-
     # Task to wait for the completion of the data_extract_dag
     wait_for_data_extraction = ExternalTaskSensor(
         task_id="wait_for_data_extraction",

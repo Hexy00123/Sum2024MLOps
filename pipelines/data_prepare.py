@@ -10,6 +10,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.data import preprocess_data, read_datastore, load_features
 from src.data_expectations import validate_features
 
+import hydra
+from hydra import compose, initialize
+from omegaconf import DictConfig, OmegaConf
+
 BASE_PATH = os.path.expandvars("$PROJECTPATH")
 
 
@@ -24,10 +28,15 @@ def extract() -> Tuple[
     ArtifactConfig(name="data_version",
                    tags=["data_preparation"])]
 ]:
+    print("Extracting version...")
+    with initialize(config_path="../configs"):
+        cfg = compose(config_name="main")
+        version = cfg.index
+        print(f'Version is: {version}, type: {type(version)}')
+
     print("Extracting data...")
-    df, version = read_datastore()
+    df = read_datastore()
     print(df)
-    print(version)
 
     return df, version
 
@@ -58,11 +67,9 @@ def validate(X: pd.DataFrame, y: pd.Series) -> Tuple[
     ArtifactConfig(name="valid_target",
                    tags=["data_preparation"])]
 ]:
-
     print("Validating features...")
     validate_features(X, y)
     return X, y
-
 
 
 @step(enable_cache=False)
@@ -74,12 +81,9 @@ def load(X: pd.DataFrame, y: pd.Series, version: int) -> Tuple[
     ArtifactConfig(name="target",
                    tags=["data_preparation"])]
 ]:
-
     print("Loading features...")
     load_features(X, y, version)
     return X, y
-
-
 
 
 @pipeline()
