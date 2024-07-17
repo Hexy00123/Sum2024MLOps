@@ -14,8 +14,9 @@ data:
   cat_cols: ["city", "location", "type", "purpose", "title"]
 
 model:
-  best_model_name: "champion"
-  best_model_alias: "champion"
+  best_model_name: "Lasso"
+  best_model_version: 19
+  best_model_alias: "Lasso"
 
 index: 1
 test_data_version: 2
