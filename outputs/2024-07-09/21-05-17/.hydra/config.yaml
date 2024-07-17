@@ -1,6 +1,0 @@
-num_samples: 5
-dataset:
-  url: zameen-updated.csv
-  name: zameen-updated
-index: 2
-test: false

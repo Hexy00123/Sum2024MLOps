@@ -1,0 +1,32 @@
+defaults:
+  - _self_
+  - experiment
+  - model/model
+
+num_samples: 5
+
+dataset:
+  url: "zameen-updated.csv"
+  name: "zameen-updated"
+
+data: 
+  target_cols: ["price"]
+  cat_cols: ["city", "location", "type", "purpose", "title"]
+
+model:
+  best_model_name: "Lasso"
+  best_model_version: 19
+  best_model_alias: "Lasso"
+
+index: 1
+test_data_version: 2
+
+
+test: False
+
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +model: "lasso, knn" 
+
