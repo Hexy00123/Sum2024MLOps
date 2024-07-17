@@ -20,4 +20,4 @@ hydra:
   mode: MULTIRUN
   sweeper:
     params:
-      +model: "lasso, knn" 
+      +model: "xgboost, rfr, lasso, catboost" # xgboost, rfr, lasso, catboost
