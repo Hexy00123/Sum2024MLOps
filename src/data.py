@@ -77,6 +77,7 @@ def refactor_sample_data(cfg: DictConfig):
 
 
 def read_datastore():
+    # TODO: get versions with git and dvc checkouts
     sample_path = "data/samples/sample.csv"
     if not os.path.exists(sample_path):
         raise FileNotFoundError(f"File {sample_path} not found.")
@@ -122,7 +123,7 @@ def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
     return data
 
 
-def preprocess_data(df: pd.DataFrame):
+def preprocess_data(df: pd.DataFrame, only_X: bool = False) -> pd.DataFrame:
     try:
         # Filter data
         df = df[df['latitude'] > 22][df['latitude'] < 38]
@@ -210,7 +211,7 @@ def preprocess_data(df: pd.DataFrame):
 
         print('preprocessing done')
 
-        return X, y
+        return X if only_X else X, y
     except Exception as e:
         print(f"Preprocessing failed: {e}")
 
@@ -222,7 +223,11 @@ def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
     zenml.save_artifact(data=df, name="features_target", tags=[tag])
 
 
+
 if __name__ == "__main__":
-    sample_data()
-    refactor_sample_data()
+    # sample_data()
+    # refactor_sample_data()
+    df = read_datastore()
+    preprocessed_data = preprocess_data(df)
+    print(preprocessed_data.head())
     
