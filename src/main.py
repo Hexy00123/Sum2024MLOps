@@ -9,10 +9,10 @@ def run(cfg):
 
     X_train, y_train = load_features(name="features_target",
                                      version=train_data_version,
-                                     size=0.2)
+                                     size=0.5)
     X_test, y_test = load_features(name="features_target",
                                    version=test_data_version,
-                                   size=0.2)
+                                   size=0.5)
 
     print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
