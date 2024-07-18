@@ -1,18 +1,20 @@
 import hydra
-from model import train, load_features, log_metadata
+from model import train, log_metadata
+from data import read_features
 from omegaconf import OmegaConf
+import mlflow 
 
 
 def run(cfg):
-    train_data_version = cfg.train_data_version
-    test_data_version = cfg.test_data_version
+    train_data_version = str(cfg.train_data_version)
+    test_data_version = str(cfg.test_data_version)
 
-    X_train, y_train = load_features(name="features_target",
+    X_train, y_train = read_features(name="features_target",
                                      version=train_data_version,
-                                     size=0.5)
-    X_test, y_test = load_features(name="features_target",
+                                     size=0.01)
+    X_test, y_test = read_features(name="features_target",
                                    version=test_data_version,
-                                   size=0.5)
+                                   size=0.01)
 
     print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
@@ -23,6 +25,8 @@ def run(cfg):
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def main(cfg=None):
+    mlflow.set_tracking_uri(uri="http://localhost:5000")
+
     # print(OmegaConf.to_yaml(cfg))
     # print(cfg.data.target_cols[0])
     run(cfg)

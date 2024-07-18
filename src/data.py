@@ -8,6 +8,7 @@ import zenml
 from omegaconf import DictConfig
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, StandardScaler
+import zenml.client
 
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
@@ -29,7 +30,8 @@ def sample_data(cfg: DictConfig):
         end_idx = total_length
     sampled_data = data.iloc[start_idx:end_idx]
 
-    output_dir = os.path.join(hydra.utils.get_original_cwd(), "data", "samples")
+    output_dir = os.path.join(
+        hydra.utils.get_original_cwd(), "data", "samples")
 
     os.makedirs(output_dir, exist_ok=True)
     sample_file = os.path.join(output_dir, filename)
@@ -69,7 +71,8 @@ def refactor_sample_data(cfg: DictConfig):
 
     df = df[df["baths"] <= 30]
 
-    output_dir = os.path.join(hydra.utils.get_original_cwd(), "data", "samples")
+    output_dir = os.path.join(
+        hydra.utils.get_original_cwd(), "data", "samples")
     os.makedirs(output_dir, exist_ok=True)
 
     df.to_csv(data_path, index=False)
@@ -117,8 +120,10 @@ def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std') -
 
 
 def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
-    data[column_name + '_sin'] = np.sin(2 * np.pi * data[column_name] / max_value)
-    data[column_name + '_cos'] = np.sin(2 * np.pi * data[column_name] / max_value)
+    data[column_name + '_sin'] = np.sin(2 *
+                                        np.pi * data[column_name] / max_value)
+    data[column_name + '_cos'] = np.sin(2 *
+                                        np.pi * data[column_name] / max_value)
     data = data.drop(column_name, axis=1)
     return data
 
@@ -152,12 +157,14 @@ def preprocess_data(df: pd.DataFrame, only_X: bool = False) -> pd.DataFrame:
         print('metrics converted')
 
         # Drop unnecessary/raw columns
-        data = df.drop(['Area Type', 'Area Size', 'Area Category', 'property_id', 'page_url', 'date_added'], axis=1)
+        data = df.drop(['Area Type', 'Area Size', 'Area Category',
+                       'property_id', 'page_url', 'date_added'], axis=1)
 
         print('unnecessary columns dropped')
 
         # Encoding features
-        columns_to_one_hot = ['property_type', 'city', 'province_name', 'purpose', 'agency', 'agent', 'location']
+        columns_to_one_hot = ['property_type', 'city',
+                              'province_name', 'purpose', 'agency', 'agent', 'location']
         for column in columns_to_one_hot:
             data = one_hot_encode_feature(data, column)
 
@@ -175,7 +182,8 @@ def preprocess_data(df: pd.DataFrame, only_X: bool = False) -> pd.DataFrame:
 
         # scale one-hot encoded features
         for column in columns_to_one_hot:
-            columns = [col for col in data.columns if col.startswith(f"{column}_")]
+            columns = [
+                col for col in data.columns if col.startswith(f"{column}_")]
             for col in columns:
                 data = scale_feature(data, col)
 
@@ -184,12 +192,14 @@ def preprocess_data(df: pd.DataFrame, only_X: bool = False) -> pd.DataFrame:
         # PCA for too large categorical features
         columns_to_pca = ['agency', 'agent', 'location']
         for column in columns_to_pca:
-            dummy_cols = [col for col in data.columns if col.startswith(f"{column}_") and col != 'location_id']
+            dummy_cols = [col for col in data.columns if col.startswith(
+                f"{column}_") and col != 'location_id']
             dummies = data[dummy_cols]
             n_components = min(500, len(dummies))
             pca_result = PCA(n_components=n_components).fit_transform(dummies)
 
-            pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
+            pca_df = pd.DataFrame(pca_result, columns=[
+                                  f"{column}_{i}" for i in range(n_components)])
 
             if n_components < 500:
                 for i in range(n_components, 500):
@@ -223,6 +233,26 @@ def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
     zenml.save_artifact(data=df, name="features_target", tags=[tag])
 
 
+def read_features(name, version, size=1, logs=False):
+    client = zenml.client.Client()
+    artifacts = client.list_artifact_versions(
+        name=name, tag=version, sort_by="version").items
+
+    df = artifacts[-1].load()
+    df = df.sample(frac=size, random_state=88)
+
+    if logs:
+        print("size of df is ", df.shape)
+        print("df columns: ", df.columns)
+
+    X = df[df.columns[:-1]]
+    y = df.price
+
+    if logs:
+        print("shapes of X,y = ", X.shape, y.shape)
+
+    return X, y
+
 
 if __name__ == "__main__":
     # sample_data()
@@ -230,4 +260,3 @@ if __name__ == "__main__":
     df = read_datastore()
     preprocessed_data = preprocess_data(df)
     print(preprocessed_data.head())
-    

@@ -8,27 +8,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-def load_features(name, version, size=1, logs=False):
-    client = Client()
-    artifacts = client.list_artifact_versions(
-        name=name, tag=version, sort_by="version").items
-
-    df = artifacts[-1].load()
-    df = df.sample(frac=size, random_state=88)
-
-    if logs:
-        print("size of df is ", df.shape)
-        print("df columns: ", df.columns)
-
-    X = df[df.columns[:-1]]
-    y = df.price
-
-    if logs:
-        print("shapes of X,y = ", X.shape, y.shape)
-
-    return X, y
-
-
 def train(X_train, y_train, cfg):
     import importlib
     from sklearn.model_selection import KFold
@@ -88,6 +67,8 @@ def retrieve_model_with_version(model_name, model_version="v1") -> mlflow.pyfunc
 
 
 def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
+    mlflow.set_tracking_uri(uri="http://localhost:5000")
+
     cv_results = pd.DataFrame(gs.cv_results_).filter(
         regex=r'std_|mean_|param_').sort_index(axis=1)
     best_metrics_values = [result[1][gs.best_index_]
@@ -215,24 +196,19 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 predictions = loaded_model.predict(X_test)  # type: ignore
                 print('LOG: re-evaluating child model')
 
-                eval_data = pd.DataFrame(y_test)
-                eval_data.columns = ["label"]
-                eval_data["predictions"] = predictions
+                eval_data = pd.DataFrame({
+                    'label': y_test,
+                    'predictions': predictions,
+                })
                 print('LOG: metrics preprocessing done')
 
-                # ??? 
                 # results = mlflow.evaluate(
-                #     data=eval_data,
-                #     model_type="regressor",
-                #     targets="label",
-                #     predictions="predictions",
-                #     evaluators=["default"]
+                #     model_info.model_uri,
+                #     data=X_test,
+                #     targets=y_test.values,
+                #     model_type='regressor',
+                #     evaluators=['default']
                 # )
                 # print('LOG: evaluating')
 
                 # print(f"LOG: metrics:\n{results.metrics}")
-
-
-if __name__ == '__main__':
-    for v in range(1, 6):
-        load_features(name='features_target', version=v, size=1)

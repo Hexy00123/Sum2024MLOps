@@ -5,7 +5,7 @@ name: MLOps2024
 entry_points:
 
   main:
-    command: "python src/main.py" # --multirun"
+    command: "python src/main.py --multirun"
   
   evaluate:
     command: "python src/evaluate.py"
