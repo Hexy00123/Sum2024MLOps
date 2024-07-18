@@ -53,7 +53,8 @@ mv = client.get_model_version(name = model_name, version = str(model_version))
 model_version = mv.version
 
 # custom predict function
-transformer_version = cfg.data_transformer_version
+# transformer_version = cfg.data_transformer_version
+
 
 def predict(raw_df):
     X = preprocess_data(
@@ -62,6 +63,7 @@ def predict(raw_df):
                       )
 
     return model.predict(X)
-
+print(type(df))
+print(type(df[df.columns].head()))
 predictions = predict(df[df.columns].head())
 print(predictions)

@@ -123,8 +123,9 @@ def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
     return data
 
 
-def preprocess_data(df: pd.DataFrame, only_X: bool = False) -> pd.DataFrame:
+def preprocess_data(df: pd.DataFrame, only_X: bool = False):
     try:
+        print(df)
         # Filter data
         df = df[df['latitude'] > 22][df['latitude'] < 38]
         df = df[df['longitude'] > 59][df['longitude'] < 79]
@@ -175,18 +176,23 @@ def preprocess_data(df: pd.DataFrame, only_X: bool = False) -> pd.DataFrame:
 
         # scale one-hot encoded features
         for column in columns_to_one_hot:
+            print(f"Scaling one-hot encoded features for {column}")
             columns = [col for col in data.columns if col.startswith(f"{column}_")]
             for col in columns:
                 data = scale_feature(data, col)
 
         print('one-hot encoded features scaled')
+        print(data)
 
         # PCA for too large categorical features
         columns_to_pca = ['agency', 'agent', 'location']
         for column in columns_to_pca:
+            print(f"Applying PCA to {column}")
             dummy_cols = [col for col in data.columns if col.startswith(f"{column}_") and col != 'location_id']
             dummies = data[dummy_cols]
-            n_components = min(500, len(dummies))
+            print(dummies)
+            n_components = min(500, len(dummy_cols))
+            print(n_components)
             pca_result = PCA(n_components=n_components).fit_transform(dummies)
 
             pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
@@ -225,9 +231,6 @@ def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
 
 
 if __name__ == "__main__":
-    # sample_data()
-    # refactor_sample_data()
-    df = read_datastore()
-    preprocessed_data = preprocess_data(df)
-    print(preprocessed_data.head())
+    sample_data()
+    refactor_sample_data()
     
