@@ -7,12 +7,11 @@ import hydra
 from hydra import compose, initialize
 import mlflow
 
-
 # 1. Wrap raw dataset
 with initialize(config_path="../configs"):
-        cfg = compose(config_name="giskard")
+    cfg = compose(config_name="giskard")
 
-version  = cfg.test_data_version
+version = cfg.test_data_version
 
 df = read_datastore()
 
@@ -23,12 +22,11 @@ TARGET_COLUMN = cfg.data.target_cols[0]
 
 dataset_name = cfg.dataset.name
 
-
 # Wrap your Pandas DataFrame with giskard.Dataset (validation or test set)
 giskard_dataset = giskard.Dataset(
     df=df,  # A pandas.DataFrame containing raw data (before pre-processing) and including ground truth variable.
     target=TARGET_COLUMN,  # Ground truth variable
-    name=dataset_name, # Optional: Give a name to your dataset
+    name=dataset_name,  # Optional: Give a name to your dataset
     # cat_columns=CATEGORICAL_COLUMNS  # List of categorical columns. Optional, but improves quality of results if available.
 )
 
@@ -48,9 +46,10 @@ print("Model loaded successfully")
 client = mlflow.MlflowClient()
 
 # mv = client.get_model_version_by_alias(name = model_name, alias=model_alias)
-mv = client.get_model_version(name = model_name, version = str(model_version))
+mv = client.get_model_version(name=model_name, version=str(model_version))
 
 model_version = mv.version
+
 
 # custom predict function
 # transformer_version = cfg.data_transformer_version
@@ -58,12 +57,15 @@ model_version = mv.version
 
 def predict(raw_df):
     X = preprocess_data(
-                        df = raw_df, 
-                        only_X = True
-                      )
+        df=raw_df,
+        only_X=True
+    )
 
     return model.predict(X)
+
+
 print(type(df))
 print(type(df[df.columns].head()))
-predictions = predict(df[df.columns].head())
-print(predictions)
+print(predict(df))
+# predictions = predict(df[df.columns].head())
+# print(predictions)

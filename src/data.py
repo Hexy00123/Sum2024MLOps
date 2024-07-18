@@ -128,6 +128,15 @@ def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
     return data
 
 
+def create_empty_columns(df: pd.DataFrame, column_name: str, n_cols: int) -> pd.DataFrame:
+    cols = [col for col in df.columns if col.startswith(column_name)]
+    if len(cols) < n_cols:
+        for i in range(len(cols), n_cols):
+            df[column_name + f'_{i}'] = 0
+
+    return df
+
+
 def preprocess_data(df: pd.DataFrame, only_X: bool = False):
     try:
         print(df)
@@ -159,7 +168,7 @@ def preprocess_data(df: pd.DataFrame, only_X: bool = False):
 
         # Drop unnecessary/raw columns
         data = df.drop(['Area Type', 'Area Size', 'Area Category',
-                       'property_id', 'page_url', 'date_added'], axis=1)
+                        'property_id', 'page_url', 'date_added'], axis=1)
 
         print('unnecessary columns dropped')
 
@@ -202,16 +211,23 @@ def preprocess_data(df: pd.DataFrame, only_X: bool = False):
             print(n_components)
             pca_result = PCA(n_components=n_components).fit_transform(dummies)
 
-            pca_df = pd.DataFrame(pca_result, columns=[
-                                  f"{column}_{i}" for i in range(n_components)])
+            pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
 
-            if n_components < 500:
-                for i in range(n_components, 500):
-                    pca_df[f"{column}_{i}"] = 0
+            pca_df = create_empty_columns(pca_df, column, 500)
 
             data = data.reset_index(drop=True)
             data = pd.concat([data, pca_df], axis=1)
             data = data.drop(dummy_cols, axis=1)
+
+        expected_number_of_columns = {
+            'property_type': 7,
+            'city': 5,
+            'province_name': 3,
+            'purpose': 2
+        }
+
+        for column, n_cols in expected_number_of_columns.items():
+            data = create_empty_columns(data, column, n_cols)
 
         print('PCA applied')
 
@@ -261,4 +277,3 @@ def read_features(name, version, size=1, logs=False):
 if __name__ == "__main__":
     sample_data()
     refactor_sample_data()
-    
