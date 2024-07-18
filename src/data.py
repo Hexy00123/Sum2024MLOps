@@ -191,11 +191,11 @@ def preprocess_data(df: pd.DataFrame):
         print('features scaled')
 
         # scale one-hot encoded features
-        # for column in columns_to_one_hot:
-        #     print(f"Scaling one-hot encoded features for {column}")
-        #     columns = [col for col in data.columns if col.startswith(f"{column}_")]
-        #     for col in columns:
-        #         data = scale_feature(data, col)
+        for column in columns_to_one_hot:
+            print(f"Scaling one-hot encoded features for {column}")
+            columns = [col for col in data.columns if col.startswith(f"{column}_")]
+            for col in columns:
+                data = scale_feature(data, col)
 
         print('one-hot encoded features scaled')
         print(data)
