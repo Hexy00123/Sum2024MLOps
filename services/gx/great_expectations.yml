@@ -102,7 +102,7 @@ fluent_datasources:
     assets:
       asset01:
         type: csv
-        filepath_or_buffer: data/samples/sample.csv
+        filepath_or_buffer: data\samples\sample.csv
   my_pandas_ds:
     type: pandas
     assets:

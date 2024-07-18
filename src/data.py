@@ -137,7 +137,7 @@ def create_empty_columns(df: pd.DataFrame, column_name: str, n_cols: int) -> pd.
     return df
 
 
-def preprocess_data(df: pd.DataFrame, only_X: bool = False):
+def preprocess_data(df: pd.DataFrame, only_X: bool):
     try:
         print(df)
         # Filter data
@@ -238,10 +238,10 @@ def preprocess_data(df: pd.DataFrame, only_X: bool = False):
         print('datetime encoded')
 
         X, y = data.drop('price', axis=1), data['price']
-
-        print('preprocessing done')
-
-        return X if only_X else X, y
+        #
+        # print('preprocessing done')
+        #
+        return X, y
     except Exception as e:
         print(f"Preprocessing failed: {e}")
 

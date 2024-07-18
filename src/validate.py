@@ -1,4 +1,5 @@
 # src/validate.py
+import pandas as pd
 
 from data import read_datastore, preprocess_data
 from model import retrieve_model_with_alias, retrieve_model_with_version
@@ -56,16 +57,48 @@ model_version = mv.version
 
 
 def predict(raw_df):
-    X = preprocess_data(
-        df=raw_df,
-        only_X=True
+    X, y = preprocess_data(
+        df=raw_df
     )
+    X = pd.DataFrame(X)
 
     return model.predict(X)
 
 
-print(type(df))
-print(type(df[df.columns].head()))
-print(predict(df))
+# print(type(df))
+# print(type(df[df.columns].head()))
+# print(predict(df))
+
+
 # predictions = predict(df[df.columns].head())
+# predictions = predict(df.head())
 # print(predictions)
+
+# from data import read_features
+# train_data_version = str(cfg.train_data_version)
+# test_data_version = str(cfg.test_data_version)
+#
+# X_test, y_test = read_features(name="features_target",
+#                                    version=test_data_version)
+#
+# print(X_test.shape, y_test.shape)
+# print(X_test.head())
+# X_zenml = X_test.head()
+
+# take half of the data df
+df_50 = df.sample(frac=0.5, random_state=88)
+
+X, y = preprocess_data(
+    # df=df,
+    df=df.head(),
+    only_X=True
+)
+#
+#
+X = pd.DataFrame(X)
+print(type(X))
+#
+print(X)
+#
+predictions = model.predict(X)
+print(predictions)

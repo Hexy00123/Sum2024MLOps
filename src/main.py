@@ -25,7 +25,7 @@ def run(cfg):
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def main(cfg=None):
-    mlflow.set_tracking_uri(uri="http://localhost:5000")
+    # mlflow.set_tracking_uri(uri="http://localhost:5000")
 
     # print(OmegaConf.to_yaml(cfg))
     # print(cfg.data.target_cols[0])
