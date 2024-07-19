@@ -137,12 +137,13 @@ def create_empty_columns(df: pd.DataFrame, column_name: str, n_cols: int) -> pd.
     return df
 
 
-def preprocess_data(df: pd.DataFrame):
+def preprocess_data(df: pd.DataFrame, X_only: bool = False):
     try:
         print(df)
         # Filter data
-        df = df[df['latitude'] > 22][df['latitude'] < 38]
-        df = df[df['longitude'] > 59][df['longitude'] < 79]
+        # TODO: move to refactor_sample_data
+        # df = df[df['latitude'] > 22][df['latitude'] < 38]
+        # df = df[df['longitude'] > 59][df['longitude'] < 79]
 
         print('data filtered')
 
@@ -182,7 +183,11 @@ def preprocess_data(df: pd.DataFrame):
 
         # Scaling features
         columns_to_minmax = ['latitude', 'longitude', 'location_id', 'year']
-        columns_to_std = ['area', 'baths', 'bedrooms', 'price']
+        if X_only:
+            columns_to_std = ['area', 'baths', 'bedrooms']
+        else:
+            columns_to_std = ['area', 'baths', 'bedrooms', 'price']
+        # columns_to_std = ['area', 'baths', 'bedrooms', 'price']
         for column in columns_to_minmax:
             data = scale_feature(data, column, strategy='minmax')
         for column in columns_to_std:
@@ -190,14 +195,15 @@ def preprocess_data(df: pd.DataFrame):
 
         print('features scaled')
 
+        # TODO: decide what to do with this part
         # scale one-hot encoded features
-        for column in columns_to_one_hot:
-            print(f"Scaling one-hot encoded features for {column}")
-            columns = [col for col in data.columns if col.startswith(f"{column}_")]
-            for col in columns:
-                data = scale_feature(data, col)
-
-        print('one-hot encoded features scaled')
+        # for column in columns_to_one_hot:
+        #     print(f"Scaling one-hot encoded features for {column}")
+        #     columns = [col for col in data.columns if col.startswith(f"{column}_")]
+        #     for col in columns:
+        #         data = scale_feature(data, col)
+        #
+        # print('one-hot encoded features scaled')
         print(data)
 
         # PCA for too large categorical features
@@ -236,12 +242,16 @@ def preprocess_data(df: pd.DataFrame):
         data = cyclic_encoding(data, 'month', 12)
 
         print('datetime encoded')
+        if X_only:
+            print('preprocessing done')
+            return data
+        else:
+            X, y = data.drop('price', axis=1), data['price']
+            #
+            print('preprocessing done')
+            #
+            return X, y
 
-        X, y = data.drop('price', axis=1), data['price']
-        #
-        # print('preprocessing done')
-        #
-        return X, y
     except Exception as e:
         print(f"Preprocessing failed: {e}")
 

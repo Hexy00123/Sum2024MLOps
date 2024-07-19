@@ -1,13 +1,14 @@
 # src/validate.py
 import pandas as pd
 
-from data import read_datastore, preprocess_data
+from data import read_datastore, preprocess_data, read_features
 from model import retrieve_model_with_alias, retrieve_model_with_version
 import giskard
 import hydra
 from hydra import compose, initialize
 import mlflow
 
+# ------------------------------
 # 1. Wrap raw dataset
 with initialize(config_path="../configs"):
     cfg = compose(config_name="giskard")
@@ -31,6 +32,7 @@ giskard_dataset = giskard.Dataset(
     # cat_columns=CATEGORICAL_COLUMNS  # List of categorical columns. Optional, but improves quality of results if available.
 )
 
+# ------------------------------
 # 2. Wrap model
 model_name = cfg.model.best_model_name
 
@@ -51,54 +53,57 @@ mv = client.get_model_version(name=model_name, version=str(model_version))
 
 model_version = mv.version
 
+# ------------------------------
+# 3. Initial prediction
 
-# custom predict function
-# transformer_version = cfg.data_transformer_version
+df_50 = df.sample(frac=0.01, random_state=42)
 
 
 def predict(raw_df):
     X, y = preprocess_data(
-        df=raw_df
-    )
+                        df=raw_df,
+                      )
     X = pd.DataFrame(X)
-
+    print(f"y: {y}")
     return model.predict(X)
 
 
-# print(type(df))
-# print(type(df[df.columns].head()))
-# print(predict(df))
+predictions = predict(df_50)
+print(f"Predictions: {predictions}")
 
 
-# predictions = predict(df[df.columns].head())
-# predictions = predict(df.head())
+
+# 3. Validation with raw dataset
+
+# X, y = preprocess_data(
+#     df=df_50,
+#     # df=df.head(),
+#     only_X=True
+# )
+# X = pd.DataFrame(X)
+# predictions = model.predict(X)
 # print(predictions)
 
-# from data import read_features
+
+# Validation with ZenML dataset
 # train_data_version = str(cfg.train_data_version)
 # test_data_version = str(cfg.test_data_version)
-#
+# #
 # X_test, y_test = read_features(name="features_target",
 #                                    version=test_data_version)
 #
-# print(X_test.shape, y_test.shape)
-# print(X_test.head())
-# X_zenml = X_test.head()
+# predictions = model.predict(X_test)
+# print(predictions)
+# print(y_test)
 
-# take half of the data df
-df_50 = df.sample(frac=0.5, random_state=88)
 
-X, y = preprocess_data(
-    # df=df,
-    df=df.head(),
-    only_X=True
-)
-#
-#
-X = pd.DataFrame(X)
-print(type(X))
-#
-print(X)
-#
-predictions = model.predict(X)
-print(predictions)
+# ------------------------------
+# 4. Create Giskard model
+# giskard_model = giskard.Model(
+#   model=predict,
+#   model_type = "classification", # regression
+#   classification_labels=list(cfg.data.labels),  # The order MUST be identical to the prediction_function's output order
+#   feature_names = df.columns, # By default all columns of the passed dataframe
+#   name=model_name, # Optional: give it a name to identify it in metadata
+#   # classification_threshold=0.5, # Optional: Default: 0.5
+# )

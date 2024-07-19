@@ -15,3 +15,6 @@ evidently
 Flask
 flask-session2
 psycopg2-binary
+kaggle
+dvc-gdrive
+giskard==2.14.0
