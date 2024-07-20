@@ -12,8 +12,8 @@ dataset:
   url: "zameen-updated.csv"
   name: "zameen-updated"
 
-data: 
-  target_cols: ["price"]
+data:
+  target_cols: [ "price" ]
 
 test: False
 

@@ -89,7 +89,7 @@ def refactor_sample_data(cfg: DictConfig):
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def read_datastore(cfg: DictConfig):
     try:
-        # Execute git and dvc checkouts to v3.0
+        subprocess.run(["dvc", "pull"], check=True)
         subprocess.run(["git", "checkout", f"v{cfg.index}.0", f"{cfg.dvc_file_path}"], check=True)
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
@@ -99,7 +99,7 @@ def read_datastore(cfg: DictConfig):
         sample = pd.read_csv(sample_path)
         return sample
     finally:
-        # Return to the HEAD state with git and dvc checkouts
+        # Return to the HEAD state
         subprocess.run(["git", "checkout", "HEAD", f"{cfg.dvc_file_path}"], check=True)
         subprocess.run(["dvc", "checkout"], check=True)
 
