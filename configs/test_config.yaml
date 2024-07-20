@@ -1,5 +1,7 @@
 defaults:
   - _self_
+  - experiment
+  - model/model
 
 num_samples: 5
 
@@ -7,6 +9,15 @@ dataset:
   url: "zameen-updated.csv"
   name: "zameen-updated"
 
-index: 1
+data:
+  target_cols: ["price"]
 
-test: True  # test mode
+index: 2
+
+test: True
+
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +model: "lasso" # xgboost, rfr, lasso, catboost

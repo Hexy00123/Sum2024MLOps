@@ -5,12 +5,10 @@ import hydra
 import numpy as np
 import pandas as pd
 import zenml
+import zenml.client
 from omegaconf import DictConfig
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, StandardScaler
-import zenml.client
-from multiprocessing import Pool
-
 
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
@@ -73,6 +71,12 @@ def refactor_sample_data(cfg: DictConfig):
 
     df = df[df["baths"] <= 30]
 
+    # filtering data by coordinates
+    df = df[df['latitude'] > 22][df['latitude'] < 38]
+    df = df[df['longitude'] > 59][df['longitude'] < 79]
+
+    # print('data filtered')
+
     output_dir = os.path.join(
         hydra.utils.get_original_cwd(), "data", "samples")
     os.makedirs(output_dir, exist_ok=True)
@@ -83,6 +87,7 @@ def refactor_sample_data(cfg: DictConfig):
 
 def read_datastore():
     # TODO: get versions with git and dvc checkouts
+    # Read from specific file with hydra
     sample_path = "data/samples/sample.csv"
     if not os.path.exists(sample_path):
         raise FileNotFoundError(f"File {sample_path} not found.")
@@ -115,7 +120,7 @@ class StdFast():
         column = data[data.columns[0]].to_numpy()
         mean = np.mean(column)
         std = np.std(column)
-        column = (column - mean)/std
+        column = (column - mean) / std
         return column
 
 
@@ -152,14 +157,6 @@ def create_empty_columns(df: pd.DataFrame, column_name: str, n_cols: int) -> pd.
 
 def preprocess_data(df: pd.DataFrame, X_only: bool = False):
     try:
-        print(df)
-        # Filter data
-        # TODO: move to refactor_sample_data
-        # df = df[df['latitude'] > 22][df['latitude'] < 38]
-        # df = df[df['longitude'] > 59][df['longitude'] < 79]
-
-        print('data filtered')
-
         # put '-' instead of missing values in agent and agency
         df['agent'] = df['agent'].fillna('-')
         df['agency'] = df['agency'].fillna('-')
@@ -232,7 +229,7 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
             pca_result = PCA(n_components=n_components).fit_transform(dummies)
 
             pca_df = pd.DataFrame(pca_result, columns=[
-                                  f"{column}_{i}" for i in range(n_components)])
+                f"{column}_{i}" for i in range(n_components)])
 
             pca_df = create_empty_columns(pca_df, column, 500)
 

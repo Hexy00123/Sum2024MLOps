@@ -5,6 +5,7 @@ import pandas as pd
 
 
 def validate_initial_data() -> None:
+    # TODO : validating different files
     context = gx.get_context(project_root_dir="services")
 
     retrieved_checkpoint = context.get_checkpoint(name="first_phase_checkpoint")
