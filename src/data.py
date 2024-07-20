@@ -3,6 +3,7 @@ import re
 import subprocess
 
 import hydra
+import mlflow
 import numpy as np
 import pandas as pd
 import zenml
@@ -304,6 +305,44 @@ def read_features(name, version, size=1, logs=False):
         print("shapes of X,y = ", X.shape, y.shape)
 
     return X, y
+
+
+def transform_data(df: pd.DataFrame, model: mlflow.pyfunc.PyFuncModel) -> pd.DataFrame:
+    """
+    Function for preprocessing data for inference
+    :param df: A dataframe with raw data
+    :param model: A model object
+    :return: Transformed data
+    """
+    schema = model.metadata.get_input_schema()
+    print(type(schema))
+    columns = []
+    for col in schema:
+        column = col.name
+        columns.append(column)
+    print(type(columns[0]))
+    print(columns)
+    print("Original DataFrame columns: ", df.columns)
+
+    X = preprocess_data(
+        df=df,
+        X_only=True,
+    )
+    print("DataFrame after preprocessing: ", X.columns)
+
+    input_schema = columns
+    # print("Missing from input schema:")
+    for col in X.columns:
+        if col not in input_schema:
+            X.drop(col, axis=1, inplace=True)
+
+    # fill the missing columns with 0
+    for col in input_schema:
+        if col not in X.columns:
+            X[col] = float(0)
+    X = X.astype(float)
+    X = pd.DataFrame(X)
+    return X
 
 
 if __name__ == "__main__":

@@ -19,3 +19,4 @@ kaggle
 dvc-gdrive
 giskard==2.14.0
 coverage
+gradio==3.50.2
