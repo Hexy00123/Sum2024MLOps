@@ -1,5 +1,6 @@
 import os
 import re
+import subprocess
 
 import hydra
 import numpy as np
@@ -85,14 +86,22 @@ def refactor_sample_data(cfg: DictConfig):
     print(f"Refactored data saved to {data_path}")
 
 
-def read_datastore():
-    # TODO: get versions with git and dvc checkouts
-    # Read from specific file with hydra
-    sample_path = "data/samples/sample.csv"
-    if not os.path.exists(sample_path):
-        raise FileNotFoundError(f"File {sample_path} not found.")
-    sample = pd.read_csv(sample_path)
-    return sample
+@hydra.main(config_path="../configs", config_name="main", version_base=None)
+def read_datastore(cfg: DictConfig):
+    try:
+        # Execute git and dvc checkouts to v3.0
+        subprocess.run(["git", "checkout", f"v{cfg.index}.0", f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
+
+        sample_path = cfg.sample_path
+        if not os.path.exists(sample_path):
+            raise FileNotFoundError(f"File {sample_path} not found.")
+        sample = pd.read_csv(sample_path)
+        return sample
+    finally:
+        # Return to the HEAD state with git and dvc checkouts
+        subprocess.run(["git", "checkout", "HEAD", f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(["dvc", "checkout"], check=True)
 
 
 def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame:

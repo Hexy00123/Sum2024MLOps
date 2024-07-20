@@ -4,6 +4,9 @@ defaults:
   - model/model
 
 num_samples: 5
+index: 2
+sample_path: "data/samples/sample.csv"
+dvc_file_path: "data/samples.dvc"
 
 dataset:
   url: "zameen-updated.csv"
@@ -11,8 +14,6 @@ dataset:
 
 data: 
   target_cols: ["price"]
-
-index: 2
 
 test: False
 

@@ -29,13 +29,13 @@ def extract() -> Tuple[
                    tags=["data_preparation"])]
 ]:
     print("Extracting version...")
-    with initialize(config_path="../configs"):
+    with initialize(config_path="../configs", version_base=None):
         cfg = compose(config_name="main")
         version = cfg.index
         print(f'Version is: {version}, type: {type(version)}')
 
     print("Extracting data...")
-    df = read_datastore()
+    df = read_datastore(cfg)
     print(df)
 
     return df, version
