@@ -11,5 +11,5 @@ params:
   gamma: [0, 0.5, 1, 5]
   max_depth: [4, 8, 12]
   subsample: [0.3, 0.6, 1]
-  device: ["cuda:0"]
+  device: ["cpu"] # cuda:0
 

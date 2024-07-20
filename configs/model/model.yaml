@@ -3,12 +3,16 @@ defaults:
 
 folds: 3
 
-evaluation_metric: "r2"
-cv_evaluation_metric: "mean_test_r2"
-
 pyfunc_predict_fn: "predict"
 
+metrics_module: "sklearn.metrics"
 metrics:
-  r2: "r2"
-  mae: "neg_mean_absolute_error"
-  rmse: "neg_root_mean_squared_error"
+  r2: "r2_score"
+  mape: "mean_absolute_percentage_error"
+  mae: "mean_absolute_error"
+  rmse: "root_mean_squared_error"
+
+evaluation_metric: "mape"
+cv_evaluation_metric: "mean_test_mape"
+
+

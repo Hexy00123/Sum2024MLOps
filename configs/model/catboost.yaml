@@ -2,7 +2,7 @@ model_name: CatBoost
 artifact_path: catboost
 
 tag_key: "model"
-tag_value: "catboost"
+tag_value: "yandex catboost"
 
 module_name: "catboost"
 class_name: "CatBoostRegressor"

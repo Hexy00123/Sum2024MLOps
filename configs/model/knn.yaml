@@ -2,7 +2,7 @@ model_name: KNearestNeighboursRegressor
 artifact_path: basic_knn
 
 tag_key: "model"
-tag_value: "basic KNN"
+tag_value: "sklearn KNN"
 
 module_name: "sklearn.neighbors"
 class_name: "KNeighborsRegressor"

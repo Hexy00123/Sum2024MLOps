@@ -4,6 +4,7 @@ import mlflow
 import pandas as pd
 from zenml.client import Client
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import make_scorer
 import warnings
 import giskard
 
@@ -32,7 +33,12 @@ def train(X_train, y_train, cfg):
     param_grid = dict(model_params)
 
     # ['r2', 'mae', 'rmse']
-    scoring = list(cfg.model.metrics.values())
+    # print("IMPORT:", getattr(importlib.import_module(
+    # 'sklearn.metrics'), 'root_mean_squared_error'))
+    scoring = {
+        method_alias: make_scorer(getattr(importlib.import_module(cfg.model.metrics_module),
+                                          method_name))
+        for method_alias, method_name in cfg.model.metrics.items()}
 
     evaluation_metric = cfg.model.evaluation_metric
 
@@ -205,12 +211,12 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 print('LOG: metrics preprocessing done')
 
                 results = mlflow.evaluate(
-                    model_info.model_uri,
-                    data=X_test,
-                    targets=y_test.values,
+                    data=eval_data,
                     model_type='regressor',
+                    targets='label',
+                    predictions="predictions",
                     evaluators=['default']
                 )
                 print('LOG: evaluating')
 
-                # print(f"LOG: metrics:\n{results.metrics}")
+                print(f"LOG: metrics:\n{results.metrics}")

@@ -2,7 +2,7 @@ model_name: RandomForest
 artifact_path: randomforest
 
 tag_key: "model"
-tag_value: "randomforest"
+tag_value: "sklearn random forest"
 
 module_name: "sklearn.ensemble"
 class_name: "RandomForestRegressor"

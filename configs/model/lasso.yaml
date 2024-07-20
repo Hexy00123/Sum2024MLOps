@@ -2,7 +2,7 @@ model_name: Lasso
 artifact_path: basic_lasso
 
 tag_key: "model"
-tag_value: "basic lasso"
+tag_value: "sklearn lasso"
 
 module_name: "sklearn.linear_model"
 class_name: "Lasso"
