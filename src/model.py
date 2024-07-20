@@ -5,6 +5,8 @@ import pandas as pd
 from zenml.client import Client
 from sklearn.model_selection import GridSearchCV
 import warnings
+import giskard
+
 warnings.filterwarnings('ignore')
 
 
@@ -202,13 +204,13 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 })
                 print('LOG: metrics preprocessing done')
 
-                # results = mlflow.evaluate(
-                #     model_info.model_uri,
-                #     data=X_test,
-                #     targets=y_test.values,
-                #     model_type='regressor',
-                #     evaluators=['default']
-                # )
-                # print('LOG: evaluating')
+                results = mlflow.evaluate(
+                    model_info.model_uri,
+                    data=X_test,
+                    targets=y_test.values,
+                    model_type='regressor',
+                    evaluators=['default']
+                )
+                print('LOG: evaluating')
 
                 # print(f"LOG: metrics:\n{results.metrics}")

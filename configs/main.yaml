@@ -12,7 +12,7 @@ dataset:
 data: 
   target_cols: ["price"]
 
-index: 1
+index: 2
 
 test: False
 

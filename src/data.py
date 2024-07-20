@@ -9,6 +9,8 @@ from omegaconf import DictConfig
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, StandardScaler
 import zenml.client
+from multiprocessing import Pool
+
 
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
@@ -105,17 +107,28 @@ def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame
     return data
 
 
+class StdFast():
+    def __init__(*args, **kwargs):
+        pass
+
+    def fit_transform(self, data: pd.DataFrame):
+        column = data[data.columns[0]].to_numpy()
+        mean = np.mean(column)
+        std = np.std(column)
+        column = (column - mean)/std
+        return column
+
+
 def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std') -> pd.DataFrame:
     scalers = {
         'std': StandardScaler,
-        'minmax': MinMaxScaler
+        'minmax': MinMaxScaler,
+        'std_fast': StdFast
     }
     if strategy not in scalers:
         raise NotImplementedError(f'Scaling is not implemented for {strategy}')
 
-    scaler = scalers[strategy]().fit(data[[column_name]])
-
-    data[column_name] = scaler.transform(data[[column_name]])
+    data[column_name] = scalers[strategy]().fit_transform(data[[column_name]])
     return data
 
 
@@ -191,11 +204,13 @@ def preprocess_data(df: pd.DataFrame):
         print('features scaled')
 
         # scale one-hot encoded features
-        for column in columns_to_one_hot:
-            print(f"Scaling one-hot encoded features for {column}")
-            columns = [col for col in data.columns if col.startswith(f"{column}_")]
-            for col in columns:
-                data = scale_feature(data, col)
+        # for column in columns_to_one_hot:
+        #     print(f"Scaling one-hot encoded features for {column}")
+        #     columns = [
+        #         col for col in data.columns if col.startswith(f"{column}_")]
+
+        #     for col in columns:
+        #         data = scale_feature(data, col, 'std_fast')
 
         print('one-hot encoded features scaled')
         print(data)
@@ -204,14 +219,16 @@ def preprocess_data(df: pd.DataFrame):
         columns_to_pca = ['agency', 'agent', 'location']
         for column in columns_to_pca:
             print(f"Applying PCA to {column}")
-            dummy_cols = [col for col in data.columns if col.startswith(f"{column}_") and col != 'location_id']
+            dummy_cols = [col for col in data.columns if col.startswith(
+                f"{column}_") and col != 'location_id']
             dummies = data[dummy_cols]
             print(dummies)
             n_components = min(500, len(dummy_cols))
             print(n_components)
             pca_result = PCA(n_components=n_components).fit_transform(dummies)
 
-            pca_df = pd.DataFrame(pca_result, columns=[f"{column}_{i}" for i in range(n_components)])
+            pca_df = pd.DataFrame(pca_result, columns=[
+                                  f"{column}_{i}" for i in range(n_components)])
 
             pca_df = create_empty_columns(pca_df, column, 500)
 
