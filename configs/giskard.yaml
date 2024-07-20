@@ -3,7 +3,13 @@ defaults:
   - experiment
   - model/model
 
+test: True
+
 num_samples: 5
+index: 1
+test_data_version: 2
+sample_path: "data/samples/sample.csv"
+dvc_file_path: "data/samples.dvc"
 
 dataset:
   url: "zameen-updated.csv"
@@ -18,11 +24,7 @@ model:
   best_model_version: 19
   best_model_alias: "Lasso"
 
-index: 1
-test_data_version: 2
 
-
-test: False
 
 hydra:
   mode: MULTIRUN

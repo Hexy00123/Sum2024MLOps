@@ -88,9 +88,10 @@ def refactor_sample_data(cfg: DictConfig):
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def read_datastore(cfg: DictConfig):
+    version = cfg.test_data_version if cfg.test else cfg.index
     try:
         subprocess.run(["dvc", "pull"], check=True)
-        subprocess.run(["git", "checkout", f"v{cfg.index}.0", f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(["git", "checkout", f"v{version}.0", f"{cfg.dvc_file_path}"], check=True)
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
         sample_path = cfg.sample_path
