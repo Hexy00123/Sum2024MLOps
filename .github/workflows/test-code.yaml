@@ -7,8 +7,8 @@ name: Test code
 on: # Event
   push: # this will trigger the workflow/pipeline only if there is push on `main` branch
     branches:
-      - main
-      - dev
+      - 'main'
+      - 'dev'
     paths: # the push should be specifically to the folders `src` or `scripts` to trigger this workflow, otherwise, the workflow will not be triggered
       - 'src'
       - 'scripts'
