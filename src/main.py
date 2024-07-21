@@ -11,7 +11,7 @@ def run(cfg):
 
     X_train, y_train = read_features(name="features_target",
                                      version=train_data_version,
-                                     size=0.5)
+                                     size=1.0)
     X_test, y_test = read_features(name="features_target",
                                    version=test_data_version,
                                    size=0.5)
