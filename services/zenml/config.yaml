@@ -1,0 +1,18 @@
+active_stack_id: 97b47891-23c5-4b0b-8002-f599e5cdec34
+active_workspace_name: default
+analytics_opt_in: true
+store:
+  backup_directory: /mnt/c/Users/sasha/PycharmProjects/Sum2024MLOps/services/zenml/database_backup
+  backup_strategy: in-memory
+  database: /mnt/c/Users/sasha/PycharmProjects/Sum2024MLOps/services/zenml/local_stores/default_zen_store/zenml.db
+  driver: sqlite
+  max_overflow: 20
+  pool_pre_ping: true
+  pool_size: 20
+  secrets_store:
+    type: sql
+  ssl_verify_server_cert: false
+  type: sql
+  url: sqlite:////mnt/c/Users/sasha/PycharmProjects/Sum2024MLOps/services/zenml/local_stores/default_zen_store/zenml.db
+user_id: 5a743064-a55a-4418-ae8e-cc8211116894
+version: 0.58.2
