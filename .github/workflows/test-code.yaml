@@ -53,11 +53,6 @@ jobs:
           python3.11 -m pip install --upgrade pip 
           pip3.11 install -r requirements.txt 
 
-      - name: Configure DVC remote with service account
-        run: |
-          echo "${{ secrets.GDRIVE_CREDENTIALS_DATA }}" > gdrive-credentials.json
-          dvc remote modify storage gdrive_use_service_account true
-          dvc remote modify storage --local gdrive_service_account_json_file_path gdrive-credentials.json
       - name: Check dvc config
         run: dvc status
         env:
