@@ -1,12 +1,32 @@
 defaults:
   - _self_
+  - experiment
+  - model/model
 
 num_samples: 5
+index: 2
+sample_path: "data/samples/sample.csv"
+dvc_file_path: "data/samples.dvc"
 
 dataset:
   url: "zameen-updated.csv"
   name: "zameen-updated"
 
-project_stage: 1
+data:
+  target_cols: [ "price" ]
 
 test: False
+
+model:
+  best_model_name: "Lasso"
+  best_model_version: 19
+  best_model_alias: "Lasso"
+
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +model: "xgboost, rfr, lasso, catboost" # xgboost, rfr, lasso, catboost
+
+deploy:
+  model_port: 5000

@@ -1,12 +1,25 @@
 defaults:
   - _self_
+  - experiment
+  - model/model
 
 num_samples: 5
+index: 2
+test_data_version: 2
+sample_path: "data/samples/sample.csv"
+dvc_file_path: "data/samples.dvc"
 
 dataset:
   url: "zameen-updated.csv"
   name: "zameen-updated"
 
-project_stage: 1
+data:
+  target_cols: ["price"]
 
-test: True  # test mode
+test: True
+
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +model: "lasso" # xgboost, rfr, lasso, catboost

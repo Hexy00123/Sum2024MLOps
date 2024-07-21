@@ -1,0 +1,13 @@
+model_name: RandomForest
+artifact_path: randomforest
+
+tag_key: "model"
+tag_value: "sklearn random forest"
+
+module_name: "sklearn.ensemble"
+class_name: "RandomForestRegressor"
+
+params:
+  n_estimators: [20, 30, 60, 100]
+  criterion: ['squared_error', 'absolute_error', 'friedman_mse']
+  max_depth: [2, 4, 6]

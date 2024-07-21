@@ -94,7 +94,7 @@ data_docs_sites:
       class_name: DefaultSiteIndexBuilder
 
 anonymous_usage_statistics:
-  data_context_id: fda37b1f-28d8-4588-aeaf-330261aafd30
+  data_context_id: 0130baae-afdd-427c-9cf0-7472caa4256b
   enabled: true
 fluent_datasources:
   first_ds:
@@ -103,6 +103,18 @@ fluent_datasources:
       asset01:
         type: csv
         filepath_or_buffer: data/samples/sample.csv
+  my_pandas_ds:
+    type: pandas
+    assets:
+      my_pandas_df:
+        type: dataframe
+        batch_metadata: {}
+  ds:
+    type: pandas
+    assets:
+      df:
+        type: dataframe
+        batch_metadata: {}
 notebooks:
 include_rendered_content:
   globally: false

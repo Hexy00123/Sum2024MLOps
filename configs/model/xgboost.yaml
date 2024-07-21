@@ -1,0 +1,15 @@
+model_name: XGBoost
+artifact_path: xgboost
+
+tag_key: "model"
+tag_value: "xgboost"
+
+module_name: "xgboost"
+class_name: "XGBRegressor"
+
+params:
+  gamma: [0, 0.5, 1, 5]
+  max_depth: [4, 8, 12]
+  subsample: [0.3, 0.6, 1]
+  device: ["cpu"] # cuda:0
+
