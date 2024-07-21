@@ -71,6 +71,9 @@ jobs:
       - name: Run ZenML server
         run: zenml down && zenml up
 
+      - name: Download kaggle dataset
+        run: python3.11 src/download_kaggle_dataset.py
+
       - name: Test with pytest
         run: pytest tests
 

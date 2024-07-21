@@ -23,8 +23,8 @@ def cfg() -> DictConfig:
 
 
 @pytest.fixture
-def raw_sample() -> pd.DataFrame:
-    df = read_datastore()
+def raw_sample(cfg) -> pd.DataFrame:
+    df = read_datastore(cfg)
     return df
 
 
