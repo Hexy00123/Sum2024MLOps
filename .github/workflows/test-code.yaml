@@ -16,8 +16,6 @@ on:
       - 'tests/**'
       - 'configs/**'
       - '.github/**'
-  schedule:
-    - cron: '*/5 * * * *'
 
 # Allows to only read the contents of the repository
 # `contents: read` permits an action to list the commits
