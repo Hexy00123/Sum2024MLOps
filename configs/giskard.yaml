@@ -21,7 +21,7 @@ data:
 
 model:
   best_model_name: "Lasso"
-  best_model_version: 19
+  best_model_version: 69
   best_model_alias: "Lasso"
 
 
