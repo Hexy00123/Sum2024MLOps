@@ -17,8 +17,8 @@ on:
       - 'configs'
       - '.github'
     # Run this workflow on a scheduled manner given the cron expression (This is a second event to trigger the workflow)
-   schedule:
-     - cron: '*/5 * * * *'
+  schedule:
+    - cron: '*/5 * * * *'
 
 # Allows to only read the contents of the repository
 # `contents: read` permits an action to list the commits
