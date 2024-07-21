@@ -137,7 +137,7 @@ class StdFast():
         return column
 
 
-def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std') -> pd.DataFrame:
+def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std', X_only: bool = False) -> pd.DataFrame:
     scalers = {
         'std': StandardScaler,
         'minmax': MinMaxScaler,
@@ -146,7 +146,14 @@ def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std') -
     if strategy not in scalers:
         raise NotImplementedError(f'Scaling is not implemented for {strategy}')
 
-    data[column_name] = scalers[strategy]().fit_transform(data[[column_name]])
+    if X_only:
+        scaler = zenml.load_artifact(f"{column_name}_scaler")
+        data[column_name] = scaler.transform(data[[column_name]])
+    else:
+        scaler = scalers[strategy]().fit(data[[column_name]])
+        zenml.save_artifact(data=scaler, name=f"{column_name}_scaler")
+        data[column_name] = scaler.transform(data[[column_name]])
+
     return data
 
 
@@ -159,16 +166,12 @@ def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
     return data
 
 
-def create_empty_columns(df: pd.DataFrame, column_name: str, n_cols: int) -> pd.DataFrame:
-    cols = [col for col in df.columns if col.startswith(column_name)]
-    if len(cols) < n_cols:
-        for i in range(len(cols), n_cols):
-            df[column_name + f'_{i}'] = 0
-
-    return df
-
-
 def preprocess_data(df: pd.DataFrame, X_only: bool = False):
+    print('Retrieving config...')
+    with initialize(config_path="../configs", version_base=None):
+        cfg = compose(config_name="categories")
+    print(f'Config retrieved: {cfg}')
+
     try:
         # put '-' instead of missing values in agent and agency
         df['agent'] = df['agent'].fillna('-')
@@ -211,9 +214,9 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
             columns_to_std = ['area', 'baths', 'bedrooms', 'price']
 
         for column in columns_to_minmax:
-            data = scale_feature(data, column, strategy='minmax')
+            data = scale_feature(data, column, strategy='minmax', X_only=X_only)
         for column in columns_to_std:
-            data = scale_feature(data, column)
+            data = scale_feature(data, column, X_only=X_only)
 
         print('features scaled')
 
@@ -232,6 +235,16 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
 
         print('datetime encoded')
         if X_only:
+            # check that all columns from cfg are present in data, otherwise add them with 0 values
+            for column in columns_to_one_hot:
+                columns = [col for col in data.columns if col.startswith(f"{column}_")]
+                if set(columns) != set(cfg[column]):
+                    for col in cfg[column]:
+                        if col not in columns:
+                            data[col] = float(0)
+
+            print(data)
+
             print('preprocessing done')
             return data
         else:
