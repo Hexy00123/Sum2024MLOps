@@ -32,7 +32,7 @@ jobs:
   test-code:
 
     # OS to run the task
-    runs-on: ubuntu-22.04 # The ubuntu-latest label currently uses the Ubuntu 22.04 runner image
+    runs-on: ubuntu-latest # The ubuntu-latest label currently uses the Ubuntu 22.04 runner image
     # for more info about the given resources, check this link below
     # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
 
@@ -105,7 +105,7 @@ jobs:
   # Another job
   print_info:
 
-      runs-on: ubuntu-22.04
+      runs-on: ubuntu-latest
 
       # Run this job after running the job `test-code`
       # This allows to set dependency between the jobs
