@@ -35,6 +35,7 @@ jobs:
     steps:
       - name: Checking out our code
         uses: actions/checkout@v4
+        uses: iterative/setup-dvc@v1
 
       - name: setup python
         uses: actions/setup-python@v5
