@@ -4,7 +4,7 @@
 name: Test code
 
 # Trigger when?
-on: # Event
+on:
   push: # this will trigger the workflow/pipeline only if there is push on `main` branch
     branches:
       - 'main'
