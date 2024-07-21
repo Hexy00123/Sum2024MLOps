@@ -11,6 +11,7 @@ import zenml.client
 from omegaconf import DictConfig
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, StandardScaler
+from hydra import compose, initialize
 
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
@@ -91,6 +92,7 @@ def refactor_sample_data(cfg: DictConfig):
 def read_datastore(cfg: DictConfig):
     version = cfg.test_data_version if cfg.test else cfg.index
     try:
+        subprocess.run(["dvc", "fetch", f"{cfg.dvc_file_path}"])
         subprocess.run(["dvc", "pull"], check=True)
         subprocess.run(["git", "checkout", f"v{version}.0", f"{cfg.dvc_file_path}"], check=True)
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
@@ -103,7 +105,7 @@ def read_datastore(cfg: DictConfig):
     finally:
         # Return to the HEAD state
         subprocess.run(["git", "checkout", "HEAD", f"{cfg.dvc_file_path}"], check=True)
-        subprocess.run(["dvc", "checkout"], check=True)
+        subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
 
 def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame:
@@ -135,7 +137,7 @@ class StdFast():
         return column
 
 
-def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std') -> pd.DataFrame:
+def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std', X_only: bool = False) -> pd.DataFrame:
     scalers = {
         'std': StandardScaler,
         'minmax': MinMaxScaler,
@@ -144,7 +146,14 @@ def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std') -
     if strategy not in scalers:
         raise NotImplementedError(f'Scaling is not implemented for {strategy}')
 
-    data[column_name] = scalers[strategy]().fit_transform(data[[column_name]])
+    if X_only:
+        scaler = zenml.load_artifact(f"{column_name}_scaler")
+        data[column_name] = scaler.transform(data[[column_name]])
+    else:
+        scaler = scalers[strategy]().fit(data[[column_name]])
+        zenml.save_artifact(data=scaler, name=f"{column_name}_scaler")
+        data[column_name] = scaler.transform(data[[column_name]])
+
     return data
 
 
@@ -157,16 +166,12 @@ def cyclic_encoding(data: pd.DataFrame, column_name: str, max_value: int):
     return data
 
 
-def create_empty_columns(df: pd.DataFrame, column_name: str, n_cols: int) -> pd.DataFrame:
-    cols = [col for col in df.columns if col.startswith(column_name)]
-    if len(cols) < n_cols:
-        for i in range(len(cols), n_cols):
-            df[column_name + f'_{i}'] = 0
-
-    return df
-
-
 def preprocess_data(df: pd.DataFrame, X_only: bool = False):
+    print('Retrieving config...')
+    with initialize(config_path="../configs", version_base=None):
+        cfg = compose(config_name="categories")
+    print(f'Config retrieved: {cfg}')
+
     try:
         # put '-' instead of missing values in agent and agency
         df['agent'] = df['agent'].fillna('-')
@@ -190,13 +195,12 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
 
         # Drop unnecessary/raw columns
         data = df.drop(['Area Type', 'Area Size', 'Area Category',
-                        'property_id', 'page_url', 'date_added'], axis=1)
+                        'property_id', 'page_url', 'date_added', 'agency', 'agent', 'location'], axis=1)
 
         print('unnecessary columns dropped')
 
         # Encoding features
-        columns_to_one_hot = ['property_type', 'city',
-                              'province_name', 'purpose', 'agency', 'agent', 'location']
+        columns_to_one_hot = ['property_type', 'city', 'province_name', 'purpose']
         for column in columns_to_one_hot:
             data = one_hot_encode_feature(data, column)
 
@@ -208,57 +212,22 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
             columns_to_std = ['area', 'baths', 'bedrooms']
         else:
             columns_to_std = ['area', 'baths', 'bedrooms', 'price']
-        # columns_to_std = ['area', 'baths', 'bedrooms', 'price']
+
         for column in columns_to_minmax:
-            data = scale_feature(data, column, strategy='minmax')
+            data = scale_feature(data, column, strategy='minmax', X_only=X_only)
         for column in columns_to_std:
-            data = scale_feature(data, column)
+            data = scale_feature(data, column, X_only=X_only)
 
         print('features scaled')
 
-        # TODO: decide what to do with this part
         # scale one-hot encoded features
-        # for column in columns_to_one_hot:
-        #     print(f"Scaling one-hot encoded features for {column}")
-        #     columns = [col for col in data.columns if col.startswith(f"{column}_")]
-        #     for col in columns:
-        #         data = scale_feature(data, col)
-        #
-        # print('one-hot encoded features scaled')
-        print(data)
+        for column in columns_to_one_hot:
+            print(f"Scaling one-hot encoded features for {column}")
+            columns = [col for col in data.columns if col.startswith(f"{column}_")]
+            for col in columns:
+                data = scale_feature(data, col)
 
-        # PCA for too large categorical features
-        columns_to_pca = ['agency', 'agent', 'location']
-        for column in columns_to_pca:
-            print(f"Applying PCA to {column}")
-            dummy_cols = [col for col in data.columns if col.startswith(
-                f"{column}_") and col != 'location_id']
-            dummies = data[dummy_cols]
-            print(dummies)
-            n_components = min(500, len(dummy_cols))
-            print(n_components)
-            pca_result = PCA(n_components=n_components).fit_transform(dummies)
-
-            pca_df = pd.DataFrame(pca_result, columns=[
-                f"{column}_{i}" for i in range(n_components)])
-
-            pca_df = create_empty_columns(pca_df, column, 500)
-
-            data = data.reset_index(drop=True)
-            data = pd.concat([data, pca_df], axis=1)
-            data = data.drop(dummy_cols, axis=1)
-
-        expected_number_of_columns = {
-            'property_type': 7,
-            'city': 5,
-            'province_name': 3,
-            'purpose': 2
-        }
-
-        for column, n_cols in expected_number_of_columns.items():
-            data = create_empty_columns(data, column, n_cols)
-
-        print('PCA applied')
+        print('one-hot encoded features scaled')
 
         # Cyclic datetime encoding
         data = cyclic_encoding(data, 'day', 31)
@@ -266,13 +235,26 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
 
         print('datetime encoded')
         if X_only:
+            # check that all columns from cfg are present in data, otherwise add them with 0 values
+            for column in columns_to_one_hot:
+                columns = [col for col in data.columns if col.startswith(f"{column}_")]
+                if set(columns) != set(cfg[column]):
+                    for col in cfg[column]:
+                        if col not in columns:
+                            data[col] = float(0)
+
+            print(data)
+
             print('preprocessing done')
             return data
         else:
             X, y = data.drop('price', axis=1), data['price']
-            #
-            print('preprocessing done')
-            #
+
+            with open(hydra.utils.to_absolute_path(f'configs/categories.yaml'), 'w') as f:
+                for column in columns_to_one_hot:
+                    columns = [col for col in X.columns if col.startswith(f"{column}_")]
+                    f.write(f"{column}: {columns}\n")
+
             return X, y
 
     except Exception as e:

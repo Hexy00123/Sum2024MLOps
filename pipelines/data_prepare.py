@@ -9,10 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.data import preprocess_data, read_datastore, load_features
 from src.data_expectations import validate_features
-
-import hydra
 from hydra import compose, initialize
-from omegaconf import DictConfig, OmegaConf
 
 BASE_PATH = os.path.expandvars("$PROJECTPATH")
 

@@ -1,0 +1,4 @@
+property_type: ['property_type_Farm House', 'property_type_Flat', 'property_type_House', 'property_type_Lower Portion', 'property_type_Penthouse', 'property_type_Room', 'property_type_Upper Portion']
+city: ['city_Faisalabad', 'city_Islamabad', 'city_Karachi', 'city_Lahore', 'city_Rawalpindi']
+province_name: ['province_name_Islamabad Capital', 'province_name_Punjab', 'province_name_Sindh']
+purpose: ['purpose_For Rent', 'purpose_For Sale']
