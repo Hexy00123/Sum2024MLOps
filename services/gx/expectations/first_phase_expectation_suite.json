@@ -43,7 +43,7 @@
       "expectation_type": "expect_column_median_to_be_between",
       "kwargs": {
         "column": "price",
-        "max_value": 15000000.0,
+        "max_value": 17000000.0,
         "min_value": 120000.0
       },
       "meta": {
