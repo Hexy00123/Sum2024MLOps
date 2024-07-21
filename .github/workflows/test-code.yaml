@@ -1,6 +1,3 @@
-# .github/workflows/test-code.yaml
-
-# Name of the workflow
 name: Test code
 
 # Trigger when?
