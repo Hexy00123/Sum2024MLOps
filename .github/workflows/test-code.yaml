@@ -13,8 +13,6 @@ on:
       - 'tests/**'
       - 'configs/**'
       - '.github/**'
-  schedule:
-    - cron: '*/5 * * * *'
 
 permissions:
   contents: read
