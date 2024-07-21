@@ -35,19 +35,26 @@ jobs:
     steps:
       - name: Checking out our code
         uses: actions/checkout@v4
-      - name: Checking our datastore
+      
+      - name: Setup DVC
         uses: iterative/setup-dvc@v1
-      - name: Pull dvc
-        run: |
-          dvc pull
 
-      - name: setup python
+      - name: Configure DVC remote with service account
+        run: |
+          echo "${{ secrets.GDRIVE_CREDENTIALS_DATA }}" > gdrive-credentials.json
+          dvc remote modify myremote gdrive_use_service_account true
+          dvc remote modify myremote --local gdrive_service_account_json_file_path gdrive-credentials.json
+
+      - name: Pull DVC data
+        run: dvc pull
+
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11.0'
           cache: 'pip'
 
-      - name: install python packages
+      - name: Install Python packages
         run: |
           python3.11 -m pip install --upgrade pip 
           pip3.11 install -r requirements.txt 
@@ -66,7 +73,7 @@ jobs:
       - name: Run ZenML server
         run: zenml down && zenml up
 
-      - name: Download kaggle dataset
+      - name: Download Kaggle dataset
         run: python3.11 src/download_kaggle_dataset.py
 
       - name: Run tests and collect coverage
@@ -88,10 +95,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-code
     steps:
-      - name: print my password
+      - name: Print my password
         run: | 
           echo My password is ${{ secrets.PASSWORD }}
           echo My name is '${{ vars.NAME }}'
 
-      - name: print message
+      - name: Print message
         run: echo $message
