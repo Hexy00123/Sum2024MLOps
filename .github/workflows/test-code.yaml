@@ -51,6 +51,11 @@ jobs:
           name: "gdrive-credentials.json"
           json: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
       
+      - name: Print git config
+        run: |
+          git config --global --get user.name
+          git config --global --get user.email
+      
       - name: Configure DVC remote with service account
         run: |
           dvc remote modify storage gdrive_use_service_account true
