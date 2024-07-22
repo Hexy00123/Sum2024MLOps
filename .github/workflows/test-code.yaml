@@ -51,6 +51,11 @@ jobs:
           name: "gdrive-credentials.json"
           json: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
       
+      - name: Set Git config
+        run: |
+          git config --global user.name "Alexandra Vabnits"
+          git config --global user.email "sashaki02@gmail.com"
+
       - name: Print git config
         run: |
           git config --global --get user.name
