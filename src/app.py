@@ -116,10 +116,10 @@ demo = gr.Interface(
                         gr.Text(label="province_name"),
                         gr.Number(label="latitude"),
                         gr.Number(label="longitude"),
-                        gr.Number(label="baths"),
+                        gr.Number(label="baths"), # slider
                         gr.Text(label="area"),  # Marla or Kanal + size
                         gr.Dropdown(label="purpose", choices=["For Sale", "For Rent"]),
-                        gr.Number(label="bedrooms"),
+                        gr.Number(label="bedrooms"), #slider
                         gr.Textbox(label="date_added"), # TODO: How to add datetime?
                         gr.Text(label="agency"),
                         gr.Text(label="agent"),

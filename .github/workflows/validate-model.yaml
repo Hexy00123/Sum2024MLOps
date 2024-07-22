@@ -55,65 +55,6 @@ jobs:
           python3.11 -m pip install --upgrade pip 
           pip3.11 install -r requirements.txt 
 
-      - name: create-json
-        id: create-json
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: "gdrive-credentials.json"
-          json: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-
-      - name: Configure DVC remote with service account
-        run: |
-          dvc remote modify storage gdrive_use_service_account true
-          dvc remote modify storage --local gdrive_service_account_json_file_path gdrive-credentials.json
-
-      - name: Pull DVC data
-        run: | 
-          dvc fetch
-          dvc pull
-
-      - name: Test git config
-        run: |
-          git status
-          git pull
-          git status
-
-
-      # - name: Git checkout
-      #   run: |
-      #     git checkout main
-
-      - name: Test tags version
-        run: |
-          git tag
-
-      - name: Test git checkout
-        run: |
-          git checkout v1.0 data/samples.dvc
-          dvc pull
-          git checkout v2.0 data/samples.dvc
-          dvc pull
-          git checkout v3.0 data/samples.dvc
-          dvc pull
-          git checkout v4.0 data/samples.dvc
-          dvc pull
-          git checkout v5.0 data/samples.dvc
-          dvc pull
-
-
-      - name: Test dvc checkout
-        run: |   
-          dvc checkout data/samples.dvc
-
-      - name: Test checkout
-        run: |   
-          git checkout HEAD data/samples.dvc
-          dvc checkout data/samples.dvc
-
-
-      - name: Run your app
-        run: python3.11 src/app.py &
-
       - name: Export variables
         run: | 
           echo $PWD
@@ -125,11 +66,8 @@ jobs:
       - name: Run ZenML server
         run: zenml down && zenml up
 
-      - name: Download kaggle dataset
-        run: python3.11 src/download_kaggle_dataset.py
-
-      - name: Test with pytest
-        run: pytest tests
+      - name: Run your app
+        run: python3.11 src/validate.py
 
   # Another job
   print_info:
