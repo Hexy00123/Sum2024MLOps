@@ -115,9 +115,13 @@ def read_datastore():
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
 
-def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame:
-    ohe = OneHotEncoder(sparse_output=False, handle_unknown='ignore').fit(
-        data[[column_name]])
+def one_hot_encode_feature(data: pd.DataFrame, column_name: str, X_only: bool = False) -> pd.DataFrame:
+    if X_only:
+        ohe = zenml.load_artifact(f"{column_name}_encoder")
+    else:
+        ohe = OneHotEncoder(sparse_output=False, handle_unknown='ignore').fit(
+            data[[column_name]])
+        zenml.save_artifact(data=ohe, name=f"{column_name}_encoder")
 
     encoded_df = pd.DataFrame(ohe.transform(
         data[[column_name]]), columns=ohe.get_feature_names_out([column_name]))
@@ -132,34 +136,21 @@ def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame
     return data
 
 
-class StdFast():
-    def __init__(*args, **kwargs):
-        pass
-
-    def fit_transform(self, data: pd.DataFrame):
-        column = data[data.columns[0]].to_numpy()
-        mean = np.mean(column)
-        std = np.std(column)
-        column = (column - mean) / std
-        return column
-
-
 def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std', X_only: bool = False) -> pd.DataFrame:
     scalers = {
         'std': StandardScaler,
         'minmax': MinMaxScaler,
-        'std_fast': StdFast
     }
     if strategy not in scalers:
         raise NotImplementedError(f'Scaling is not implemented for {strategy}')
 
     if X_only:
         scaler = zenml.load_artifact(f"{column_name}_scaler")
-        data[column_name] = scaler.transform(data[[column_name]])
     else:
         scaler = scalers[strategy]().fit(data[[column_name]])
         zenml.save_artifact(data=scaler, name=f"{column_name}_scaler")
-        data[column_name] = scaler.transform(data[[column_name]])
+
+    data[column_name] = scaler.transform(data[[column_name]])
 
     return data
 
@@ -180,12 +171,6 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
     print(f'Config retrieved: {cfg}')
 
     try:
-        # put '-' instead of missing values in agent and agency
-        df['agent'] = df['agent'].fillna('-')
-        df['agency'] = df['agency'].fillna('-')
-
-        print('missing values filled')
-
         # Preprocess datetime features
         df['day'] = df['date_added'].apply(lambda x: int(x.split('-')[1]))
         df['month'] = df['date_added'].apply(lambda x: int(x.split('-')[0]))
@@ -207,10 +192,12 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
         print('unnecessary columns dropped')
 
         # Encoding features
-        columns_to_one_hot = ['property_type',
-                              'city', 'province_name', 'purpose']
+        # columns_to_one_hot = ['property_type',
+        #                       'city', 'province_name', 'purpose']
+        print("DBG:", cfg.keys())
+        columns_to_one_hot = cfg.keys()
         for column in columns_to_one_hot:
-            data = one_hot_encode_feature(data, column)
+            data = one_hot_encode_feature(data, column, X_only=X_only)
 
         print('features encoded')
 
