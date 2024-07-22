@@ -1,4 +1,6 @@
 # src/validate.py
+from copy import deepcopy
+
 from giskard import demo, test, Dataset, TestResult, testing
 from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.metrics import r2_score
@@ -41,6 +43,7 @@ giskard_dataset = giskard.Dataset(
 )
 
 print("DBG: Wrapping model")
+print("DBG dataframe", df.columns)
 # ------------------------------
 # 2. Wrap model
 model_name = cfg.model.best_model_name
@@ -70,27 +73,31 @@ for col in schema:
 print(type(columns[0]))
 print(columns)
 
-data = preprocess_data(df[df.columns].head(), X_only=True)
-data
-
-data2 = preprocess_data(df[df.columns].head(), X_only=True)
-data2
+# data = preprocess_data(df[df.columns].head(), X_only=True)
+# data
+#
+# data2 = preprocess_data(df[df.columns].head(), X_only=True)
+# data2
 # ------------------------------
 # 3. Initial prediction
 
+print("DBG dataframe", df.columns)
 
 def predict(raw_df):
     #TODO: price
-    print("PREPROCESS:")
-    data = preprocess_data(df=raw_df, X_only=True)
+    print("DBG preprocess: call predict")
+    data = preprocess_data(df=deepcopy(raw_df), X_only=True)
     # X = data.drop('price', axis=1)
     return model.predict(data)
 
+print("DBG dataframe", df.columns)
 
 predictions = predict(df)
 print(f"DBG: Predictions: {len(predictions)}\n{predictions}")
 
 X, y = df.drop(cfg.data.target_cols[0], axis=1), df[cfg.data.target_cols[0]]
+
+print("DBG dataframe", df.columns)
 
 # ------------------------------
 print("DBG: Create giskard model")

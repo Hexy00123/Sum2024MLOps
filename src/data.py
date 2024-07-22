@@ -118,10 +118,12 @@ def read_datastore():
 def one_hot_encode_feature(data: pd.DataFrame, column_name: str, X_only: bool = False) -> pd.DataFrame:
     if X_only:
         ohe = zenml.load_artifact(f"{column_name}_encoder")
+        print("DBG preprocess: encoder was loaded:", column_name)
     else:
         ohe = OneHotEncoder(sparse_output=False, handle_unknown='ignore').fit(
             data[[column_name]])
         zenml.save_artifact(data=ohe, name=f"{column_name}_encoder")
+        print("DBG preprocess: encoder was saved:", column_name)
 
     encoded_df = pd.DataFrame(ohe.transform(
         data[[column_name]]), columns=ohe.get_feature_names_out([column_name]))
@@ -146,9 +148,11 @@ def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std', X
 
     if X_only:
         scaler = zenml.load_artifact(f"{column_name}_scaler")
+        print("DBG preprocess: scaler was loaded:", column_name)
     else:
         scaler = scalers[strategy]().fit(data[[column_name]])
         zenml.save_artifact(data=scaler, name=f"{column_name}_scaler")
+        print("DBG preprocess: scaler was saved:", column_name)
 
     data[column_name] = scaler.transform(data[[column_name]])
 
@@ -177,6 +181,12 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
         df['year'] = df['date_added'].apply(lambda x: int(x.split('-')[2]))
 
         print('datetime features processed')
+
+        # Cyclic datetime encoding
+        df = cyclic_encoding(df, 'day', 31)
+        df = cyclic_encoding(df, 'month', 12)
+
+        print('cyclic encoding completed')
 
         # Convert metrics
         area_marla = np.where(df['Area Type'] == 'Kanal',
@@ -222,15 +232,10 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
             columns = [
                 col for col in data.columns if col.startswith(f"{column}_")]
             for col in columns:
-                data = scale_feature(data, col)
+                data = scale_feature(data, col, X_only=X_only)
 
         print('one-hot encoded features scaled')
 
-        # Cyclic datetime encoding
-        data = cyclic_encoding(data, 'day', 31)
-        data = cyclic_encoding(data, 'month', 12)
-
-        print('datetime encoded')
         if X_only:
             # check that all columns from cfg are present in data, otherwise add them with 0 values
             for column in columns_to_one_hot:
