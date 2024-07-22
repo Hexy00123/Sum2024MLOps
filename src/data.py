@@ -97,10 +97,11 @@ def read_datastore():
 
     version = cfg.test_data_version if cfg.test else cfg.index
     try:
-        subprocess.run(["dvc", "fetch"])
+        subprocess.run(["dvc", "fetch"], check=True)
         subprocess.run(["dvc", "pull"], check=True)
         subprocess.run(
             ["git", "checkout", f"v{version}.0", f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(["dvc", "pull"], check=True)
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
         sample_path = cfg.sample_path
@@ -112,6 +113,7 @@ def read_datastore():
         # Return to the HEAD state
         subprocess.run(["git", "checkout", "HEAD",
                        f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(["dvc", "pull"], check=True)
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
 
