@@ -1,0 +1,83 @@
+# .github/workflows/test-code.yaml
+
+# Name of the workflow
+name: Test code
+
+# Trigger when?
+on:
+  push: # this will trigger the workflow/pipeline only if there is push on `main` branch
+    branches:
+      - main
+      - dev
+    paths: # the push should be specifically to the folders `src` or `scripts` to trigger this workflow, otherwise, the workflow will not be triggered
+      - 'src/**'
+      - 'scripts/**'
+      - 'services/airflow/dags/**'
+      - 'tests/**'
+      - 'configs/**'
+      - '.github/**'
+
+# Allows to only read the contents of the repository
+# `contents: read` permits an action to list the commits
+# `contents: write` allows the action to create a release
+permissions:
+  contents: read
+
+# Declare environment variables to be used in this workflow file
+env:
+  message: "Testing code!"
+
+# Tasks
+jobs:
+  # Task name
+  test-code:
+    # OS to run the task
+    runs-on: ubuntu-latest # The ubuntu-latest label currently uses the Ubuntu 22.04 runner image
+
+    defaults: # Set working directory of the job
+      run:
+        shell: bash # Set the default shell
+        working-directory: .
+
+    # The steps of the task/job
+    steps:
+      - name: Checking out our code
+        uses: actions/checkout@v4
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.0'
+          cache: 'pip' # caching pip dependencies
+
+      - name: install python packages
+        run: |
+          python3.11 -m pip install --upgrade pip 
+          pip3.11 install -r requirements.txt 
+
+      - name: Export variables
+        run: | 
+          echo $PWD
+          export ZENML_CONFIG_PATH=$PWD/services/zenml
+          export PROJECTPATH=$PWD
+          export AIRFLOW_HOME=$PWD/services/airflow
+          export PYTHONPATH=$PWD/src
+
+      - name: Run ZenML server
+        run: zenml down && zenml up
+
+      - name: Run your app
+        run: python3.11 src/validate.py
+
+  # Another job
+  print_info:
+    runs-on: ubuntu-latest
+    needs: test-code
+    steps:
+      - name: print my password
+        run: | 
+          echo My password is ${{ secrets.PASSWORD }}
+          echo My name is '${{ vars.NAME }}'
+
+      - name: print message
+        run: echo $message
