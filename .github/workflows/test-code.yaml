@@ -57,7 +57,9 @@ jobs:
           dvc remote modify storage --local gdrive_service_account_json_file_path gdrive-credentials.json
 
       - name: Check dvc config
-        run: dvc status
+        run: |
+          dvc status
+          dvc fetch
         
 
       - name: Pull DVC data
