@@ -76,7 +76,7 @@ jobs:
   # Another job
   print_info:
     runs-on: ubuntu-latest
-    needs: test-code
+    needs: validate-model
     steps:
       - name: print my password
         run: | 
