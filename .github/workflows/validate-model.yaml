@@ -30,7 +30,7 @@ env:
 # Tasks
 jobs:
   # Task name
-  test-code:
+  validate-model:
     # OS to run the task
     runs-on: ubuntu-latest # The ubuntu-latest label currently uses the Ubuntu 22.04 runner image
 
