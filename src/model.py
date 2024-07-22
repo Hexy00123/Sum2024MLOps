@@ -67,7 +67,6 @@ def retrieve_model_with_alias(model_name, model_alias="champion") -> mlflow.pyfu
 
 
 def retrieve_model_with_version(model_name, model_version="v1") -> mlflow.pyfunc.PyFuncModel:
-
     best_model: mlflow.pyfunc.PyFuncModel = mlflow.pyfunc.load_model(
         model_uri=f"models:/{model_name}/{model_version}")
 

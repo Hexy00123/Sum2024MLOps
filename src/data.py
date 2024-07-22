@@ -14,6 +14,9 @@ from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, StandardScaler
 from hydra import compose, initialize
 
 
+import os
+
+
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def sample_data(cfg: DictConfig):
     filename = "sample.csv" if cfg.test is False else "test_sample.csv"
@@ -88,13 +91,16 @@ def refactor_sample_data(cfg: DictConfig):
     print(f"Refactored data saved to {data_path}")
 
 
-@hydra.main(config_path="../configs", config_name="main", version_base=None)
-def read_datastore(cfg: DictConfig):
+def read_datastore():
+    with initialize(config_path="../configs", version_base=None):
+        cfg = compose(config_name="main")
+
     version = cfg.test_data_version if cfg.test else cfg.index
     try:
-        subprocess.run(["dvc", "fetch", f"{cfg.dvc_file_path}"])
+        subprocess.run(["dvc", "fetch"])
         subprocess.run(["dvc", "pull"], check=True)
-        subprocess.run(["git", "checkout", f"v{version}.0", f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(
+            ["git", "checkout", f"v{version}.0", f"{cfg.dvc_file_path}"], check=True)
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
         sample_path = cfg.sample_path
@@ -104,7 +110,8 @@ def read_datastore(cfg: DictConfig):
         return sample
     finally:
         # Return to the HEAD state
-        subprocess.run(["git", "checkout", "HEAD", f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(["git", "checkout", "HEAD",
+                       f"{cfg.dvc_file_path}"], check=True)
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
 
@@ -200,7 +207,8 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
         print('unnecessary columns dropped')
 
         # Encoding features
-        columns_to_one_hot = ['property_type', 'city', 'province_name', 'purpose']
+        columns_to_one_hot = ['property_type',
+                              'city', 'province_name', 'purpose']
         for column in columns_to_one_hot:
             data = one_hot_encode_feature(data, column)
 
@@ -214,7 +222,8 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
             columns_to_std = ['area', 'baths', 'bedrooms', 'price']
 
         for column in columns_to_minmax:
-            data = scale_feature(data, column, strategy='minmax', X_only=X_only)
+            data = scale_feature(
+                data, column, strategy='minmax', X_only=X_only)
         for column in columns_to_std:
             data = scale_feature(data, column, X_only=X_only)
 
@@ -223,7 +232,8 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
         # scale one-hot encoded features
         for column in columns_to_one_hot:
             print(f"Scaling one-hot encoded features for {column}")
-            columns = [col for col in data.columns if col.startswith(f"{column}_")]
+            columns = [
+                col for col in data.columns if col.startswith(f"{column}_")]
             for col in columns:
                 data = scale_feature(data, col)
 
@@ -237,7 +247,8 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
         if X_only:
             # check that all columns from cfg are present in data, otherwise add them with 0 values
             for column in columns_to_one_hot:
-                columns = [col for col in data.columns if col.startswith(f"{column}_")]
+                columns = [
+                    col for col in data.columns if col.startswith(f"{column}_")]
                 if set(columns) != set(cfg[column]):
                     for col in cfg[column]:
                         if col not in columns:
@@ -252,7 +263,8 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
 
             with open(hydra.utils.to_absolute_path(f'configs/categories.yaml'), 'w') as f:
                 for column in columns_to_one_hot:
-                    columns = [col for col in X.columns if col.startswith(f"{column}_")]
+                    columns = [
+                        col for col in X.columns if col.startswith(f"{column}_")]
                     f.write(f"{column}: {columns}\n")
 
             return X, y
@@ -271,7 +283,7 @@ def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
 def read_features(name, version, size=1, logs=False):
     client = zenml.client.Client()
     artifacts = client.list_artifact_versions(
-        name=name, tag=version, sort_by="version").items
+        name=name, tag=version, sort_by="updated").items
 
     df = artifacts[-1].load()
     df = df.sample(frac=size, random_state=88)
@@ -328,5 +340,6 @@ def transform_data(df: pd.DataFrame, model: mlflow.pyfunc.PyFuncModel) -> pd.Dat
 
 
 if __name__ == "__main__":
-    sample_data()
-    refactor_sample_data()
+    read_features('features_target', 1, size=0.01, logs=True)
+    # sample_data()
+    # refactor_sample_data()

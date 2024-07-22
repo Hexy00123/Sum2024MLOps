@@ -4,7 +4,7 @@ defaults:
   - model/model
 
 num_samples: 5
-index: 2
+index: 1
 sample_path: "data/samples/sample.csv"
 dvc_file_path: "data/samples.dvc"
 
@@ -18,15 +18,15 @@ data:
 test: False
 
 model:
-  best_model_name: "Lasso"
-  best_model_version: 19
-  best_model_alias: "Lasso"
+  best_model_name: "XGBoost"
+  best_model_version: 32
+  best_model_alias: "XGBoost"
 
 hydra:
   mode: MULTIRUN
   sweeper:
     params:
-      +model: "xgboost, rfr, lasso, catboost" # xgboost, rfr, lasso, catboost
+      +model: "xgboost" # xgboost, rfr, lasso, catboost
 
 deploy:
   model_port: 5000
