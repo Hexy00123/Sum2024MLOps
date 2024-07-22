@@ -95,13 +95,19 @@ jobs:
         run: |
           git checkout v1.0 data/samples.dvc
           dvc pull
+          dvc checkout data/samples.dvc
           git checkout v2.0 data/samples.dvc
           dvc pull
+          dvc checkout data/samples.dvc
           git checkout v3.0 data/samples.dvc
           dvc pull
+          dvc checkout data/samples.dvc
           git checkout v4.0 data/samples.dvc
           dvc pull
+          dvc checkout data/samples.dvc
           git checkout v5.0 data/samples.dvc
+          dvc pull
+          dvc checkout data/samples.dvc
 
 
       - name: Test dvc checkout
