@@ -66,6 +66,10 @@ jobs:
       - name: Run ZenML server
         run: zenml down && zenml up
 
+
+      - name: Run MLflow server
+        run: mlflow ui &
+
       - name: Run your app
         run: python3.11 src/validate.py
 
