@@ -55,6 +55,18 @@ jobs:
           python3.11 -m pip install --upgrade pip 
           pip3.11 install -r requirements.txt 
 
+      - name: create-json
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "gdrive-credentials.json"
+          json: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+
+      - name: Configure DVC remote with service account
+        run: |
+          dvc remote modify storage gdrive_use_service_account true
+          dvc remote modify storage --local gdrive_service_account_json_file_path gdrive-credentials.json
+
       - name: Export variables
         run: | 
           echo $PWD
