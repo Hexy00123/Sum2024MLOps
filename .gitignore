@@ -187,9 +187,11 @@ services/airflow/airflow.db
 services/airflow/webserver_config.py
 
 services/airflow/logs/scheduler/latest
-
-
-
-
+mlruns
+multirun 
+catboost
+catboost_info
+services/airflow/standalone_admin_password.txt
+mlartifacts
 
 gdrive-credentials.json

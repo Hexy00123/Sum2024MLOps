@@ -1,0 +1,49 @@
+artifact_path: xgboost
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.6
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.0
+mlflow_version: 2.14.1
+model_size_bytes: 5540482
+model_uuid: d550d51900a847c096a606612fa7ebd2
+run_id: 5ab878e2a40d4e4c85fbc56dc71132a5
+saved_input_example_info:
+  artifact_path: input_example.json
+  format: tf-serving
+  type: ndarray
+signature:
+  inputs: '[{"type": "double", "name": "location_id", "required": true}, {"type":
+    "double", "name": "latitude", "required": true}, {"type": "double", "name": "longitude",
+    "required": true}, {"type": "double", "name": "baths", "required": true}, {"type":
+    "double", "name": "area", "required": true}, {"type": "double", "name": "bedrooms",
+    "required": true}, {"type": "double", "name": "year", "required": true}, {"type":
+    "double", "name": "day_sin", "required": true}, {"type": "double", "name": "day_cos",
+    "required": true}, {"type": "double", "name": "month_sin", "required": true},
+    {"type": "double", "name": "month_cos", "required": true}, {"type": "double",
+    "name": "property_type_Farm House", "required": true}, {"type": "double", "name":
+    "property_type_Flat", "required": true}, {"type": "double", "name": "property_type_House",
+    "required": true}, {"type": "double", "name": "property_type_Lower Portion", "required":
+    true}, {"type": "double", "name": "property_type_Penthouse", "required": true},
+    {"type": "double", "name": "property_type_Room", "required": true}, {"type": "double",
+    "name": "property_type_Upper Portion", "required": true}, {"type": "double", "name":
+    "city_Faisalabad", "required": true}, {"type": "double", "name": "city_Islamabad",
+    "required": true}, {"type": "double", "name": "city_Karachi", "required": true},
+    {"type": "double", "name": "city_Lahore", "required": true}, {"type": "double",
+    "name": "city_Rawalpindi", "required": true}, {"type": "double", "name": "province_name_Islamabad
+    Capital", "required": true}, {"type": "double", "name": "province_name_Punjab",
+    "required": true}, {"type": "double", "name": "province_name_Sindh", "required":
+    true}, {"type": "double", "name": "purpose_For Rent", "required": true}, {"type":
+    "double", "name": "purpose_For Sale", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1]}}]'
+  params: null
+utc_time_created: '2024-07-23 17:18:58.413421'
