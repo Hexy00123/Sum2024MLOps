@@ -11,6 +11,7 @@ from data import preprocess_data
 with initialize(config_path="../configs", version_base=None):
     cfg = compose(config_name="main")
 
+
 def predict(
         property_id=None,
         location_id=None,
@@ -87,6 +88,7 @@ def predict(
     except json.JSONDecodeError:
         return "Invalid response from Flask API"
 
+
 # Define the Gradio interface
 demo = gr.Interface(
     fn=predict,
@@ -94,22 +96,24 @@ demo = gr.Interface(
         gr.Number(label="property_id"),
         gr.Number(label="location_id"),
         gr.Textbox(label="page_url"),
-        gr.Dropdown(label="property_type", choices=["House", "Flat", "Upper Portion", "Lower Portion", "Room", "Farm House", "Penthouse"]),
+        gr.Dropdown(label="property_type", choices=[
+                    "House", "Flat", "Upper Portion", "Lower Portion", "Room", "Farm House", "Penthouse"]),
         gr.Text(label="location"),
         gr.Text(label="city"),
         gr.Text(label="province_name"),
         gr.Number(label="latitude"),
         gr.Number(label="longitude"),
-        gr.Number(label="baths"), # slider
+        gr.Number(label="baths"),  # slider
         gr.Text(label="area"),  # Marla or Kanal + size
         gr.Dropdown(label="purpose", choices=["For Sale", "For Rent"]),
-        gr.Number(label="bedrooms"), # slider
-        gr.Textbox(label="date_added"), # TODO: How to add datetime?
+        gr.Number(label="bedrooms"),  # slider
+        gr.Textbox(label="date_added"),  # TODO: How to add datetime?
         gr.Text(label="agency"),
         gr.Text(label="agent"),
         gr.Dropdown(label="area_type", choices=["Marla", "Kanal"]),
         gr.Number(label="area_size"),
-        gr.Dropdown(label="area_category", choices=["0-5 Marla", "5-10 Marla", "10-15 Marla", "15-20 Marla"])
+        gr.Dropdown(label="area_category", choices=[
+                    "0-5 Marla", "5-10 Marla", "10-15 Marla", "15-20 Marla"])
     ],
     outputs=gr.Text(label="prediction result"),
     examples="data/examples"
