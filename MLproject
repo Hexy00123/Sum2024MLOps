@@ -9,3 +9,9 @@ entry_points:
   
   evaluate:
     command: "python src/evaluate.py"
+
+  validate:
+    command: "python src/validate.py"
+
+  transform:
+    command: "python pipelines/data_prepare.py"
