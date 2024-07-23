@@ -49,23 +49,6 @@ def home():
     response.content_type = "text/plain"
     return response
 
-# /predict endpoint
-# @app.route("/predict", methods = ["POST"])
-# def predict():
-
-#     # EDIT THIS ENDPOINT
-
-#     # EXAMPLE
-# 	content = str(request.data)
-# 	response = make_response(content, 200)
-# 	response.headers["content-type"] = "application/json"
-# 	return jsonify({'result': 'yes', 'prob': '0.7'})
-
-# # This will run a local server to accept requests to the API.
-# if __name__ == "__main__":
-#     port = int(os.environ.get('PORT', 5001))
-#     app.run(debug=True, host='0.0.0.0', port=port)
-
 
 @app.route("/predict", methods=["POST"])
 def predict():
