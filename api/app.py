@@ -22,6 +22,8 @@ with initialize(config_path="../configs", version_base=None):
     cfg = compose(config_name="main")
 
 model = mlflow.pyfunc.load_model(os.path.join("api", "model_dir"))
+column_name = cfg.data.target_cols[0]
+scaler = zenml.load_artifact(f"{column_name}_scaler")
 
 app = Flask(__name__)
 
@@ -81,9 +83,6 @@ def predict():
         predictions = model.predict(df)
         print("Predictions:", predictions)
 
-        column_name = cfg.data.target_cols[0]
-
-        scaler = zenml.load_artifact(f"{column_name}_scaler")
         print(predictions)
         predictions = scaler.inverse_transform(predictions.reshape(-1, 1))
 
