@@ -19,6 +19,9 @@ entry_points:
   extract: 
     command: "airflow dags test data_extract_dag"
 
+  deploy:
+    command: "chmod +x scripts/deploy_docker.sh && ./scripts/deploy_docker.sh"
+
   predict:
     parameters:
       example_version: 
