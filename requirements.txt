@@ -15,7 +15,7 @@ evidently
 Flask==2.2.5
 flask-session2
 psycopg2-binary
-kaggle
+kaggle==1.6.14
 dvc-gdrive
 giskard==2.14.0
 coverage
