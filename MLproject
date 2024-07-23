@@ -18,3 +18,16 @@ entry_points:
 
   extract: 
     command: "airflow dags test data_extract_dag"
+
+  predict:
+    parameters:
+      example_version: 
+        type: int
+        default: 2
+      port:
+        type: float
+        default: 5151
+      random_state:
+        type: float
+        default: 1
+    command: "python src/predict.py ++example_version={example_version} ++port={port} ++random_state={random_state}"
