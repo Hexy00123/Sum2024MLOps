@@ -15,3 +15,6 @@ entry_points:
 
   transform:
     command: "python pipelines/data_prepare.py"
+
+  extract: 
+    command: "airflow dags test data_extract_dag"
