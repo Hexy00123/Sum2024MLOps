@@ -12,6 +12,7 @@ from model import retrieve_model_with_version
 import giskard
 from hydra import compose, initialize
 import mlflow
+import zenml
 
 mlflow.set_tracking_uri("http://localhost:5000")
 print(datetime.now())
@@ -83,12 +84,22 @@ print(columns)
 
 print("DBG dataframe", df.columns)
 
+
 def predict(raw_df):
-    #TODO: price
+    column_name = cfg.data.target_cols[0]
+    scaler = zenml.load_artifact(f"{column_name}_scaler")
+
+    # TODO: price
     print("DBG preprocess: call predict")
     data = preprocess_data(df=deepcopy(raw_df), X_only=True)
+    predictions = model.predict(data)
+    predictions = scaler.inverse_transform(
+        predictions.reshape(-1, 1)).reshape(-1)
+
+    print("DBG return:", predictions)
     # X = data.drop('price', axis=1)
-    return model.predict(data)
+    return predictions
+
 
 print("DBG dataframe", df.columns)
 
@@ -131,13 +142,13 @@ suite_name = f"test_suite_{model_name}_{model_version}_{dataset_name}_{version}"
 test_suite = giskard.Suite(name=suite_name)
 
 test1 = giskard.testing.test_rmse(model=giskard_model,
-                                 dataset=giskard_dataset,
-                                 threshold=1.0)
+                                  dataset=giskard_dataset,
+                                  threshold=1.0)
 
 test_suite.add_test(test1)
 
 test_results = test_suite.run()
 if (test_results.passed):
-  print("Passed model validation!")
+    print("Passed model validation!")
 else:
-  print("Model has vulnerabilities!")
+    print("Model has vulnerabilities!")
