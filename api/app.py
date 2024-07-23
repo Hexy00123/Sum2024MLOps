@@ -19,22 +19,24 @@ print(BASE_PATH)
 # print(path)
 
 with initialize(config_path="../configs", version_base=None):
-              cfg = compose(config_name="main")
+    cfg = compose(config_name="main")
 
-model = mlflow.pyfunc.load_model(os.path.join("api", "model_dir", "xgboost"))
+model = mlflow.pyfunc.load_model(os.path.join("api", "model_dir"))
 
 app = Flask(__name__)
 
-@app.route("/info", methods = ["GET"])
+
+@app.route("/info", methods=["GET"])
 def info():
 
-	response = make_response(str(model.metadata), 200)
-	response.content_type = "text/plain"
-	return response
+    response = make_response(str(model.metadata), 200)
+    response.content_type = "text/plain"
+    return response
 
-@app.route("/", methods = ["GET"])
+
+@app.route("/", methods=["GET"])
 def home():
-	msg = """
+    msg = """
 	Welcome to our ML service to predict Customer satisfaction\n\n
 
 	This API has two main endpoints:\n
@@ -43,16 +45,16 @@ def home():
 
 	"""
 
-	response = make_response(msg, 200)
-	response.content_type = "text/plain"
-	return response
+    response = make_response(msg, 200)
+    response.content_type = "text/plain"
+    return response
 
 # /predict endpoint
 # @app.route("/predict", methods = ["POST"])
 # def predict():
-	
+
 #     # EDIT THIS ENDPOINT
-    
+
 #     # EXAMPLE
 # 	content = str(request.data)
 # 	response = make_response(content, 200)
@@ -95,25 +97,21 @@ def predict():
         # Make predictions
         predictions = model.predict(df)
         print("Predictions:", predictions)
-        
+
         column_name = cfg.data.target_cols[0]
-        						
+
         scaler = zenml.load_artifact(f"{column_name}_scaler")
         print(predictions)
         predictions = scaler.inverse_transform(predictions.reshape(-1, 1))
-              									
+
         print("Predictions:", predictions)
-        
+
         # Return predictions as JSON
         return jsonify({"predictions": predictions.tolist()})
 
     except Exception as e:
         # Return error message as JSON
         return jsonify({"error": str(e)}), 400
-
-
-    
-
 
 
 # # This will run a local server to accept requests to the API.

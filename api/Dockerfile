@@ -1,5 +1,5 @@
 # Build an image that can serve mlflow models.
-FROM python:3.11.0-slim
+FROM python:3.11.6-slim
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends nginx
 
@@ -11,7 +11,7 @@ WORKDIR /opt/mlflow
 RUN pip install mlflow==2.14.1
 
 # Copy model to image and install dependencies
-COPY model_dir/xgboost /opt/ml/model
+COPY model_dir/ /opt/ml/model
 RUN python -c "from mlflow.models import container as C; C._install_pyfunc_deps('/opt/ml/model', install_mlflow=False, enable_mlserver=False, env_manager='local');"
 
 ENV MLFLOW_DISABLE_ENV_CREATION=True
