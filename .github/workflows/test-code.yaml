@@ -1,12 +1,15 @@
 # .github/workflows/test-code.yaml
+
+# Name of the workflow
 name: Test code
 
+# Trigger when?
 on:
-  push:
+  push: # this will trigger the workflow/pipeline only if there is push on `main` branch
     branches:
       - main
       - dev
-    paths:
+    paths: # the push should be specifically to the folders `src` or `scripts` to trigger this workflow, otherwise, the workflow will not be triggered
       - 'src/**'
       - 'scripts/**'
       - 'services/airflow/dags/**'
@@ -14,32 +17,40 @@ on:
       - 'configs/**'
       - '.github/**'
 
+# Allows to only read the contents of the repository
+# `contents: read` permits an action to list the commits
+# `contents: write` allows the action to create a release
 permissions:
   contents: read
 
+# Declare environment variables to be used in this workflow file
 env:
   message: "Testing code!"
 
+# Tasks
 jobs:
+  # Task name
   test-code:
-    runs-on: ubuntu-latest
+    # OS to run the task
+    runs-on: ubuntu-latest # The ubuntu-latest label currently uses the Ubuntu 22.04 runner image
 
-    defaults:
+    defaults: # Set working directory of the job
       run:
-        shell: bash
+        shell: bash # Set the default shell
         working-directory: .
 
+    # The steps of the task/job
     steps:
       - name: Checking out our code
         uses: actions/checkout@v4
-    
-      - name: Setup Python
+
+      - name: setup python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11.0'
-          cache: 'pip'
+          cache: 'pip' # caching pip dependencies
 
-      - name: Install Python packages
+      - name: install python packages
         run: |
           python3.11 -m pip install --upgrade pip 
           pip3.11 install -r requirements.txt 
@@ -50,30 +61,55 @@ jobs:
         with:
           name: "gdrive-credentials.json"
           json: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-      
-      - name: Set Git config
-        run: |
-          git config --global user.name "Alexandra Vabnits"
-          git config --global user.email "sashaki02@gmail.com"
 
-      - name: Print git config
-        run: |
-          git config --global --get user.name
-          git config --global --get user.email
-      
       - name: Configure DVC remote with service account
         run: |
           dvc remote modify storage gdrive_use_service_account true
           dvc remote modify storage --local gdrive_service_account_json_file_path gdrive-credentials.json
 
-      - name: Check dvc config
-        run: |
-          dvc status
-          dvc fetch
-        
-
       - name: Pull DVC data
-        run: dvc pull
+        run: | 
+          dvc fetch
+          dvc pull
+
+      - name: Test git config
+        run: |
+          git status
+          git pull
+          git status
+
+
+      # - name: Git checkout
+      #   run: |
+      #     git checkout main
+
+      - name: Test tags version
+        run: |
+          git tag
+
+      - name: Test git checkout
+        run: |
+          git checkout v1.0 data/samples.dvc
+          dvc pull
+          git checkout v2.0 data/samples.dvc
+          dvc pull
+          git checkout v3.0 data/samples.dvc
+          dvc pull
+          git checkout v4.0 data/samples.dvc
+          dvc pull
+          git checkout v5.0 data/samples.dvc
+          dvc pull
+
+
+      - name: Test dvc checkout
+        run: |   
+          dvc checkout data/samples.dvc
+
+      - name: Test checkout
+        run: |   
+          git checkout HEAD data/samples.dvc
+          dvc checkout data/samples.dvc
+
 
       - name: Run your app
         run: python3.11 src/app.py &
@@ -89,34 +125,21 @@ jobs:
       - name: Run ZenML server
         run: zenml down && zenml up
 
-      - name: Download Kaggle dataset
+      - name: Download kaggle dataset
         run: python3.11 src/download_kaggle_dataset.py
 
-      - name: Run tests and collect coverage
-        run: |
-          coverage run -m pytest tests
-          coverage report
-        env:
-          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+      - name: Test with pytest
+        run: pytest tests
 
-      - name: Generate coverage badge
-        run: |
-          coverage-badge -o coverage.svg -f
-
-      - name: Upload coverage badge
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-badge
-          path: coverage.svg
-
+  # Another job
   print_info:
     runs-on: ubuntu-latest
     needs: test-code
     steps:
-      - name: Print my password
+      - name: print my password
         run: | 
-          # echo My password is ${{ secrets.PASSWORD }}
+          echo My password is ${{ secrets.PASSWORD }}
           echo My name is '${{ vars.NAME }}'
 
-      - name: Print message
+      - name: print message
         run: echo $message
