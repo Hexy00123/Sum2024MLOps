@@ -131,6 +131,7 @@ jobs:
 
       - name: Generate test artifacts
         run: | 
+          export PYTHONPATH=$PWD
           python3.11 src/utils.py 1
           python3.11 pipelines/data_prepare.py
           python3.11 src/utils.py 2
