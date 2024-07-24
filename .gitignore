@@ -186,6 +186,8 @@ services/airflow/airflow.cfg
 services/airflow/airflow.db
 services/airflow/webserver_config.py
 
+
+
 services/airflow/logs/scheduler/latest
 mlruns
 multirun 
@@ -195,3 +197,5 @@ services/airflow/standalone_admin_password.txt
 mlartifacts
 
 gdrive-credentials.json
+
+services/zenml

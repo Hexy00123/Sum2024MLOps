@@ -96,10 +96,10 @@ jobs:
       - name: Export variables
         run: | 
           echo $PWD
-          export ZENML_CONFIG_PATH=$PWD/services/zenml
-          export PROJECTPATH=$PWD
-          export AIRFLOW_HOME=$PWD/services/airflow
-          export PYTHONPATH=$PWD
+          export ZENML_CONFIG_PATH=$GITHUB_WORKSPACE/services/zenml
+          export PROJECTPATH=$GITHUB_WORKSPACE
+          export AIRFLOW_HOME=$GITHUB_WORKSPACE/services/airflow
+          export PYTHONPATH=$GITHUB_WORKSPACE
           echo "PYTHONPATH=$PYTHONPATH" >> $GITHUB_ENV
 
       - name: Print current directory and list files
