@@ -78,6 +78,9 @@ jobs:
           git pull
           git status
 
+      - name: Fetch tags
+        run: |
+          git fetch --tags --force
 
       # - name: Git checkout
       #   run: |
