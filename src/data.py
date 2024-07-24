@@ -334,6 +334,6 @@ def transform_data(df: pd.DataFrame, model: mlflow.pyfunc.PyFuncModel) -> pd.Dat
 
 
 if __name__ == "__main__":
-    read_features('features_target', 1, size=0.01, logs=True)
-    # sample_data()
-    # refactor_sample_data()
+    # read_features('features_target', 1, size=0.01, logs=True)
+    sample_data()
+    refactor_sample_data()
