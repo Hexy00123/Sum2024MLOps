@@ -198,4 +198,5 @@ mlartifacts
 
 gdrive-credentials.json
 
-services/zenml
+services/zenml/config.yaml
+services/zenml/local_stores/
