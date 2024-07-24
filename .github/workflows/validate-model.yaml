@@ -143,7 +143,7 @@ jobs:
         run: | 
           mlflow run . --env-manager=local
 
-      - name: Run your app
+      - name: Run validation for champion model
         run: python3.11 src/validate.py
 
   # Another job
