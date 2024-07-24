@@ -50,10 +50,20 @@ jobs:
         with:
           python-version: '3.11.0'
           cache: 'pip' # caching pip dependencies
-      - name: install python packages
+
+      - name: Create and activate virtual environment
         run: |
-          
-          pip3.11 install -r requirements.txt 
+          python3.11 -m venv venv  # Create a virtual environment named 'venv'
+          source venv/bin/activate # Activate the virtual environment
+          echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV  # Persist venv path
+          echo "PATH=$VIRTUAL_ENV/bin:$PATH" >> $GITHUB_ENV  # Use venv's executables
+          echo "PYTHONPATH=$PWD" >> $GITHUB_ENV  # Persist PYTHONPATH
+          echo "VIRTUAL_ENV set to $VIRTUAL_ENV"
+
+      - name: Install python packages
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt 
 
       - name: create-json
         id: create-json
@@ -82,41 +92,16 @@ jobs:
         run: |
           git fetch --tags --force
 
-
-      # - name: Git checkout
-      #   run: |
-      #     git checkout main
-
-      - name: Test tags version
+      - name: Test git checkout and DVC pull
         run: |
-          git tag
-
-      - name: Test git checkout
-        run: |
-          git checkout v1.0 data/samples.dvc
-          dvc pull
-          dvc checkout data/samples.dvc
-          git checkout v2.0 data/samples.dvc
-          dvc pull
-          dvc checkout data/samples.dvc
-          git checkout v3.0 data/samples.dvc
-          dvc pull
-          dvc checkout data/samples.dvc
-          git checkout v4.0 data/samples.dvc
-          dvc pull
-          dvc checkout data/samples.dvc
-          git checkout v5.0 data/samples.dvc
-          dvc pull
-          dvc checkout data/samples.dvc
-
-
-      - name: Test dvc checkout
-        run: |   
-          dvc checkout data/samples.dvc
-
-      - name: Test checkout
-        run: |   
+          for version in 1 2 3 4 5
+          do
+            git checkout v${version}.0 data/samples.dvc
+            dvc pull
+            dvc checkout data/samples.dvc
+          done
           git checkout HEAD data/samples.dvc
+          dvc pull
           dvc checkout data/samples.dvc
 
       - name: Export variables
@@ -125,7 +110,7 @@ jobs:
           export ZENML_CONFIG_PATH=$PWD/services/zenml
           export PROJECTPATH=$PWD
           export AIRFLOW_HOME=$PWD/services/airflow
-          export PYTHONPATH=$PWD/src  # Set the root directory as PYTHONPATH
+          export PYTHONPATH=$PWD
           echo "PYTHONPATH=$PYTHONPATH" >> $GITHUB_ENV  # Persist across steps
 
       - name: Print current directory and list files
@@ -139,10 +124,8 @@ jobs:
 
       - name: Generate test artifacts
         run: | 
-          export ZENML_CONFIG_PATH=/home/runner/work/Sum2024MLOps/services/zenml
-          export PROJECTPATH=/home/runner/work/Sum2024MLOps
-          export AIRFLOW_HOME=/home/runner/work/Sum2024MLOps/services/airflow
-          export PYTHONPATH=/home/runner/work/Sum2024MLOps
+          export ZENML_CONFIG_PATH=$PROJECTPATH/services/zenml
+          export AIRFLOW_HOME=$PROJECTPATH/services/airflow
           python3.11 src/utils.py 1
           python3.11 pipelines/data_prepare.py
           python3.11 src/utils.py 2
