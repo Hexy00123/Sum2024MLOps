@@ -110,8 +110,8 @@ jobs:
 
       - name: Run ZenML server
         run: |
-        export ZENML_CONFIG_PATH=$PROJECTPATH/services/zenml
-        zenml down && zenml up
+          export ZENML_CONFIG_PATH=$PROJECTPATH/services/zenml
+          zenml down && zenml up
 
       - name: Generate test artifacts
         run: | 
