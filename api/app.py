@@ -10,13 +10,9 @@ import pandas as pd
 import zenml
 from hydra import compose, initialize
 
-BASE_PATH = "home/sshk/Sum2024MLOps"
-# sys.path.append(BASE_PATH)
 
 mlflow.set_tracking_uri("http://localhost:5000")
 
-print(BASE_PATH)
-# print(path)
 
 with initialize(config_path="../configs", version_base=None):
     cfg = compose(config_name="main")
