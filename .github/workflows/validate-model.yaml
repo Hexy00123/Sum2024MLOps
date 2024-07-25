@@ -122,6 +122,8 @@ jobs:
           python3.11 pipelines/data_prepare.py
           python3.11 src/utils.py 5
           python3.11 pipelines/data_prepare.py
+          python3.11 src/utils.py 2
+          python3.11 pipelines/data_prepare.py
 
       - name: Run MLflow server
         run: mlflow server &
