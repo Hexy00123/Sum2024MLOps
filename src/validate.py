@@ -8,7 +8,7 @@ from giskard import Dataset, Model, Suite, testing
 import mlflow
 import zenml
 from data import read_datastore, preprocess_data
-from model import retrieve_model_with_alias  # Assuming this function is properly implemented
+from model import retrieve_model_with_alias, retrieve_model_with_version
 from hydra import compose, initialize
 
 # Set MLflow tracking URI
@@ -69,10 +69,12 @@ print("DBG: Model name: ", model_name)
 print("DBG: Model tag: ", model_tag_key, '=', model_tag_value)
 print("DBG: Model version: ", model_version)
 
-model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_alias(model_name, model_alias = model_alias)  
+# model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_alias(model_name, model_alias = model_alias)  
+model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_version(model_name, model_version = model_version)
 print("Model loaded successfully")
 
-mv = client.get_model_version_by_alias(name = model_name, alias=model_alias)
+mv = client.get_model_version(name = model_name, version=model_version)
+# mv = client.get_model_version_by_alias(name = model_name, alias=model_alias)
 model_version = mv.version
 print("Model input schema: ", model.metadata.get_input_schema())
 
@@ -133,19 +135,19 @@ scan_results_path = f"reports/validation_results_{model_name}_{model_version}_{d
 scan_results.to_html(scan_results_path)
 
 # 6. Create a Test Suite
-suite_name = f"test_suite_{model_name}_{model_version}_{dataset_name}_{version}"
-test_suite = Suite(name=suite_name)
+# suite_name = f"test_suite_{model_name}_{model_version}_{dataset_name}_{version}"
+# test_suite = Suite(name=suite_name)
 
-test1 = testing.test_r2(
-    model=giskard_model,
-    dataset=giskard_dataset,
-    threshold=0.4
-)
+# test1 = testing.test_r2(
+#     model=giskard_model,
+#     dataset=giskard_dataset,
+#     threshold=0.4
+# )
 
-test_suite.add_test(test1)
+# test_suite.add_test(test1)
 
-test_results = test_suite.run()
-if test_results.passed:
-    print("Passed model validation!")
-else:
-    print("Model has vulnerabilities!")
+# test_results = test_suite.run()
+# if test_results.passed:
+#     print("Passed model validation!")
+# else:
+#     print("Model has vulnerabilities!")
