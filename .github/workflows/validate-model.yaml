@@ -141,7 +141,7 @@ jobs:
           export PROJECT_DIR=$PWD
           export PYTHONPATH=$PROJECT_DIR/src
           export ZENML_CONFIG_PATH=$PWD/services/zenml
-          python3.11 src/utils.py 4
+          python3.11 src/utils.py 2
           python3.11 src/validate.py
 
   print_info:
