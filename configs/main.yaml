@@ -4,7 +4,7 @@ defaults:
   - model/model
 
 num_samples: 5
-index: 4
+index: 2
 sample_path: "data/samples/sample.csv"
 dvc_file_path: "data/samples.dvc"
 
@@ -19,7 +19,7 @@ test: False
 
 model:
   best_model_name: "CatBoost"
-  best_model_version: 37
+  best_model_version: 33
   best_model_alias: "champion"
   model_tag_key: "source"
   model_tag_value: "best_Grid_search_model"

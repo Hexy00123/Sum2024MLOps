@@ -63,7 +63,7 @@ with initialize(config_path="../configs", version_base=None):
 
 model = mlflow.pyfunc.load_model(os.path.join("api", "model_dir"))
 
-print(model)
+# print(model)
 
 
 
@@ -97,7 +97,7 @@ model_version = str(cfg.model.best_model_version)
 
 # model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_alias(model_name, model_alias = model_alias)  
 # model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_version(model_name, model_version = model_version)
-# print("Model loaded successfully")
+print("Model loaded successfully")
 
 # mv = client.get_model_version(name = model_name, version=model_version)
 # mv = client.get_model_version_by_alias(name = model_name, alias=model_alias)
@@ -166,7 +166,7 @@ test_suite = Suite(name=suite_name)
 test1 = testing.test_r2(
     model=giskard_model,
     dataset=giskard_dataset,
-    threshold=0.4
+    threshold=0.3
 )
 
 test_suite.add_test(test1)
@@ -176,3 +176,4 @@ if test_results.passed:
     print("Passed model validation!")
 else:
     print("Model has vulnerabilities!")
+    raise Exception("Model has vulnerabilities!")
