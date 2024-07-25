@@ -1,3 +1,5 @@
+from hydra import compose, initialize
+
 import os
 import sys
 from typing_extensions import Tuple, Annotated
@@ -5,25 +7,27 @@ from typing_extensions import Tuple, Annotated
 import pandas as pd
 from zenml import step, pipeline, ArtifactConfig
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+BASE_PATH = os.getenv("PROJECT_DIR")
+print(BASE_PATH)
+sys.path.append(BASE_PATH)
 
-from src.data import preprocess_data, read_datastore, load_features
-from src.data_expectations import validate_features
-from hydra import compose, initialize
 
-BASE_PATH = os.path.expandvars("$PROJECTPATH")
+from data import read_datastore, preprocess_data, load_features
+from data_expectations import validate_features
+# from src.data_expectations import validate_features
+# from src.data import preprocess_data, read_datastore, load_features
 
 
 @step(enable_cache=False)
 def extract() -> Tuple[
     Annotated[pd.DataFrame,
-    ArtifactConfig(name="extracted_data",
-                   tags=["data_preparation"]
-                   )
-    ],
+              ArtifactConfig(name="extracted_data",
+                             tags=["data_preparation"]
+                             )
+              ],
     Annotated[int,
-    ArtifactConfig(name="data_version",
-                   tags=["data_preparation"])]
+              ArtifactConfig(name="data_version",
+                             tags=["data_preparation"])]
 ]:
     print("Extracting version...")
     with initialize(config_path="../configs", version_base=None):
@@ -32,7 +36,7 @@ def extract() -> Tuple[
         print(f'Version is: {version}, type: {type(version)}')
 
     print("Extracting data...")
-    df = read_datastore(cfg)
+    df = read_datastore()
     print(df)
 
     return df, version
@@ -41,11 +45,11 @@ def extract() -> Tuple[
 @step(enable_cache=False)
 def transform(df: pd.DataFrame) -> Tuple[
     Annotated[pd.DataFrame,
-    ArtifactConfig(name="input_features",
-                   tags=["data_preparation"])],
+              ArtifactConfig(name="input_features",
+                             tags=["data_preparation"])],
     Annotated[pd.Series,
-    ArtifactConfig(name="input_target",
-                   tags=["data_preparation"])]
+              ArtifactConfig(name="input_target",
+                             tags=["data_preparation"])]
 ]:
     print("Preprocessing data...")
     X, y = preprocess_data(df)
@@ -58,11 +62,11 @@ def transform(df: pd.DataFrame) -> Tuple[
 @step(enable_cache=False)
 def validate(X: pd.DataFrame, y: pd.Series) -> Tuple[
     Annotated[pd.DataFrame,
-    ArtifactConfig(name="valid_input_features",
-                   tags=["data_preparation"])],
+              ArtifactConfig(name="valid_input_features",
+                             tags=["data_preparation"])],
     Annotated[pd.Series,
-    ArtifactConfig(name="valid_target",
-                   tags=["data_preparation"])]
+              ArtifactConfig(name="valid_target",
+                             tags=["data_preparation"])]
 ]:
     print("Validating features...")
     validate_features(X, y)
@@ -72,11 +76,11 @@ def validate(X: pd.DataFrame, y: pd.Series) -> Tuple[
 @step(enable_cache=False)
 def load(X: pd.DataFrame, y: pd.Series, version: int) -> Tuple[
     Annotated[pd.DataFrame,
-    ArtifactConfig(name="features",
-                   tags=["data_preparation"])],
+              ArtifactConfig(name="features",
+                             tags=["data_preparation"])],
     Annotated[pd.Series,
-    ArtifactConfig(name="target",
-                   tags=["data_preparation"])]
+              ArtifactConfig(name="target",
+                             tags=["data_preparation"])]
 ]:
     print("Loading features...")
     load_features(X, y, version)

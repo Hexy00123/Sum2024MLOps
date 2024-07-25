@@ -1,0 +1,6 @@
+defaults: 
+  - _self_
+  - main@index
+
+deploy:
+  model_port: 5000

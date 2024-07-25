@@ -1,0 +1,157 @@
+# .github/workflows/test-code.yaml
+
+name: Validate model
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'src/**'
+      - 'scripts/**'
+      - 'services/airflow/dags/**'
+      - 'pipelines/**'
+      - 'tests/**'
+      - 'configs/**'
+      - '.github/**'
+
+permissions:
+  contents: read
+
+env:
+  message: "Validating model!"
+
+jobs:
+  validate-model:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+
+    steps:
+      - name: Checking out our code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.0'
+          cache: 'pip'
+
+      - name: Create and activate virtual environment
+        run: |
+          python3.11 -m venv venv
+          source venv/bin/activate
+          echo "VIRTUAL_ENV=$(pwd)/venv" >> $GITHUB_ENV
+          echo "PATH=$(pwd)/venv/bin:$PATH" >> $GITHUB_ENV
+          echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
+      - name: Install Python packages
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create JSON
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "gdrive-credentials.json"
+          json: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+
+      - name: Configure DVC remote with service account
+        run: |
+          dvc remote modify storage gdrive_use_service_account true
+          dvc remote modify storage --local gdrive_service_account_json_file_path gdrive-credentials.json
+
+      - name: Pull DVC data
+        run: | 
+          dvc fetch
+          dvc pull
+
+      - name: Test git config
+        run: |
+          git status
+          git pull
+          git status
+
+      - name: Fetch tags
+        run: |
+          git fetch --tags --force
+
+      - name: Test git checkout and DVC pull
+        run: |
+          for version in 1 2 3 4 5
+          do
+            git checkout v${version}.0 data/samples.dvc
+            dvc pull
+            dvc checkout data/samples.dvc
+          done
+          git checkout HEAD data/samples.dvc
+          dvc pull
+          dvc checkout data/samples.dvc
+
+      - name: Export variables
+        run: | 
+          echo $PWD
+          export ZENML_CONFIG_PATH=$GITHUB_WORKSPACE/services/zenml
+          export PROJECTPATH=$GITHUB_WORKSPACE
+          export AIRFLOW_HOME=$GITHUB_WORKSPACE/services/airflow
+          export PYTHONPATH=$GITHUB_WORKSPACE
+          echo "PYTHONPATH=$PYTHONPATH" >> $GITHUB_ENV
+
+      - name: Run ZenML server
+        run: |
+          export ZENML_CONFIG_PATH=$PWD/services/zenml
+          zenml down && zenml up
+
+      - name: Generate test artifacts
+        run: | 
+          export PROJECT_DIR=$PWD
+          export PYTHONPATH=$PROJECT_DIR/src
+          export ZENML_CONFIG_PATH=$PWD/services/zenml
+          python3.11 src/utils.py 1
+          python3.11 pipelines/data_prepare.py
+          python3.11 src/utils.py 2
+          python3.11 pipelines/data_prepare.py
+          python3.11 src/utils.py 3
+          python3.11 pipelines/data_prepare.py
+          python3.11 src/utils.py 4
+          python3.11 pipelines/data_prepare.py
+          python3.11 src/utils.py 5
+          python3.11 pipelines/data_prepare.py
+
+      - name: Run MLflow server
+          export PROJECT_DIR=$PWD
+          export PYTHONPATH=$PROJECT_DIR/src
+          export ZENML_CONFIG_PATH=$PWD/services/zenml
+        run: mlflow server &
+
+      - name: Run experiments
+        run: | 
+          export PROJECT_DIR=$PWD
+          export PYTHONPATH=$PROJECT_DIR/src
+          export ZENML_CONFIG_PATH=$PWD/services/zenml
+          mlflow run . --env-manager=local
+
+      - name: Run validation for champion model
+        run: |
+          export PROJECT_DIR=$PWD
+          export PYTHONPATH=$PROJECT_DIR/src
+          export ZENML_CONFIG_PATH=$PWD/services/zenml
+          python3.11 src/utils.py 4
+          python3.11 src/validate.py
+
+  print_info:
+    runs-on: ubuntu-latest
+    needs: validate-model
+    steps:
+      - name: print my password
+        run: | 
+          echo My password is ${{ secrets.PASSWORD }}
+          echo My name is '${{ vars.NAME }}'
+
+      - name: print message
+        run: echo $message

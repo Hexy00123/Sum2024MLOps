@@ -1,0 +1,127 @@
+# .github/workflows/test-code.yaml
+
+# Name of the workflow
+name: Test dvc
+
+# Trigger when?
+on:
+  push: # this will trigger the workflow/pipeline only if there is push on `main` branch
+    branches:
+      - main
+      - dev
+    paths: # the push should be specifically to the folders `src` or `scripts` to trigger this workflow, otherwise, the workflow will not be triggered
+      - 'src/**'
+      - 'scripts/**'
+      - 'services/airflow/dags/**'
+      - 'tests/**'
+      - 'configs/**'
+      - '.github/**'
+
+# Allows to only read the contents of the repository
+# `contents: read` permits an action to list the commits
+# `contents: write` allows the action to create a release
+permissions:
+  contents: read
+
+# Declare environment variables to be used in this workflow file
+env:
+  message: "Testing dvc!"
+
+# Tasks
+jobs:
+  # Task name
+  test-code:
+    # OS to run the task
+    runs-on: ubuntu-latest # The ubuntu-latest label currently uses the Ubuntu 22.04 runner image
+
+    defaults: # Set working directory of the job
+      run:
+        shell: bash # Set the default shell
+        working-directory: .
+
+    # The steps of the task/job
+    steps:
+
+
+      - name: Checking out our code
+        uses: actions/checkout@v4
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.0'
+          cache: 'pip' # caching pip dependencies
+
+
+      - name: install python packages
+        run: |
+          python3.11 -m pip install --upgrade pip 
+          pip3.11 install dvc
+          pip3.11 install dvc-gdrive
+
+      - name: create-json
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "gdrive-credentials.json"
+          json: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+
+      - name: Configure DVC remote with service account
+        run: |
+          dvc remote modify storage gdrive_use_service_account true
+          dvc remote modify storage --local gdrive_service_account_json_file_path gdrive-credentials.json
+
+      - name: Pull DVC data
+        run: | 
+          dvc fetch
+          dvc pull
+
+      - name: Test git config
+        run: |
+          git status
+          git pull
+          git status
+
+
+      # - name: Git checkout
+      #   run: |
+      #     git checkout main
+
+      - name: Fetch tags
+        run: |
+          git fetch --tags --force
+
+      - name: Test tags version
+        run: |
+          git tag
+
+      - name: Test git checkout
+        run: |
+          git checkout v1.0 data/samples.dvc
+          dvc pull
+          dvc checkout data/samples.dvc
+          git checkout v2.0 data/samples.dvc
+          dvc pull
+          dvc checkout data/samples.dvc
+          git checkout v3.0 data/samples.dvc
+          dvc pull
+          dvc checkout data/samples.dvc
+          git checkout v4.0 data/samples.dvc
+          dvc pull
+          dvc checkout data/samples.dvc
+          git checkout v5.0 data/samples.dvc
+          dvc pull
+          dvc checkout data/samples.dvc
+
+
+      - name: Test dvc checkout
+        run: |   
+          dvc checkout data/samples.dvc
+
+      - name: Test checkout
+        run: |   
+          git checkout HEAD data/samples.dvc
+          dvc checkout data/samples.dvc
+
+
+    

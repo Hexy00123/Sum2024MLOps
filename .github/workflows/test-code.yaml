@@ -49,10 +49,10 @@ jobs:
         with:
           python-version: '3.11.0'
           cache: 'pip' # caching pip dependencies
+      # python3.11 -m pip install --upgrade pip 
 
       - name: install python packages
         run: |
-          python3.11 -m pip install --upgrade pip 
           pip3.11 install -r requirements.txt 
 
       - name: create-json
@@ -78,10 +78,9 @@ jobs:
           git pull
           git status
 
-
-      # - name: Git checkout
-      #   run: |
-      #     git checkout main
+      - name: Fetch tags
+        run: |
+          git fetch --tags --force
 
       - name: Test tags version
         run: |

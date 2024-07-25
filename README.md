@@ -1,4 +1,5 @@
 [![Test code](https://github.com/Hexy00123/Sum2024MLOps/actions/workflows/test-code.yaml/badge.svg?branch=dev&event=push)](https://github.com/Hexy00123/Sum2024MLOps/actions/workflows/test-code.yaml)
+[![Validate model](https://github.com/Hexy00123/Sum2024MLOps/actions/workflows/validate-model.yaml/badge.svg)](https://github.com/Hexy00123/Sum2024MLOps/actions/workflows/validate-model.yaml)
 
 # MLOps Sum 2024 project repository
 

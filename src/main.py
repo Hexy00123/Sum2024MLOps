@@ -11,10 +11,10 @@ def run(cfg):
 
     X_train, y_train = read_features(name="features_target",
                                      version=train_data_version,
-                                     size=1.0)
+                                     size=1)
     X_test, y_test = read_features(name="features_target",
                                    version=test_data_version,
-                                   size=0.5)
+                                   size=1)
 
     print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 

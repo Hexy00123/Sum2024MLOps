@@ -14,6 +14,9 @@ from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, StandardScaler
 from hydra import compose, initialize
 
 
+import os
+
+
 @hydra.main(config_path="../configs", config_name="main", version_base=None)
 def sample_data(cfg: DictConfig):
     filename = "sample.csv" if cfg.test is False else "test_sample.csv"
@@ -88,13 +91,17 @@ def refactor_sample_data(cfg: DictConfig):
     print(f"Refactored data saved to {data_path}")
 
 
-@hydra.main(config_path="../configs", config_name="main", version_base=None)
-def read_datastore(cfg: DictConfig):
+def read_datastore():
+    with initialize(config_path="../configs", version_base=None):
+        cfg = compose(config_name="main")
+
     version = cfg.test_data_version if cfg.test else cfg.index
     try:
-        subprocess.run(["dvc", "fetch", f"{cfg.dvc_file_path}"])
+        subprocess.run(["dvc", "fetch"], check=True)
         subprocess.run(["dvc", "pull"], check=True)
-        subprocess.run(["git", "checkout", f"v{version}.0", f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(
+            ["git", "checkout", f"v{version}.0", f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(["dvc", "pull"], check=True)
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
         sample_path = cfg.sample_path
@@ -104,13 +111,21 @@ def read_datastore(cfg: DictConfig):
         return sample
     finally:
         # Return to the HEAD state
-        subprocess.run(["git", "checkout", "HEAD", f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(["git", "checkout", "HEAD",
+                       f"{cfg.dvc_file_path}"], check=True)
+        subprocess.run(["dvc", "pull"], check=True)
         subprocess.run(["dvc", "checkout", f"{cfg.dvc_file_path}"], check=True)
 
 
-def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame:
-    ohe = OneHotEncoder(sparse_output=False, handle_unknown='ignore').fit(
-        data[[column_name]])
+def one_hot_encode_feature(data: pd.DataFrame, column_name: str, X_only: bool = False) -> pd.DataFrame:
+    if X_only:
+        ohe = zenml.load_artifact(f"{column_name}_encoder")
+        print("DBG preprocess: encoder was loaded:", column_name)
+    else:
+        ohe = OneHotEncoder(sparse_output=False, handle_unknown='ignore').fit(
+            data[[column_name]])
+        zenml.save_artifact(data=ohe, name=f"{column_name}_encoder")
+        print("DBG preprocess: encoder was saved:", column_name)
 
     encoded_df = pd.DataFrame(ohe.transform(
         data[[column_name]]), columns=ohe.get_feature_names_out([column_name]))
@@ -125,34 +140,23 @@ def one_hot_encode_feature(data: pd.DataFrame, column_name: str) -> pd.DataFrame
     return data
 
 
-class StdFast():
-    def __init__(*args, **kwargs):
-        pass
-
-    def fit_transform(self, data: pd.DataFrame):
-        column = data[data.columns[0]].to_numpy()
-        mean = np.mean(column)
-        std = np.std(column)
-        column = (column - mean) / std
-        return column
-
-
 def scale_feature(data: pd.DataFrame, column_name: str, strategy: str = 'std', X_only: bool = False) -> pd.DataFrame:
     scalers = {
         'std': StandardScaler,
         'minmax': MinMaxScaler,
-        'std_fast': StdFast
     }
     if strategy not in scalers:
         raise NotImplementedError(f'Scaling is not implemented for {strategy}')
 
     if X_only:
         scaler = zenml.load_artifact(f"{column_name}_scaler")
-        data[column_name] = scaler.transform(data[[column_name]])
+        print("DBG preprocess: scaler was loaded:", column_name)
     else:
         scaler = scalers[strategy]().fit(data[[column_name]])
         zenml.save_artifact(data=scaler, name=f"{column_name}_scaler")
-        data[column_name] = scaler.transform(data[[column_name]])
+        print("DBG preprocess: scaler was saved:", column_name)
+
+    data[column_name] = scaler.transform(data[[column_name]])
 
     return data
 
@@ -173,18 +177,18 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
     print(f'Config retrieved: {cfg}')
 
     try:
-        # put '-' instead of missing values in agent and agency
-        df['agent'] = df['agent'].fillna('-')
-        df['agency'] = df['agency'].fillna('-')
-
-        print('missing values filled')
-
         # Preprocess datetime features
         df['day'] = df['date_added'].apply(lambda x: int(x.split('-')[1]))
         df['month'] = df['date_added'].apply(lambda x: int(x.split('-')[0]))
         df['year'] = df['date_added'].apply(lambda x: int(x.split('-')[2]))
 
         print('datetime features processed')
+
+        # Cyclic datetime encoding
+        df = cyclic_encoding(df, 'day', 31)
+        df = cyclic_encoding(df, 'month', 12)
+
+        print('cyclic encoding completed')
 
         # Convert metrics
         area_marla = np.where(df['Area Type'] == 'Kanal',
@@ -200,9 +204,12 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
         print('unnecessary columns dropped')
 
         # Encoding features
-        columns_to_one_hot = ['property_type', 'city', 'province_name', 'purpose']
+        # columns_to_one_hot = ['property_type',
+        #                       'city', 'province_name', 'purpose']
+        print("DBG:", cfg.keys())
+        columns_to_one_hot = cfg.keys()
         for column in columns_to_one_hot:
-            data = one_hot_encode_feature(data, column)
+            data = one_hot_encode_feature(data, column, X_only=X_only)
 
         print('features encoded')
 
@@ -214,7 +221,8 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
             columns_to_std = ['area', 'baths', 'bedrooms', 'price']
 
         for column in columns_to_minmax:
-            data = scale_feature(data, column, strategy='minmax', X_only=X_only)
+            data = scale_feature(
+                data, column, strategy='minmax', X_only=X_only)
         for column in columns_to_std:
             data = scale_feature(data, column, X_only=X_only)
 
@@ -223,21 +231,18 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
         # scale one-hot encoded features
         for column in columns_to_one_hot:
             print(f"Scaling one-hot encoded features for {column}")
-            columns = [col for col in data.columns if col.startswith(f"{column}_")]
+            columns = [
+                col for col in data.columns if col.startswith(f"{column}_")]
             for col in columns:
-                data = scale_feature(data, col)
+                data = scale_feature(data, col, X_only=X_only)
 
         print('one-hot encoded features scaled')
 
-        # Cyclic datetime encoding
-        data = cyclic_encoding(data, 'day', 31)
-        data = cyclic_encoding(data, 'month', 12)
-
-        print('datetime encoded')
         if X_only:
             # check that all columns from cfg are present in data, otherwise add them with 0 values
             for column in columns_to_one_hot:
-                columns = [col for col in data.columns if col.startswith(f"{column}_")]
+                columns = [
+                    col for col in data.columns if col.startswith(f"{column}_")]
                 if set(columns) != set(cfg[column]):
                     for col in cfg[column]:
                         if col not in columns:
@@ -252,7 +257,8 @@ def preprocess_data(df: pd.DataFrame, X_only: bool = False):
 
             with open(hydra.utils.to_absolute_path(f'configs/categories.yaml'), 'w') as f:
                 for column in columns_to_one_hot:
-                    columns = [col for col in X.columns if col.startswith(f"{column}_")]
+                    columns = [
+                        col for col in X.columns if col.startswith(f"{column}_")]
                     f.write(f"{column}: {columns}\n")
 
             return X, y
@@ -271,7 +277,7 @@ def load_features(X: pd.DataFrame, y: pd.Series, version: int) -> None:
 def read_features(name, version, size=1, logs=False):
     client = zenml.client.Client()
     artifacts = client.list_artifact_versions(
-        name=name, tag=version, sort_by="version").items
+        name=name, tag=version, sort_by="updated").items
 
     df = artifacts[-1].load()
     df = df.sample(frac=size, random_state=88)
@@ -328,5 +334,6 @@ def transform_data(df: pd.DataFrame, model: mlflow.pyfunc.PyFuncModel) -> pd.Dat
 
 
 if __name__ == "__main__":
+    # read_features('features_target', 1, size=0.01, logs=True)
     sample_data()
     refactor_sample_data()
