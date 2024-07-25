@@ -101,7 +101,6 @@ model_version = str(cfg.model.best_model_version)
 
 # mv = client.get_model_version(name = model_name, version=model_version)
 # mv = client.get_model_version_by_alias(name = model_name, alias=model_alias)
-model_version = 1
 # print("Model input schema: ", model.metadata.get_input_schema())
 
 schema = model.metadata.get_input_schema()

@@ -4,7 +4,7 @@ defaults:
   - model/model
 
 num_samples: 5
-index: 2
+index: 4
 sample_path: "data/samples/sample.csv"
 dvc_file_path: "data/samples.dvc"
 
