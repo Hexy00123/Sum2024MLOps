@@ -22,7 +22,7 @@ model:
   best_model_version: 47
   best_model_alias: "champion"
   model_tag_key: "source"
-  model_tag_value:"best_Grid_search_model"
+  model_tag_value: "best_Grid_search_model"
 
 hydra:
   mode: MULTIRUN

@@ -82,10 +82,6 @@ jobs:
         run: |
           git fetch --tags --force
 
-      # - name: Git checkout
-      #   run: |
-      #     git checkout main
-
       - name: Test tags version
         run: |
           git tag
