@@ -8,13 +8,14 @@ import pandas as pd
 from zenml import step, pipeline, ArtifactConfig
 
 BASE_PATH = os.getenv("PROJECT_DIR")
+print(BASE_PATH)
 sys.path.append(BASE_PATH)
 
 
-# from data import read_datastore, preprocess_data, load_features
-# from data_expectations import validate_features
-from src.data_expectations import validate_features
-from src.data import preprocess_data, read_datastore, load_features
+from data import read_datastore, preprocess_data, load_features
+from data_expectations import validate_features
+# from src.data_expectations import validate_features
+# from src.data import preprocess_data, read_datastore, load_features
 
 
 @step(enable_cache=False)

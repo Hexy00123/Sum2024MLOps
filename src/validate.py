@@ -141,9 +141,9 @@ scan_results.to_html(scan_results_path)
 suite_name = f"test_suite_{model_name}_{model_version}_{dataset_name}_{version}"
 test_suite = giskard.Suite(name=suite_name)
 
-test1 = giskard.testing.test_rmse(model=giskard_model,
+test1 = giskard.testing.test_r2(model=giskard_model,
                                   dataset=giskard_dataset,
-                                  threshold=1.0)
+                                  threshold=0.4)
 
 test_suite.add_test(test1)
 
