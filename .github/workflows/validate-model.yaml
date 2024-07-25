@@ -124,9 +124,6 @@ jobs:
           python3.11 pipelines/data_prepare.py
 
       - name: Run MLflow server
-          export PROJECT_DIR=$PWD
-          export PYTHONPATH=$PROJECT_DIR/src
-          export ZENML_CONFIG_PATH=$PWD/services/zenml
         run: mlflow server &
 
       # - name: Run experiments
