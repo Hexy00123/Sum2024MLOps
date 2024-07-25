@@ -65,6 +65,8 @@ model = mlflow.pyfunc.load_model(os.path.join("api", "model_dir"))
 
 print(model)
 
+
+
 # df = mlflow.search_runs(filter_string="metrics.r2 < 1")
 # print(df)
 

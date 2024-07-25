@@ -129,12 +129,12 @@ jobs:
           export ZENML_CONFIG_PATH=$PWD/services/zenml
         run: mlflow server &
 
-      - name: Run experiments
-        run: | 
-          export PROJECT_DIR=$PWD
-          export PYTHONPATH=$PROJECT_DIR/src
-          export ZENML_CONFIG_PATH=$PWD/services/zenml
-          mlflow run . --env-manager=local
+      # - name: Run experiments
+      #   run: | 
+      #     export PROJECT_DIR=$PWD
+      #     export PYTHONPATH=$PROJECT_DIR/src
+      #     export ZENML_CONFIG_PATH=$PWD/services/zenml
+      #     mlflow run . --env-manager=local
 
       - name: Run validation for champion model
         run: |
