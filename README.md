@@ -28,6 +28,7 @@ pip install -r requirements.txt
 export PROJECT_DIR=$PWD
 export PYTHONPATH=$PROJECT_DIR/src
 export ZENML_CONFIG_PATH=$PWD/services/zenml
+export MLFLOW_TRACKING_URI="http://localhost:5000"
 ```
 ### Download dataset from Kaggle:
 ```sh
@@ -53,6 +54,24 @@ python src/validate.py
 ### Run tests:
 ```sh
 pytest tests
+```
+## Deploy
+### Deploy Docker container:
+```sh
+cd api
+
+docker build -t my_ml_service .
+docker run -d -p 5123:8080 my_ml_service
+
+docker tag my_ml_service sashhhak0/my_ml_service
+docker tag my_ml_service sashhhak0/my_ml_service:v1.0
+docker push sashhhak0/my_ml_service:latest
+```
+### Deploy website:
+```
+mlflow ui --port 5000
+python3 api/app.py
+python3 src/app.py
 ```
 
 
