@@ -42,7 +42,7 @@ giskard_dataset = Dataset(
 )
 
 print("DBG: Wrapping model")
-print("DBG dataframe", df.columns)
+# print("DBG dataframe", df.columns)
 
 # ------------------------------
 # 2. Retrieve Model by finding the model with highest r2 score
@@ -78,7 +78,7 @@ print(model)
 # reatrieve a 
 
 # Search for the model version that matches the tag {'source': 'champion'}
-# model_version = None
+model_version = str(cfg.model.best_model_version)
 # for mv in client.search_model_versions(f"name='{model_name}'"):
 #     # Check if the specific tag key-value pair exists
 #     if model_tag_key in mv.tags and mv.tags[model_tag_key] == model_tag_value:
@@ -101,18 +101,17 @@ print(model)
 
 # mv = client.get_model_version(name = model_name, version=model_version)
 # mv = client.get_model_version_by_alias(name = model_name, alias=model_alias)
-# model_version = mv.version
-model_vearion = 1
-print("Model input schema: ", model.metadata.get_input_schema())
+model_version = mv.version
+# print("Model input schema: ", model.metadata.get_input_schema())
 
 schema = model.metadata.get_input_schema()
-print(type(schema))
+# print(type(schema))
 columns = []
 for col in schema:
     column = col.name
     columns.append(column)
-print(type(columns[0]))
-print(columns)
+# print(type(columns[0]))
+# print(columns)
 
 # ------------------------------
 # 3. Initial Prediction
@@ -121,12 +120,12 @@ def predict(raw_df):
     column_name = cfg.data.target_cols[0]
     scaler = zenml.load_artifact(f"{column_name}_scaler")
 
-    print("DBG preprocess: call predict")
+    # print("DBG preprocess: call predict")
     data = preprocess_data(df=deepcopy(raw_df), X_only=True)
     predictions = model.predict(data)
     predictions = scaler.inverse_transform(predictions.reshape(-1, 1)).reshape(-1)
 
-    print("DBG return:", predictions)
+    # print("DBG return:", predictions)
     return predictions
 
 predictions = predict(df)
@@ -145,8 +144,8 @@ giskard_model = Model(
     name=model_name,
 )
 
-print(giskard_model.feature_names)
-print(giskard_dataset.df.columns)
+# print(giskard_model.feature_names)
+# print(giskard_dataset.df.columns)
 
 # ------------------------------
 # 5. Scanning Model
@@ -162,19 +161,19 @@ print(f'DBG: Wrapped Test R2-score: {wrapped_test_metric:.2f}')
 # scan_results.to_html(scan_results_path)
 
 # 6. Create a Test Suite
-# suite_name = f"test_suite_{model_name}_{model_version}_{dataset_name}_{version}"
-# test_suite = Suite(name=suite_name)
+suite_name = f"test_suite_{model_name}_{model_version}_{dataset_name}_{version}"
+test_suite = Suite(name=suite_name)
 
-# test1 = testing.test_r2(
-#     model=giskard_model,
-#     dataset=giskard_dataset,
-#     threshold=0.4
-# )
+test1 = testing.test_r2(
+    model=giskard_model,
+    dataset=giskard_dataset,
+    threshold=0.4
+)
 
-# test_suite.add_test(test1)
+test_suite.add_test(test1)
 
-# test_results = test_suite.run()
-# if test_results.passed:
-#     print("Passed model validation!")
-# else:
-#     print("Model has vulnerabilities!")
+test_results = test_suite.run()
+if test_results.passed:
+    print("Passed model validation!")
+else:
+    print("Model has vulnerabilities!")
