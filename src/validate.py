@@ -150,10 +150,10 @@ giskard_model = Model(
 # 5. Scanning Model
 print("DBG: Scanning model")
 
-wrapped_predict = giskard_model.predict(giskard_dataset)
-wrapped_test_metric = r2_score(y, wrapped_predict.prediction)
+# wrapped_predict = giskard_model.predict(giskard_dataset)
+# wrapped_test_metric = r2_score(y, wrapped_predict.prediction)
 
-print(f'DBG: Wrapped Test R2-score: {wrapped_test_metric:.2f}')
+# print(f'DBG: Wrapped Test R2-score: {wrapped_test_metric:.2f}')
 
 # scan_results = giskard.scan(giskard_model, giskard_dataset)
 # scan_results_path = f"reports/validation_results_{model_name}_{model_version}_{dataset_name}_{version}.html"
@@ -166,7 +166,7 @@ test_suite = Suite(name=suite_name)
 test1 = testing.test_r2(
     model=giskard_model,
     dataset=giskard_dataset,
-    threshold=0.3
+    threshold=0.4
 )
 
 test_suite.add_test(test1)
