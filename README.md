@@ -68,9 +68,16 @@ docker tag my_ml_service sashhhak0/my_ml_service:v1.0
 docker push sashhhak0/my_ml_service:latest
 ```
 ### Deploy website:
+Start mlflow server:
 ```
 mlflow ui --port 5000
+```
+Deploy Flask API:
+```
 python3 api/app.py
+```
+Deploy Gradio UI:
+```
 python3 src/app.py
 ```
 
