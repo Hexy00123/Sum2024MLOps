@@ -50,3 +50,9 @@ mlflow run . --env-manager=local
 ```sh
 python src/validate.py
 ```
+### Run tests:
+```sh
+pytest tests
+```
+
+
