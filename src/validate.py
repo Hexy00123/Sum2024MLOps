@@ -63,45 +63,9 @@ with initialize(config_path="../configs", version_base=None):
 
 model = mlflow.pyfunc.load_model(os.path.join("api", "model_dir"))
 
-# print(model)
-
-
-
-# df = mlflow.search_runs(filter_string="metrics.r2 < 1")
-# print(df)
-
-# run_id = df.loc[df['metrics.rmse'].idxmax()]['run_id']
-# print(run_id)
-
-# model = mlflow.sklearn.load_model("runs:/" + run_id + "/model")
-
-# reatrieve a 
-
 # Search for the model version that matches the tag {'source': 'champion'}
 model_version = str(cfg.model.best_model_version)
-# for mv in client.search_model_versions(f"name='{model_name}'"):
-#     # Check if the specific tag key-value pair exists
-#     if model_tag_key in mv.tags and mv.tags[model_tag_key] == model_tag_value:
-#         model_version = mv.version
-#         break
-
-# if model_version is None:
-#     raise ValueError(f"No model found with name '{model_name}' and tag '{model_tag_key}': '{model_tag_value}'")
-
-# # Assign alias 'champion' to the model version found
-# client.set_registered_model_alias(name=model_name, version=model_version, alias=model_alias)
-
-# print("DBG: Model name: ", model_name)
-# print("DBG: Model tag: ", model_tag_key, '=', model_tag_value)
-# print("DBG: Model version: ", model_version)
-
-# model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_alias(model_name, model_alias = model_alias)  
-# model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_version(model_name, model_version = model_version)
 print("Model loaded successfully")
-
-# mv = client.get_model_version(name = model_name, version=model_version)
-# mv = client.get_model_version_by_alias(name = model_name, alias=model_alias)
-# print("Model input schema: ", model.metadata.get_input_schema())
 
 schema = model.metadata.get_input_schema()
 # print(type(schema))
@@ -109,9 +73,6 @@ columns = []
 for col in schema:
     column = col.name
     columns.append(column)
-# print(type(columns[0]))
-# print(columns)
-
 # ------------------------------
 # 3. Initial Prediction
 
@@ -119,12 +80,10 @@ def predict(raw_df):
     column_name = cfg.data.target_cols[0]
     scaler = zenml.load_artifact(f"{column_name}_scaler")
 
-    # print("DBG preprocess: call predict")
     data = preprocess_data(df=deepcopy(raw_df), X_only=True)
     predictions = model.predict(data)
     predictions = scaler.inverse_transform(predictions.reshape(-1, 1)).reshape(-1)
 
-    # print("DBG return:", predictions)
     return predictions
 
 predictions = predict(df)
@@ -143,21 +102,9 @@ giskard_model = Model(
     name=model_name,
 )
 
-# print(giskard_model.feature_names)
-# print(giskard_dataset.df.columns)
-
 # ------------------------------
 # 5. Scanning Model
 print("DBG: Scanning model")
-
-# wrapped_predict = giskard_model.predict(giskard_dataset)
-# wrapped_test_metric = r2_score(y, wrapped_predict.prediction)
-
-# print(f'DBG: Wrapped Test R2-score: {wrapped_test_metric:.2f}')
-
-# scan_results = giskard.scan(giskard_model, giskard_dataset)
-# scan_results_path = f"reports/validation_results_{model_name}_{model_version}_{dataset_name}_{version}.html"
-# scan_results.to_html(scan_results_path)
 
 # 6. Create a Test Suite
 suite_name = f"test_suite_{model_name}_{model_version}_{dataset_name}_{version}"
