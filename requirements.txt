@@ -19,6 +19,7 @@ kaggle==1.6.14
 dvc-gdrive
 giskard==2.14.0
 coverage
+coverage-badge
 gradio==3.50.2
 xgboost
 catboost

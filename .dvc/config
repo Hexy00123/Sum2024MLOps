@@ -5,4 +5,4 @@
     url = C:\Users\sasha\PycharmProjects\Sum2024MLOps/datastore
 ['remote "storage"']
     url = gdrive://1b6ck1qgPUOKF7pCdEE2gcr7H0daEadYq
-
+    gdrive_use_service_account = true
