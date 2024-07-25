@@ -82,7 +82,7 @@ def predict(
         if predictions and isinstance(predictions[0], list) and len(predictions[0]) > 0:
             prediction = predictions[0][0]
             # Format the result into a readable string
-            return f"Predicted value: {prediction:.2f}"
+            return f"{prediction:.2f}"
         else:
             return "Prediction could not be made."
     except json.JSONDecodeError:
@@ -115,7 +115,7 @@ demo = gr.Interface(
         gr.Dropdown(label="area_category", choices=[
                     "0-5 Marla", "5-10 Marla", "10-15 Marla", "15-20 Marla"])
     ],
-    outputs=gr.Text(label="prediction result"),
+    outputs=gr.Text(label="Prediction price, PKR"),
     examples="data/examples"
 )
 
