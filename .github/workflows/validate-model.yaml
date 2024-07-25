@@ -131,6 +131,7 @@ jobs:
           mlflow run . --env-manager=local
 
       - name: Run validation for champion model
+        python3.11 src/utils.py 4
         run: python3.11 src/validate.py
 
   print_info:

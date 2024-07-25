@@ -1,70 +1,81 @@
 # src/validate.py
 from copy import deepcopy
-
-from giskard import demo, test, Dataset, TestResult, testing
-from sklearn.metrics import mean_absolute_percentage_error
-from sklearn.metrics import r2_score
 import pandas as pd
 from datetime import datetime
-
-from data import read_datastore, preprocess_data, read_features
-from model import retrieve_model_with_version
+from sklearn.metrics import r2_score
 import giskard
-from hydra import compose, initialize
+from giskard import Dataset, Model, Suite, testing
 import mlflow
 import zenml
+from data import read_datastore, preprocess_data
+from model import retrieve_model_with_alias  # Assuming this function is properly implemented
+from hydra import compose, initialize
 
+# Set MLflow tracking URI
 mlflow.set_tracking_uri("http://localhost:5000")
 print(datetime.now())
 
-
 # ------------------------------
-# 1. Wrap raw dataset
+# 1. Initialize Configuration
 with initialize(config_path="../configs"):
     cfg = compose(config_name="main")
-
 
 print("DBG: Wrapping dataset")
 version = cfg.test_data_version
 
+# Read datastore
 df = read_datastore()
 print('DBG: read datastore')
 if cfg.data.target_cols[0] not in df.columns:
-    raise ValueError("The 'price' column is missing from the DataFrame.")
+    raise ValueError(f"The '{cfg.data.target_cols[0]}' column is missing from the DataFrame.")
 
 dataset_name = cfg.dataset.name
 
 # Wrap your Pandas DataFrame with giskard.Dataset (validation or test set)
-giskard_dataset = giskard.Dataset(
-    # A pandas.DataFrame containing raw data (before pre-processing) and including ground truth variable.
+giskard_dataset = Dataset(
     df=df,
-    target=cfg.data.target_cols[0],  # Ground truth variable
-    name=dataset_name,  # Optional: Give a name to your dataset
-    # cat_columns=CATEGORICAL_COLUMNS  # List of categorical columns. Optional, but improves quality of results if available.
+    target=cfg.data.target_cols[0],
+    name=dataset_name,
 )
 
 print("DBG: Wrapping model")
 print("DBG dataframe", df.columns)
+
 # ------------------------------
-# 2. Wrap model
+# 2. Retrieve Model Using Tag {'source': 'champion'}
 model_name = cfg.model.best_model_name
+model_tag_key = cfg.model.model_tag_key
+model_tag_value = cfg.model.model_tag_value
 model_alias = cfg.model.best_model_alias
-model_version = cfg.model.best_model_version
 
-print("DBG: Model name: ", model_name)
-# model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_alias(model_name, model_alias = model_alias)
-model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_version(
-    model_name, model_version)
-print("DBG: Model loaded successfully")
-
+# Initialize MLflow Client
 client = mlflow.MlflowClient()
 
-# mv = client.get_model_version_by_alias(name = model_name, alias=model_alias)
-mv = client.get_model_version(name=model_name, version=str(model_version))
+# Search for the model version that matches the tag {'source': 'champion'}
+model_version = None
+for mv in client.search_model_versions(f"name='{model_name}'"):
+    # Check if the specific tag key-value pair exists
+    if model_tag_key in mv.tags and mv.tags[model_tag_key] == model_tag_value:
+        model_version = mv.version
+        break
 
+if model_version is None:
+    raise ValueError(f"No model found with name '{model_name}' and tag '{model_tag_key}': '{model_tag_value}'")
+
+# Assign alias 'champion' to the model version found
+client.set_registered_model_alias(name=model_name, version=model_version, alias=model_alias)
+
+print("DBG: Model name: ", model_name)
+print("DBG: Model tag: ", model_tag_key, '=', model_tag_value)
+print("DBG: Model version: ", model_version)
+
+model: mlflow.pyfunc.PyFuncModel = retrieve_model_with_alias(model_name, model_alias = model_alias)  
+print("Model loaded successfully")
+
+mv = client.get_model_version_by_alias(name = model_name, alias=model_alias)
 model_version = mv.version
+print("Model input schema: ", model.metadata.get_input_schema())
 
-print("DBG: Model input schema: ", model.metadata.get_input_schema())
 schema = model.metadata.get_input_schema()
 print(type(schema))
 columns = []
@@ -74,58 +85,42 @@ for col in schema:
 print(type(columns[0]))
 print(columns)
 
-# data = preprocess_data(df[df.columns].head(), X_only=True)
-# data
-#
-# data2 = preprocess_data(df[df.columns].head(), X_only=True)
-# data2
 # ------------------------------
-# 3. Initial prediction
-
-print("DBG dataframe", df.columns)
-
+# 3. Initial Prediction
 
 def predict(raw_df):
     column_name = cfg.data.target_cols[0]
     scaler = zenml.load_artifact(f"{column_name}_scaler")
 
-    # TODO: price
     print("DBG preprocess: call predict")
     data = preprocess_data(df=deepcopy(raw_df), X_only=True)
     predictions = model.predict(data)
-    predictions = scaler.inverse_transform(
-        predictions.reshape(-1, 1)).reshape(-1)
+    predictions = scaler.inverse_transform(predictions.reshape(-1, 1)).reshape(-1)
 
     print("DBG return:", predictions)
-    # X = data.drop('price', axis=1)
     return predictions
-
-
-print("DBG dataframe", df.columns)
 
 predictions = predict(df)
 print(f"DBG: Predictions: {len(predictions)}\n{predictions}")
 
 X, y = df.drop(cfg.data.target_cols[0], axis=1), df[cfg.data.target_cols[0]]
 
-print("DBG dataframe", df.columns)
-
 # ------------------------------
+# 4. Create Giskard Model
 print("DBG: Create giskard model")
-# 4. Create Giskard model
-giskard_model = giskard.Model(
+
+giskard_model = Model(
     model=predict,
     model_type="regression",
     feature_names=X.columns,
     name=model_name,
 )
 
-
 print(giskard_model.feature_names)
 print(giskard_dataset.df.columns)
 
 # ------------------------------
-# 3. Scanning model
+# 5. Scanning Model
 print("DBG: Scanning model")
 
 wrapped_predict = giskard_model.predict(giskard_dataset)
@@ -137,18 +132,20 @@ scan_results = giskard.scan(giskard_model, giskard_dataset)
 scan_results_path = f"reports/validation_results_{model_name}_{model_version}_{dataset_name}_{version}.html"
 scan_results.to_html(scan_results_path)
 
-# 4. Create a test suite
+# 6. Create a Test Suite
 suite_name = f"test_suite_{model_name}_{model_version}_{dataset_name}_{version}"
-test_suite = giskard.Suite(name=suite_name)
+test_suite = Suite(name=suite_name)
 
-test1 = giskard.testing.test_r2(model=giskard_model,
-                                  dataset=giskard_dataset,
-                                  threshold=0.4)
+test1 = testing.test_r2(
+    model=giskard_model,
+    dataset=giskard_dataset,
+    threshold=0.4
+)
 
 test_suite.add_test(test1)
 
 test_results = test_suite.run()
-if (test_results.passed):
+if test_results.passed:
     print("Passed model validation!")
 else:
     print("Model has vulnerabilities!")
