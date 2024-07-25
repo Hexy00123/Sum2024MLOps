@@ -29,6 +29,10 @@ export PROJECT_DIR=$PWD
 export PYTHONPATH=$PROJECT_DIR/src
 export ZENML_CONFIG_PATH=$PWD/services/zenml
 ```
+### Download dataset from Kaggle:
+```sh
+python src/download_kaggle_dataset
+```
 ### How to start ZenML pipeline:
 ```sh
 python pipelines/data_prepare.py
