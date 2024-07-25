@@ -124,7 +124,7 @@ jobs:
           python3.11 pipelines/data_prepare.py
 
       - name: Run MLflow server
-        run: mlflow ui &
+        run: mlflow server &
 
       - name: Run experiments
         run: | 
