@@ -23,7 +23,7 @@ Initial whole dataset zameen-updated.csv should be stored in folder "data".
 ```sh
 pip install -r requirements.txt
 ```
-### Set venv:
+### Set env:
 ```sh
 export PROJECT_DIR=$PWD
 export PYTHONPATH=$PROJECT_DIR/src
