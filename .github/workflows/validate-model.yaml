@@ -110,12 +110,14 @@ jobs:
 
       - name: Run ZenML server
         run: |
+          export ZENML_CONFIG_PATH=$PWD/services/zenml
           zenml down && zenml up
 
       - name: Generate test artifacts
         run: | 
           export PROJECT_DIR=$PWD
           export PYTHONPATH=$PROJECT_DIR/src
+          export ZENML_CONFIG_PATH=$PWD/services/zenml
           python3.11 src/utils.py 1
           python3.11 pipelines/data_prepare.py
           python3.11 src/utils.py 2
