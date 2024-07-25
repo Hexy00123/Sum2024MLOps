@@ -79,11 +79,6 @@ def predict():
         predictions = model.predict(df)
         print("Predictions:", predictions)
 
-        print(predictions)
-        predictions = scaler.inverse_transform(predictions.reshape(-1, 1))
-
-        print("Predictions:", predictions)
-
         # Return predictions as JSON
         return jsonify({"predictions": predictions.tolist()})
 

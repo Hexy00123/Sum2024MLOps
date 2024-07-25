@@ -3,19 +3,21 @@ import requests
 import hydra
 from data import read_features
 
-@hydra.main(config_path="../configs", config_name="main", version_base=None) # type: ignore
-def predict(cfg = None):
 
-    X, y = read_features(name = "features_target", 
-                        version = cfg.example_version, 
-                        )
+# type: ignore
+@hydra.main(config_path="../configs", config_name="deploy", version_base=None)
+def predict(cfg=None):
+    print(cfg)
 
-    example = X.iloc[0,:]
+    X, y = read_features(name="features_target",
+                         version=cfg.example_version)
+
+    example = X.iloc[0, :]
     example_target = y[0]
 
-    example = json.dumps( 
-    { "inputs": example.to_dict() }
-    )
+    example = json.dumps({
+        "inputs": example.to_dict()
+    })
 
     payload = example
 
@@ -25,10 +27,15 @@ def predict(cfg = None):
         headers={"Content-Type": "application/json"},
     )
 
+    # print(predictions)
+    # predictions = scaler.inverse_transform(predictions.reshape(-1, 1))
+
+    # print("Predictions:", predictions)
+    
     print(response.json())
     print("encoded target labels: ", example_target)
     # print("target labels: ", list(cfg.data.labels)[example_target])
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     predict()

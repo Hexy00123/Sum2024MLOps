@@ -27,6 +27,4 @@ hydra:
   sweeper:
     params:
       +model: "xgboost, lasso, catboost" # xgboost, rfr, lasso, catboost
-
-deploy:
-  model_port: 5000
+      
